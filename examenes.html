@@ -19,7 +19,6 @@
   --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   --shadow-hover: 0 35px 60px -12px rgba(30, 64, 175, 0.4);
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -29,7 +28,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
 /* ====== HEADER PRINCIPAL ====== */
 .header-main {
   position: fixed;
@@ -44,7 +42,6 @@ body {
   box-shadow: var(--shadow);
   border-bottom: 1px solid var(--glass-border);
 }
-
 .header-main h1 {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   background: linear-gradient(135deg, var(--gold), #f59e0b);
@@ -53,7 +50,17 @@ body {
   font-weight: 800;
   letter-spacing: -0.02em;
 }
-
+/* LOGO EN HEADER - PEQUEÑO SOLO EN CELULAR */
+.header-main img {
+  width: 180px;
+  height: auto;
+  padding: 1.2rem;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 20px;
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
+  transition: all 0.4s ease;
+}
 .menu-trigger {
   background: rgba(251, 191, 36, 0.2);
   border: 1px solid var(--gold);
@@ -68,13 +75,11 @@ body {
   transition: all 0.3s ease;
   display: none;
 }
-
 .menu-trigger:hover {
   background: var(--gold);
   color: #0f172a;
   transform: scale(1.05);
 }
-
 /* ====== MENÚ LATERAL (DESKTOP) ====== */
 .sidebar {
   position: fixed;
@@ -89,13 +94,11 @@ body {
   box-shadow: var(--shadow);
   border-right: 1px solid var(--glass-border);
 }
-
 .logo-section {
   text-align: center;
   margin-bottom: 2.5rem;
   padding: 0 1.5rem;
 }
-
 .logo-section img {
   width: 180px;
   height: auto;
@@ -106,12 +109,10 @@ body {
   box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
   transition: all 0.4s ease;
 }
-
 .logo-section img:hover {
   transform: scale(1.05);
   box-shadow: 0 25px 50px rgba(251, 191, 36, 0.25);
 }
-
 .nav-btn {
   display: block;
   width: 85%;
@@ -127,30 +128,25 @@ body {
   font-size: 0.95rem;
   transition: all 0.3s ease;
 }
-
 .nav-btn:hover {
   background: rgba(239, 68, 68, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 15px 30px rgba(239, 68, 68, 0.2);
 }
-
 .nav-menu {
   flex: 1;
   padding: 0 1.5rem;
   overflow-y: auto;
 }
-
 .nav-menu::-webkit-scrollbar { width: 6px; }
 .nav-menu::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-.nav-menu::-webkit-scrollbar-thumb { 
-  background: var(--gold); 
+.nav-menu::-webkit-scrollbar-thumb {
+  background: var(--gold);
   border-radius: 3px;
 }
-
 .nav-item {
   margin-bottom: 0.75rem;
 }
-
 .nav-link {
   display: flex;
   align-items: center;
@@ -164,7 +160,6 @@ body {
   position: relative;
   overflow: hidden;
 }
-
 .nav-link::before {
   content: '';
   position: absolute;
@@ -174,34 +169,28 @@ body {
   transform: scaleY(0);
   transition: transform 0.3s ease;
 }
-
 .nav-link i {
   width: 24px;
   margin-right: 1rem;
   font-size: 1.1rem;
   transition: transform 0.3s ease;
 }
-
 .nav-link:hover, .nav-link.active {
   background: rgba(30, 64, 175, 0.2);
   color: white;
   transform: translateX(8px);
   box-shadow: 0 10px 25px rgba(30, 64, 175, 0.2);
 }
-
 .nav-link:hover::before, .nav-link.active::before {
   transform: scaleY(1);
 }
-
 .nav-link:hover i, .nav-link.active i {
   transform: scale(1.1);
 }
-
 .nav-link.active {
   background: linear-gradient(135deg, var(--accent), #2563eb);
   box-shadow: 0 8px 25px rgba(30, 64, 175, 0.3);
 }
-
 /* ====== MENÚ MÓVIL (DESLIZA DESDE ARRIBA) ====== */
 .mobile-overlay {
   position: fixed;
@@ -213,12 +202,10 @@ body {
   visibility: hidden;
   transition: all 0.3s ease;
 }
-
 .mobile-overlay.active {
   opacity: 1;
   visibility: visible;
 }
-
 .mobile-menu {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -230,18 +217,15 @@ body {
   padding: 1rem 0;
   border-bottom: 1px solid var(--glass-border);
 }
-
 .mobile-menu.active {
   transform: translateY(0);
 }
-
 .mobile-nav {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
 }
-
 .mobile-nav-link {
   display: flex;
   align-items: center;
@@ -253,7 +237,6 @@ body {
   transition: all 0.3s ease;
   position: relative;
 }
-
 .mobile-nav-link::before {
   content: '';
   position: absolute;
@@ -264,30 +247,25 @@ body {
   transition: transform 0.3s ease;
   border-radius: 0 2px 2px 0;
 }
-
 .mobile-nav-link i {
   width: 20px;
   margin-right: 1rem;
   font-size: 1.1rem;
 }
-
 .mobile-nav-link:hover, .mobile-nav-link.active {
   background: rgba(30, 64, 175, 0.2);
   color: white;
   transform: translateX(8px);
 }
-
 .mobile-nav-link.active::before {
   transform: translateY(-50%) scaleX(1);
 }
-
 /* ====== CONTENIDO PRINCIPAL ====== */
 .main-content {
   padding: 6rem 2rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
 }
-
 .section-title {
   font-size: clamp(2rem, 5vw, 3rem);
   text-align: center;
@@ -298,14 +276,12 @@ body {
   font-weight: 800;
   letter-spacing: -0.02em;
 }
-
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
   margin-bottom: 3rem;
 }
-
 .exam-card {
   background: var(--card-bg);
   border-radius: 24px;
@@ -315,24 +291,20 @@ body {
   border: 1px solid var(--glass);
   backdrop-filter: blur(10px);
 }
-
 .exam-card:hover {
   transform: translateY(-16px) scale(1.02);
   box-shadow: var(--shadow-hover);
   border-color: rgba(251, 191, 36, 0.3);
 }
-
 .card-image {
   height: 220px;
   width: 100%;
   object-fit: cover;
   background: linear-gradient(45deg, var(--accent), var(--gold));
 }
-
 .card-content {
   padding: 1.5rem;
 }
-
 .card-title {
   font-size: 1.25rem;
   font-weight: 700;
@@ -341,13 +313,11 @@ body {
   color: var(--text);
   line-height: 1.3;
 }
-
 .card-actions {
   display: flex;
   gap: 0.75rem;
   justify-content: center;
 }
-
 .action-btn {
   flex: 1;
   padding: 0.9rem 1.2rem;
@@ -359,24 +329,20 @@ body {
   transition: all 0.3s ease;
   border: 1px solid transparent;
 }
-
 .btn-view {
   background: linear-gradient(135deg, var(--accent), #2563eb);
   color: white;
   border-color: rgba(30, 64, 175, 0.3);
 }
-
 .btn-download {
   background: linear-gradient(135deg, var(--gold), #f59e0b);
   color: #0f172a;
   border-color: rgba(251, 191, 36, 0.3);
 }
-
 .action-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
-
 /* ====== BOTÓN SUBIR ====== */
 .upload-section {
   background: var(--card-bg);
@@ -389,12 +355,10 @@ body {
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
-
 .upload-section:hover {
   border-color: var(--gold);
   box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
 }
-
 .upload-btn {
   background: linear-gradient(135deg, var(--gold), #f59e0b);
   color: #0f172a;
@@ -409,24 +373,20 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
 .upload-btn:hover {
   transform: translateY(-4px);
   box-shadow: 0 25px 50px rgba(251, 191, 36, 0.4);
 }
-
 /* ====== ESTADOS DE CARGA ====== */
 .loading-state {
   text-align: center;
   padding: 8rem 2rem;
 }
-
 .loading-text {
   font-size: 1.6rem;
   color: var(--text-muted);
   margin-bottom: 2rem;
 }
-
 .loading-spinner {
   width: 50px;
   height: 50px;
@@ -436,60 +396,61 @@ body {
   animation: spin 1s linear infinite;
   margin: 0 auto;
 }
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
 .empty-state {
   grid-column: 1 / -1;
   text-align: center;
   padding: 4rem 2rem;
   color: var(--text-muted);
 }
-
 .empty-state i {
   font-size: 4rem;
   margin-bottom: 1rem;
   opacity: 0.5;
 }
-
 /* ====== RESPONSIVE ====== */
 @media (max-width: 1024px) {
   .sidebar { transform: translateX(-100%); }
   .sidebar.active { transform: translateX(0); }
   .main-content { padding-left: 2rem; padding-right: 2rem; }
 }
-
 @media (max-width: 768px) {
   .menu-trigger { display: flex; }
-  .sidebar { 
-    width: 100%; 
-    transform: translateX(-100%); 
+  .sidebar {
+    width: 100%;
+    transform: translateX(-100%);
     left: 0;
   }
   .sidebar.active { transform: translateX(0); }
-  .cards-grid { 
+  .cards-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
   }
   .main-content { padding: 5rem 1.5rem 2rem; }
+  /* LOGO MÁS PEQUEÑO EN CELULAR */
+  .header-main img {
+    width: 80px !important;
+    padding: 0.6rem !important;
+  }
 }
-
 @media (max-width: 480px) {
-  .cards-grid { 
+  .cards-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
   .card-image { height: 200px; }
-  .section-title { 
+  .section-title {
     font-size: 2rem;
     margin: 3rem 0 2rem;
   }
   .upload-section { padding: 2.5rem 1.5rem; margin: 3rem 1rem; }
+  .header-main img {
+    width: 70px !important;
+  }
 }
-
 /* ====== ANIMACIONES DE ENTRADA ====== */
 @keyframes fadeInUp {
   from {
@@ -501,11 +462,9 @@ body {
     transform: translateY(0);
   }
 }
-
 .exam-card, .upload-section, .section-title {
   animation: fadeInUp 0.6s ease-out forwards;
 }
-
 .exam-card:nth-child(1) { animation-delay: 0.1s; }
 .exam-card:nth-child(2) { animation-delay: 0.2s; }
 .exam-card:nth-child(3) { animation-delay: 0.3s; }
@@ -518,8 +477,8 @@ body {
 <!-- Header principal -->
 <header class="header-main">
   <h1>Banco de Exámenes Sanluisina</h1>
-    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" 
-         alt="IEP San Luis Gonzaga">
+  <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png"
+       alt="IEP San Luis Gonzaga">
   <div class="menu-trigger" onclick="toggleMobileMenu()">
     <i class="fas fa-bars"></i>
   </div>
@@ -528,14 +487,14 @@ body {
 <!-- Menú lateral (desktop) -->
 <nav class="sidebar" id="sidebar">
   <div class="logo-section">
-    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" 
+    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png"
          alt="IEP San Luis Gonzaga">
   </div>
-  
+ 
   <a href="index.html" class="nav-btn">
     <i class="fas fa-home"></i> Volver al Inicio
   </a>
-  
+ 
   <div class="nav-menu">
     <div class="nav-item">
       <a href="#area1" class="nav-link active">
@@ -616,7 +575,6 @@ body {
     <div class="loading-spinner"></div>
     <div class="loading-text">Cargando exámenes...</div>
   </div>
-
   <section>
     <h2 class="section-title" id="area1">Área I</h2>
     <div class="cards-grid" id="cont-area1"></div>
@@ -626,7 +584,6 @@ body {
       </button>
     </div>
   </section>
-
   <section>
     <h2 class="section-title" id="area2">Área II</h2>
     <div class="cards-grid" id="cont-area2"></div>
@@ -636,7 +593,6 @@ body {
       </button>
     </div>
   </section>
-
   <section>
     <h2 class="section-title" id="area3">Área III</h2>
     <div class="cards-grid" id="cont-area3"></div>
@@ -646,7 +602,6 @@ body {
       </button>
     </div>
   </section>
-
   <section>
     <h2 class="section-title" id="area4">Área IV</h2>
     <div class="cards-grid" id="cont-area4"></div>
@@ -656,7 +611,6 @@ body {
       </button>
     </div>
   </section>
-
   <section>
     <h2 class="section-title" id="area5">Área V</h2>
     <div class="cards-grid" id="cont-area5"></div>
@@ -666,7 +620,6 @@ body {
       </button>
     </div>
   </section>
-
   <section>
     <h2 class="section-title" id="area6">Concursos Interescolares</h2>
     <div class="cards-grid" id="cont-area6"></div>
@@ -689,15 +642,13 @@ const CARPETAS = [
   "1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77",
   "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
 ];
-
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
-
 async function cargarTodo() {
   for (let i = 0; i < 6; i++) {
     try {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
       const archivos = await res.json();
-      
+     
       if (archivos.length === 0) {
         contenedores[i].innerHTML = `
           <div class="empty-state">
@@ -713,7 +664,7 @@ async function cargarTodo() {
           card.className = 'exam-card';
           card.style.animationDelay = `${index * 0.1}s`;
           card.innerHTML = `
-            <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400" 
+            <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400"
                  alt="${nombre}" class="card-image"
                  onerror="this.style.background='linear-gradient(45deg, var(--accent), var(--gold))'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.style.color='white'; this.style.fontSize='1.2rem'; this.innerHTML='<i class=\'fas fa-file-pdf\'></i> ${nombre}'">
             <div class="card-content">
@@ -742,23 +693,20 @@ async function cargarTodo() {
   }
   document.getElementById('loading').style.display = 'none';
 }
-
 // Funciones de menú móvil
 function toggleMobileMenu() {
   document.getElementById('mobileMenu').classList.toggle('active');
   document.querySelector('.mobile-overlay').classList.toggle('active');
 }
-
 function closeMobileMenu() {
   document.getElementById('mobileMenu').classList.remove('active');
   document.querySelector('.mobile-overlay').classList.remove('active');
 }
-
 // Navegación activa
 function updateActiveNav() {
   const sections = document.querySelectorAll('.section-title');
   const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
-  
+ 
   let current = '';
   sections.forEach(section => {
     const sectionTop = section.offsetTop - 200;
@@ -766,7 +714,6 @@ function updateActiveNav() {
       current = section.getAttribute('id');
     }
   });
-
   navLinks.forEach(link => {
     link.classList.remove('active');
     if (link.getAttribute('href') === `#${current}`) {
@@ -774,7 +721,6 @@ function updateActiveNav() {
     }
   });
 }
-
 // Event listeners
 window.addEventListener('scroll', updateActiveNav);
 document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
@@ -783,7 +729,6 @@ document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
     setTimeout(updateActiveNav, 300);
   });
 });
-
 // Cargar contenido
 cargarTodo();
 </script>
