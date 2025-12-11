@@ -6,24 +6,25 @@
 <title>Biblioteca Digital Sanluisina | IEP San Luis Gonzaga</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 <style>
 :root{--p:#003087;--s:#0146c6;--a:#FFD700;--l:#f8f9fa;--d:#1e293b;--g:#64748b;--r:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-left:280px;transition:.4s}
+body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-left:280px;transition:.4s;overflow-x:hidden}
 .sidebar{position:fixed;left:0;top:0;width:280px;height:100vh;background:linear-gradient(180deg,var(--p),var(--s));color:white;z-index:999;box-shadow:8px 0 30px rgba(0,48,135,.3);overflow-y:auto;display:flex;flex-direction:column}
 .sidebar-header{padding:2.8rem 1.5rem 2.2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.15)}
 .logo{width:158px;border-radius:22px;background:rgba(255,255,255,.18);padding:14px;margin-bottom:16px}
-.sidebar h2{font-family:'Playfair Display',serif;font-size:1.85rem}
+.sidebar h2{font-family:'Playfair Display',serif;font-size:1.85rem;line-height:1.2}
+.sidebar h2 span{font-size:1.35rem;opacity:.95}
 .nav-item{display:flex;align-items:center;gap:16px;padding:1.1rem 2rem;color:rgba(255,255,255,.92);text-decoration:none;font-weight:500;transition:.35s}
 .nav-item:hover{background:rgba(255,255,255,.18);padding-left:2.4rem}
 .nav-item.active{background:rgba(255,255,255,.28);font-weight:700;border-left:6px solid var(--a);padding-left:2.4rem}
-.hero{height:100vh;background:linear-gradient(rgba(0,48,135,.95),rgba(0,48,135,.88)),url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920) center/cover;display:flex;align-items:center;justify-content:center;text-align:center;color:white}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,8vw,5.8rem);font-weight:900;color:var(--a)}
+.hero{height:100vh;background:linear-gradient(rgba(0,48,135,.95),rgba(0,48,135,.88)),url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920') center/cover;display:flex;align-items:center;justify-content:center;text-align:center;color:white}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,8vw,5.8rem);font-weight:900;color:var(--a);text-shadow:0 8px 20px rgba(0,0,0,.6)}
 .container{max-width:1400px;margin:0 auto;padding:2rem}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
 .card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 25px rgba(0,48,135,.15);border:3px solid var(--a);transition:.4s}
-.card:hover{transform:translateY(-12px)}
+.card:hover{transform:translateY(-12px);box-shadow:0 25px 50px rgba(0,48,135,.22)}
 .card img{width:100%;height:180px;object-fit:cover}
 .content{padding:1.5rem;text-align:center}
 .badge{background:linear-gradient(135deg,var(--p),var(--s));color:white;padding:8px 16px;border-radius:50px;font-size:.8rem;font-weight:700;margin-bottom:10px}
@@ -31,7 +32,7 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
 .action-buttons{display:flex;flex-direction:column;gap:10px;margin-top:15px}
 .read-btn,.download-btn{padding:12px;border-radius:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
 .read-btn{background:linear-gradient(135deg,var(--p),var(--s));color:white;border:none;cursor:pointer}
-.download-btn{background:var(--r);color:white;text-decoration:none}
+.download-btn{background:#dc2626;color:white;text-decoration:none}
 .add-book-card{background:linear-gradient(135deg,var(--p),var(--s));color:white;border-radius:20px;padding:3rem 2rem;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;min-height:460px}
 .add-book-card i{font-size:6rem}
 .add-book-card span{font-size:2.2rem;font-weight:900;font-family:'Playfair Display',serif}
@@ -51,7 +52,9 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
 </head>
 <body>
 
-<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active')"><i class="fas fa-bars"></i></button>
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active')">
+  <i class="fas fa-bars"></i>
+</button>
 
 <aside class="sidebar">
   <div class="sidebar-header">
@@ -100,7 +103,7 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
 const CARPETA = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 const SCRIPT = "https://script.google.com/macros/s/AKfycbztbSGkOzAxM6634AMXvjS9arvg_kpAd4wH70QDrQfNGmc1gbUuwQLfenp4jEcwsRk8/exec";
 
-async function cargar(cat = 'all'){
+async function cargar(){
   const c = document.getElementById('cards');
   c.innerHTML = '';
 
@@ -119,7 +122,7 @@ async function cargar(cat = 'all'){
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
-        <img src="https://drive.google.com/thumbnail?id=${l.id}&sz=w400" onerror="this.src='https://via.placeholder.com/400x600/003087/ffffff?text=${n}'">
+        <img src="https://drive.google.com/thumbnail?id=${l.id}&sz=w400" onerror="this.src='https://via.placeholder.com/400x600/003087/ffffff?text=${encodeURIComponent(n)}'">
         <div class="content">
           <div class="badge">Libro</div>
           <h3>${n}</h3>
@@ -141,18 +144,8 @@ function subir(){
   if(!t||!f) return alert('Falta título o PDF');
   window.open('https://drive.google.com/drive/folders/'+CARPETA+'?usp=sharing','_blank');
   document.getElementById('modal').classList.remove('active');
-  alert('¡Carpeta abierta! Arrastra tu PDF y renómbralo con el título');
+  alert('¡Carpeta abierta! Arrastra tu PDF y renómbralo');
 }
-
-// Menú funciona
-document.querySelectorAll('.nav-item[data-cat]').forEach(item => {
-  item.onclick = e => {
-    e.preventDefault();
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-    cargar(item.dataset.cat);
-  };
-});
 
 cargar();
 </script>
