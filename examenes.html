@@ -14,10 +14,9 @@
   --gold:#fbbf24;
   --red:#ef4444;
   --text:#e2e8f0;
-  --hover:#2563eb;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth} /* ← Importante para el centrado suave */
+html{scroll-behavior:smooth}
 body{
   font-family:'Inter',sans-serif;
   background:var(--bg);
@@ -35,15 +34,25 @@ body{
   box-shadow:8px 0 40px rgba(0,0,0,0.7);z-index:1000;padding:0 20px;
   transition:transform .4s ease;
 }
+
+/* LOGO CON ESTILO ACUARELA */
 .sidebar .logo{
-  text-align:center;padding:25px 0;margin-bottom:20px;font-size:2.1rem;
-  font-weight:900;background:linear-gradient(90deg,#fbbf24,#f59e0b);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  text-align:center;
+  padding:20px 0 30px;
 }
-.sidebar .logo::after{
-  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:120px;height:4px;background:var(--gold);border-radius:2px;
+.sidebar .logo img{
+  width:195px;
+  height:auto;
+  padding:12px;
+  background:rgba(251,191,36,0.15);
+  border-radius:22px;
+  border:2px solid rgba(251,191,36,0.3);
+  backdrop-filter:blur(10px);
+  box-shadow:0 10px 30px rgba(251,191,36,0.3);
+  transition:transform .3s;
 }
+.sidebar .logo img:hover{transform:scale(1.05)}
+
 .volver-btn{
   display:block;margin:0 auto 35px;width:85%;padding:16px;
   background:rgba(239,68,68,0.25);backdrop-filter:blur(10px);
@@ -75,7 +84,7 @@ body{
 .sidebar ul li a:hover i{transform:scale(1.2)}
 .sidebar ul li a.active{background:var(--accent);color:white}
 
-/* Botón hamburguesa */
+/* Botón hamburguesa móvil */
 .menu-toggle{
   position:fixed;top:25px;left:25px;width:55px;height:55px;
   background:var(--gold);color:black;border-radius:50%;
@@ -96,18 +105,13 @@ header h1{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;
 }
 
-/* Contenido */
 .container{max-width:1400px;margin:0 auto;padding:3rem 2rem}
-
-/* ← AJUSTE CLAVE: cada sección tiene padding-top para centrar bien al hacer scroll */
 .section-title{
   font-size:2.8rem;text-align:center;margin:0 0 3rem;
-  padding-top:120px;           /* ← Esto compensa el header fijo */
-  margin-top:-120px;           /* ← Truco para centrar perfecto */
+  padding-top:120px;margin-top:-120px;
   background:linear-gradient(90deg,#fbbf24,#f59e0b);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  font-weight:900;
-  scroll-margin-top:100px;     /* ← Lo más importante para el centrado */
+  font-weight:900;scroll-margin-top:100px;
 }
 
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem}
@@ -128,7 +132,6 @@ header h1{
 .subir button:hover{transform:translateY(-5px)}
 .loading{text-align:center;padding:8rem;font-size:1.7rem;color:#888}
 
-/* Responsive */
 @media (max-width:992px){
   body{padding-left:0}
   header{left:0}
@@ -145,10 +148,16 @@ header h1{
 </div>
 
 <nav class="sidebar">
-  <div class="logo">SAN LUIS G.</div>
+  <!-- LOGO ACUARELA DEL COLEGIO -->
+  <div class="logo">
+    <img src="https://tu-usuario.github.io/tu-repositorio/logo.png" 
+         alt="IEP San Luis Gonzaga - Huánuco">
+  </div>
+
   <a href="index.html" class="volver-btn">
     <i class="fas fa-home"></i> VOLVER AL INICIO
   </a>
+
   <ul>
     <li><a href="#area1" class="active"><i class="fas fa-brain"></i> Área I</a></li>
     <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
@@ -164,7 +173,6 @@ header h1{
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- ÁREAS (solo cambié el id del h2 para que coincida con el enlace) -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="cards" id="cont-area1"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">
@@ -230,7 +238,6 @@ async function cargarTodo() {
   document.getElementById('loading').style.display = 'none';
 }
 
-// Resaltar opción activa al hacer scroll
 window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('.section-title');
   const links = document.querySelectorAll('.sidebar ul a');
