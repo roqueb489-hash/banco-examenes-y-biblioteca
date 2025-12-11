@@ -54,7 +54,7 @@
     <h2>Banco de<br>Exámenes</h2>
   </div>
   <nav class="nav">
-    <a href="biblioteca.html" class="volver">Ir a Biblioteca Digital</a>
+    <a href="biblioteca.html" class="volver">Ir a Biblioteca</a>
     <a href="#area1">Área I</a>
     <a href="#area2">Área II</a>
     <a href="#area3">Área III</a>
@@ -80,7 +80,7 @@
 
 <script>
   const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbztbSGkOzAxM6634AMXvjS9arvg_kpAd4wH70QDrQfNGmc1gbUuwQLfenp4jEcwsRk8/exec";
-  const CARPETA_ID = "1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm";  // TU CARPETA DE EXÁMENES
+  const CARPETA_ID = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";  // TU CARPETA DE EXÁMENES
 
   async function cargar() {
     const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_ID}`);
@@ -90,32 +90,43 @@
     archivos.forEach(f => {
       const name = f.name.toLowerCase();
       let area = 6;
-      if(/área\s*1|area\s*1|area i/i.test(name)) area=1;
-      else if(/área\s*2|area\s*2|area ii/i.test(name)) area=2;
-      else if(/área\s*3|area\s*3|area iii/i.test(name)) area=3;
-      else if(/área\s*4|area\s*4|area iv/i.test(name)) area=4;
-      else if(/área\s*5|area\s*5|area v/i.test(name)) area=5;
-      else if(/concurso|interescolar/i.test(name)) area=6;
+      if(/área\s*1|area\s*1/i.test(name)) area=1;
+      else if(/área\s*2|area\s*2/i.test(name)) area=2;
+      else if(/área\s*3|area\s*3/i.test(name)) area=3;
+      else if(/área\s*4|area\s*4/i.test(name)) area=4;
+      else if(/área\s*5|area\s*5/i.test(name)) area=5;
+      else if(/concurso/i.test(name)) area=6;
       areas[area].push(f);
     });
 
     for(let i=1;i<=6;i++){
       const cont = document.getElementById('cards'+i);
-      if(areas[i].length===0){ cont.innerHTML='<p class="empty">Aún no hay exámenes en esta área</p>'; continue; }
+      if(areas[i].length===0){ cont.innerHTML='<p class="empty">Aún no hay exámenes</p>'; continue; }
       areas[i].forEach(ex=>{
         const embed = `https://drive.google.com/file/d/${ex.id}/preview`;
         cont.innerHTML += `
-          <div class="card">
-            <div class="card-img-container"><canvas></canvas></div>
+          <div class="card" onclick="window.open('${embed}','_blank')">
+            <div class="card-img-container"><canvas id="pdf-${ex.id}"></canvas></div>
             <div class="card-content">
-              <div class="badge">${i===6?'Concursos':'Área '+i}</div>
+              <div class="badge">Área ${i}</div>
               <h3>${ex.name.replace(/\.pdf$/i,'')}</h3>
               <div class="btns">
-                <a href="${embed}" target="_blank" class="btn btn-primary">Ver</a>
-                <a href="https://drive.google.com/uc?id=${ex.id}&export=download" class="btn btn-success">Descargar</a>
+                <a href="${embed}" target="_blank" class="btn btn-primary" onclick="event.stopPropagation()">Ver</a>
+                <a href="https://drive.google.com/uc?id=${ex.id}&export=download" class="btn btn-success" onclick="event.stopPropagation()">Descargar</a>
               </div>
             </div>
           </div>`;
+        // Generar portada automática con PDF.js
+        pdfjsLib.getDocument(`https://drive.google.com/uc?id=${ex.id}`).promise.then(pdf => {
+          pdf.getPage(1).then(page => {
+            const canvas = document.getElementById(`pdf-${ex.id}`);
+            const context = canvas.getContext('2d');
+            const viewport = page.getViewport({scale: 1.5});
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            page.render({canvasContext: context, viewport: viewport});
+          });
+        }).catch(() => { /* si falla, queda el fondo negro */ });
       });
     }
   }
