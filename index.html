@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biblioteca Digital Sanluisina | IEP San Luis Gonzaga</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-<style>
-:root{--primary:#003087;--secondary:#0146c6;--accent:#FFD700;--light:#f8f9fa;--dark:#1e293b;--gray:#64748b;--danger:#ef4444;--card-shadow:0 8px 25px rgba(0,48,135,0.12);--card-shadow-hover:0 25px 50px rgba(0,48,135,0.22);--transition:all .4s cubic-bezier(.4,0,.2,1);--radius:20px}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);line-height:1.6;transition:var(--transition);overflow-x:hidden;padding-left:280px}
-.sidebar{position:fixed;left:0;top:0;width:280px;height:100vh;background:linear-gradient(180deg,var(--primary),var(--secondary));color:white;z-index:999;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,48,135,0.3);overflow-y:auto}
-.sidebar-header{padding:2.8rem 1.5rem 2.2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,0.15)}
-.sidebar-logo-big{width:158px;border-radius:22px;background:rgba(255,255,255,0.18);padding:14px}
-.hero{height:100vh;background:linear-gradient(rgba(0,48,135,0.95),rgba(0,48,135,0.88)),url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920') center/cover;display:flex;align-items:center;justify-content:center;text-align:center;color:white}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,8vw,5.8rem);font-weight:900;color:var(--accent);text-shadow:0 8px 20px rgba(0,0,0,0.6)}
-.container{max-width:1400px;margin:0 auto;padding:0 30px}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem;padding:3rem 0}
-.card{background:white;border-radius:20px;overflow:hidden;box-shadow:var(--card-shadow);border:3px solid var(--accent);transition:all .4s}
-.card:hover{transform:translateY(-12px);box-shadow:var(--card-shadow-hover)}
-.card img{width:100%;height:180px;object-fit:cover}
-.content{padding:1.5rem;text-align:center}
-.category-badge{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:8px 16px;border-radius:50px;font-size:0.8rem;font-weight:700;margin-bottom:10px}
-.card h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;margin:10px 0}
-.action-buttons{display:flex;flex-direction:column;gap:10px;margin-top:15px}
-.read-btn,.download-btn{padding:12px;border-radius:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
-.read-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;cursor:pointer}
-.download-btn{background:#dc2626;color:white;text-decoration:none}
-.add-book-card{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border-radius:20px;padding:3rem 2rem;text-align:center;cursor:pointer;min-height:460px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
-.add-book-card i{font-size:6rem}
-.add-book-card span{font-size:2.2rem;font-weight:900;font-family:'Playfair Display',serif}
-.menu-toggle{display:none;position:fixed;top:20px;left:20px;z-index:1002;background:var(--primary);color:white;border:none;width:60px;height:60px;border-radius:50%;font-size:1.8rem;cursor:pointer;box-shadow:0 8px 25px rgba(0,0,0,0.5)}
-@media (max-width:992px){body{padding-left:0}.sidebar{transform:translateX(-100%)}.sidebar.active{transform:translateX(0)}.menu-toggle{display:block}}
-.upload-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);z-index:9999;align-items:center;justify-content:center}
-.upload-modal.active{display:flex}
-.upload-box{background:white;border-radius:24px;width:90%;max-width:500px;padding:3rem 2rem;box-shadow:0 30px 80px rgba(0,0,0,0.4);position:relative}
-.upload-box h2{font-size:2.4rem;color:var(--primary);text-align:center;margin-bottom:1.5rem;font-weight:900}
-.form-group{margin:1.5rem 0}
-.form-group label{display:block;margin-bottom:8px;font-weight:600;color:#333}
-.form-group input{width:100%;padding:14px;border:2px solid #ddd;border-radius:12px;font-size:1rem}
-.form-group input[type="file"]{padding:40px;background:#f8f9fa;cursor:pointer;border:3px dashed #ccc;border-radius:16px;text-align:center;font-weight:700}
-.upload-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:16px;border-radius:12px;font-size:1.3rem;font-weight:700;cursor:pointer;width:100%}
-.close-upload{position:absolute;top:15px;right:20px;font-size:2.5rem;background:none;border:none;cursor:pointer;color:#999}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Digital Sanluisina</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+  <style>
+    :root{--primary:#003087;--secondary:#0146c6;--accent:#FFD700;--light:#f8f9fa;--dark:#1e293b;--danger:#ef4444;--radius:20px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);padding-left:280px;transition:all .4s}
+    .sidebar{position:fixed;left:0;top:0;width:280px;height:100vh;background:linear-gradient(180deg,var(--primary),var(--secondary));color:white;z-index:999;box-shadow:8px 0 30px rgba(0,48,135,0.3);overflow-y:auto}
+    .sidebar-header{padding:2.8rem 1.5rem 2.2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,0.15)}
+    .sidebar-logo-big{width:158px;border-radius:22px;background:rgba(255,255,255,0.18);padding:14px}
+    .hero{height:100vh;background:linear-gradient(rgba(0,48,135,0.95),rgba(0,48,135,0.88)),url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920') center/cover;display:flex;align-items:center;justify-content:center;text-align:center;color:white}
+    .hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,8vw,5.8rem);font-weight:900;color:var(--accent)}
+    .container{max-width:1400px;margin:0 auto;padding:2rem}
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
+    .card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 25px rgba(0,48,135,0.15);border:3px solid var(--accent);transition:all .4s}
+    .card:hover{transform:translateY(-12px)}
+    .card img{width:100%;height:180px;object-fit:cover}
+    .content{padding:1.5rem;text-align:center}
+    .category-badge{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:8px 16px;border-radius:50px;font-size:0.8rem;font-weight:700;margin-bottom:10px}
+    .card h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;margin:10px 0}
+    .action-buttons{display:flex;flex-direction:column;gap:10px;margin-top:15px}
+    .read-btn,.download-btn{padding:12px;border-radius:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
+    .read-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;cursor:pointer}
+    .download-btn{background:#dc2626;color:white;text-decoration:none}
+    .add-book-card{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border-radius:20px;padding:3rem 2rem;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;min-height:460px}
+    .add-book-card i{font-size:6rem}
+    .add-book-card span{font-size:2.2rem;font-weight:900;font-family:'Playfair Display',serif}
+    .menu-toggle{display:none;position:fixed;top:20px;left:20px;z-index:1002;background:var(--primary);color:white;border:none;width:60px;height:60px;border-radius:50%;font-size:1.8rem;cursor:pointer;box-shadow:0 8px 25px rgba(0,0,0,0.5)}
+    @media (max-width:992px){body{padding-left:0}.sidebar{transform:translateX(-100%)}.sidebar.active{transform:translateX(0)}.menu-toggle{display:block}}
+    .upload-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);z-index:9999;align-items:center;justify-content:center}
+    .upload-modal.active{display:flex}
+    .upload-box{background:white;border-radius:24px;width:90%;max-width:500px;padding:3rem 2rem;box-shadow:0 30px 80px rgba(0,0,0,0.4);position:relative}
+    .upload-box h2{font-size:2.4rem;color:var(--primary);text-align:center;margin-bottom:1.5rem;font-weight:900}
+    .form-group{margin:1.5rem 0}
+    .form-group label{display:block;margin-bottom:8px;font-weight:600;color:#333}
+    .form-group input{width:100%;padding:14px;border:2px solid #ddd;border-radius:12px;font-size:1rem}
+    .form-group input[type="file"]{padding:40px;background:#f8f9fa;cursor:pointer;border:3px dashed #ccc;border-radius:16px;text-align:center;font-weight:700}
+    .upload-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:16px;border-radius:12px;font-size:1.3rem;font-weight:700;cursor:pointer;width:100%}
+    .close-upload{position:absolute;top:15px;right:20px;font-size:2.5rem;background:none;border:none;cursor:pointer;color:#999}
+  </style>
 </head>
 <body>
 
@@ -67,9 +67,7 @@ body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);li
 </section>
 
 <div class="container">
-  <div class="cards" id="all-container">
-    <!-- El botón gigante se crea aquí con JS -->
-  </div>
+  <div class="cards" id="all-container"></div>
 </div>
 
 <!-- MODAL SUBIR LIBRO -->
@@ -96,7 +94,7 @@ const CARPETA_ID = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 async function cargarLibros(){
   const cont = document.getElementById('all-container');
   
-  // BOTÓN GIGANTE
+  // BOTÓN GIGANTE (siempre aparece)
   const btn = document.createElement('div');
   btn.className = 'add-book-card';
   btn.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><span>Subir nuevo<br>libro</span><small>Click aquí</small>`;
