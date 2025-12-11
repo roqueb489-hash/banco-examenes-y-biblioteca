@@ -9,13 +9,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
   <style>
-    :root{--primary:#003087;--secondary:#0146c6;--accent:#FFD700;--light:#f8f9fa;--dark:#1e293b;--gray:#64748b;--gray-light:#e2e8f0;--success:#10b981;--danger:#ef4444;--card-shadow:0 8px 25px rgba(0,48,135,0.12);--card-shadow-hover:0 25px 50px rgba(0,48,135,0.22);--transition:all .4s cubic-bezier(.4,0,.2,1);--radius:20px}
+    :root{--primary:#003087;--secondary:#0146c6;--accent:#FFD700;--light:#f8f9fa;--dark:#1e293b;--gray:#64748b;--gray-light:#e2e8f0;--danger:#ef4444;--card-shadow:0 8px 25px rgba(0,48,135,0.12);--card-shadow-hover:0 25px 50px rgba(0,48,135,0.22);--transition:all .4s cubic-bezier(.4,0,.2,1);--radius:20px}
     [data-theme="dark"]{--light:#0f172a;--dark:#000;--gray:#94a3b8;--gray-light:#334155;--card-shadow:0 8px 25px rgba(0,48,135,0.35);--card-shadow-hover:0 30px 60px rgba(0,48,135,0.5)}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);line-height:1.6;transition:var(--transition);overflow-x:hidden;padding-left:280px}
     .sidebar{position:fixed;left:0;top:0;width:280px;height:100vh;background:linear-gradient(180deg,var(--primary),var(--secondary));color:white;z-index:999;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,48,135,0.3);overflow-y:auto}
     .sidebar-header{padding:2.8rem 1.5rem 2.2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,0.15)}
-    .sidebar-logo-big{width:158px;max-width:80%;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.6));margin-bottom:16px;border-radius:22px;background:rgba(255,255,255,0.18);padding:14px;backdrop-filter:blur(6px)}
+    .sidebar-logo-big{width:158px;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.6));margin-bottom:16px;border-radius:22px;background:rgba(255,255,255,0.18);padding:14px;backdrop-filter:blur(6px)}
     .sidebar-header h2{font-family:'Playfair Display',serif;font-size:1.85rem;line-height:1.2}
     .sidebar-header span{font-size:1.35rem;opacity:0.95}
     .nav-item{display:flex;align-items:center;gap:16px;padding:1.1rem 2rem;color:rgba(255,255,255,0.92);text-decoration:none;font-weight:500;transition:all .35s}
@@ -47,6 +47,11 @@
     .read-btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,48,135,0.5)}
     .download-btn{background:#dc2626;color:white;box-shadow:0 6px 20px rgba(220,38,38,0.35)}
     .download-btn:hover{background:#b91c1c;transform:translateY(-3px);box-shadow:0 12px 30px rgba(220,38,38,0.5)}
+    .add-book-card{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border-radius:var(--radius);padding:2.5rem 1.5rem;text-align:center;box-shadow:var(--card-shadow);transition:var(--transition);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;min-height:420px}
+    .add-book-card:hover{transform:translateY(-16px);box-shadow:var(--card-shadow-hover)}
+    .add-book-card i{font-size:5.5rem;opacity:0.95}
+    .add-book-card span{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;line-height:1.2}
+    .add-book-card small{font-size:1.05rem;opacity:0.9}
     .controls{position:fixed;top:90px;right:20px;z-index:999;display:flex;flex-direction:column;gap:16px}
     .control-btn{width:56px;height:56px;border-radius:50%;background:var(--primary);color:white;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(0,48,135,0.35);font-size:1.35rem}
     #scrollTop{position:fixed;bottom:30px;right:30px;width:58px;height:58px;background:var(--primary);color:white;border:none;border-radius:50%;font-size:1.7rem;cursor:pointer;box-shadow:0 8px 25px rgba(0,48,135,0.4);opacity:0;visibility:hidden;transition:var(--transition);z-index:998}
@@ -56,20 +61,16 @@
   </style>
 </head>
 <body data-theme="light">
-  <button class="menu-toggle" id="menu-toggle">
-    <i class="fas fa-bars"></i>
-  </button>
+
+  <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
 
   <aside class="sidebar">
     <div class="sidebar-header">
-      <img src="Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga" class="sidebar-logo-big"
-           onerror="this.src='https://via.placeholder.com/158x158/003087/ffffff?text=Logo'">
+      <img src="Insignia-New-cuadrado.png" alt="Logo" class="sidebar-logo-big" onerror="this.src='https://via.placeholder.com/158x158/003087/ffffff?text=Logo'">
       <h2>Biblioteca<br><span>Sanluisina</span></h2>
     </div>
     <nav class="sidebar-nav">
-      <a href="examenes.html" class="nav-item">
-        <i class="fas fa-graduation-cap"></i> Banco de Exámenes
-      </a>
+      <a href="examenes.html" class="nav-item"><i class="fas fa-graduation-cap"></i> Banco de Exámenes</a>
     </nav>
     <div class="sidebar-footer">
       <a href="#" class="nav-item active" data-section="all">Inicio Todos los libros</a>
@@ -83,15 +84,13 @@
 
   <div class="controls">
     <button class="control-btn" id="theme-toggle"><i class="fas fa-moon"></i></button>
-    <button class="control-btn" id="favorites-btn"><i class="fas fa-heart"></i><span id="fav-count">0</span></button>
   </div>
 
   <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
   <section class="hero">
     <div class="hero-content">
-      <img src="Insignia-New-cuadrado.png" alt="Logo" class="hero-logo-big"
-           onerror="this.src='https://via.placeholder.com/190x190/003087/ffffff?text=Logo'">
+      <img src="Insignia-New-cuadrado.png" alt="Logo" class="hero-logo-big" onerror="this.src='https://via.placeholder.com/190x190/003087/ffffff?text=Logo'">
       <h1>Biblioteca Digital Sanluisina</h1>
       <p>IEP San Luis Gonzaga - Huánuco</p>
       <div class="search-bar">
@@ -107,32 +106,88 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.mjs" type="module"></script>
   <script type="module">
     const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbztbSGkOzAxM6634AMXvjS9arvg_kpAd4wH70QDrQfNGmc1gbUuwQLfenp4jEcwsRk8/exec";
-    const CARPETA_BIBLIOTECA = "PEGA_AQUÍ_EL_ID_DE_LA_CARPETA_DE_LIBROS"; // ← Cuando me des el ID te lo cambio en 3 segundos
+    const CARPETA_ID = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4"; // <-- TU CARPETA DE LIBROS
 
-    // Aquí irá todo tu JS de búsqueda, favoritos, portadas automáticas, etc.
-    // Por ahora solo cargo los libros
+    const CATEGORIES = {
+      "wol": "Publicaciones Bíblicas",
+      "peru": "Literatura Peruana",
+      "huanuco": "Huánuco",
+      "creencias-peru": "Creencias"
+    };
+
     async function cargarLibros() {
-      const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_BIBLIOTECA}`);
-      const libros = await res.json();
+      const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_ID}`);
+      const archivos = await res.json();
+
       const container = document.getElementById('all-container');
-      libros.forEach(libro => {
+      container.innerHTML = '';
+
+      // Botón gigante de subir (igualito al original)
+      const botonSubir = document.createElement('div');
+      botonSubir.className = 'add-book-card';
+      botonSubir.innerHTML = `
+        <i class="fas fa-cloud-upload-alt"></i>
+        <span>Subir nuevo<br>libro</span>
+        <small>Arrastra el PDF a la carpeta →</small>
+      `;
+      `;
+      botonSubir.onclick = () => window.open('https://drive.google.com/drive/folders/1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4?usp=sharing', '_blank');
+      container.appendChild(botonSubir);
+
+      );
+
+      if (archivos.length === 0) {
+        container.innerHTML += '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--gray)">Aún no hay libros</p>';
+        return;
+      }
+
+      archivos.forEach(libro => {
+        const nombre = libro.name.replace(/\.pdf$/i, '');
         const embed = `https://drive.google.com/file/d/${libro.id}/preview`;
-        container.innerHTML += `
-          <div class="card visible">
-            <img src="https://drive.google.com/thumbnail?id=${libro.id}&sz=w400" alt="${libro.name}" onerror="this.src='https://via.placeholder.com/400x600/003087/ffffff?text=${encodeURIComponent(libro.name)}'">
-            <div class="content">
-              <div class="category-badge">Libro</div>
-              <h3>${libro.name.replace(/\.pdf$/i,'')}</h3>
-              <div class="action-buttons">
-                <button class="read-btn" onclick="window.open('${embed}','_blank')"><i class="fas fa-eye"></i> Leer</button>
-                <a href="https://drive.google.com/uc?id=${libro.id}&export=download" class="download-btn"><i class="fas fa-download"></i> Descargar</a>
-              </div>
+        const download = `https://drive.google.com/uc?id=${libro.id}&export=download`;
+
+        // Intentamos adivinar categoría por nombre de archivo
+        let categoria = "wol";
+        if (/peru|peruano|perú/i.test(nombre)) categoria = "peru";
+        else if (/hu[áa]nuco|huanuque/i.test(nombre)) categoria = "huanuco";
+        else if (/creencia|fe|cristian|biblia|testigo/i.test(nombre)) categoria = "creencias-peru";
+
+        const card = document.createElement('div');
+        card.className = 'card visible';
+        card.innerHTML = `
+          <img src="https://drive.google.com/thumbnail?id=${libro.id}&sz=w400" alt="${nombre}" onerror="this.src='https://via.placeholder.com/400x600/003087/ffffff?text=${encodeURIComponent(nombre)}'">
+          <div class="content">
+            <div class="category-badge">${CATEGORIES[categoria] || "Libro"}</div>
+            <h3>${nombre}</h3>
+            <div class="action-buttons">
+              <button class="read-btn" onclick="window.open('${embed}','_blank')"><i class="fas fa-eye"></i> Leer</button>
+              <a href="${download}" class="download-btn"><i class="fas fa-download"></i> Descargar</a>
             </div>
-          </div>`;
+          </div>
+        `;
+        container.appendChild(card);
       });
+
+      // Animación de entrada
+      gsap.fromTo('.card, .add-book-card', {y:50, opacity:0}, {y:0, opacity:1, stagger:0.1, duration:0.8, ease:"back.out(1.4)"});
     }
-    // cargarLibros();  // Descomenta cuando pegues el ID
+
+    // Tema oscuro/claro
+    const toggle = document.getElementById('theme-toggle');
+    toggle.onclick = () => {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      toggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+    };
+
+    // Scroll to top
+    window.onscroll = () => document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 500);
+    document.getElementById('scrollTop').onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+
+    // Menú móvil
+    document.getElementById('menu-toggle').onclick = () => document.querySelector('.sidebar').classList.toggle('active');
+
+    cargarLibros();
   </script>
-</body>
 </body>
 </html>
