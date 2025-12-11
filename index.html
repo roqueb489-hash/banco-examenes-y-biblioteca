@@ -25,7 +25,6 @@
       --radius: 20px;
       --radius-sm: 14px;
     }
-
     [data-theme="dark"] {
       --light: #0f172a;
       --dark: #000000ff;
@@ -34,7 +33,6 @@
       --card-shadow: 0 8px 25px rgba(0,48,135,0.35);
       --card-shadow-hover: 0 30px 60px rgba(0,48,135,0.5);
     }
-
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Inter', sans-serif;
@@ -45,7 +43,6 @@
       overflow-x: hidden;
       padding-left: 280px;
     }
-
     .sidebar { position: fixed; left: 0; top: 0; width: 280px; height: 100vh; background: linear-gradient(180deg, var(--primary), var(--secondary)); color: white; z-index: 999; display: flex; flex-direction: column; box-shadow: 8px 0 30px rgba(0,48,135,0.3); overflow-y: auto; }
     .sidebar-header { padding: 2.8rem 1.5rem 2.2rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .sidebar-logo-big { width: 158px; height: auto; max-width: 80%; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)); margin-bottom: 16px; border-radius: 22px; background: rgba(255,255,255,0.18); padding: 14px; backdrop-filter: blur(6px); }
@@ -88,7 +85,24 @@
     .favorite-btn:hover { transform: scale(1.12); border-color: #ef4444; }
     @keyframes heartbeat { 0%,100%{transform:scale(1)} 15%{transform:scale(1.3)} 30%{transform:scale(1)} 45%{transform:scale(1.25)} 70%{transform:scale(1)} }
 
-    .add-book-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: var(--radius); padding: 2.5rem 1.5rem; text-align: center; box-shadow: var(--card-shadow); transition: var(--transition); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; min-height: 420px; opacity: 0; transform: translateY(35px); }
+    .add-book-card {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: var(--radius);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      min-height: 420px;
+      opacity: 0;
+      transform: translateY(35px);
+    }
     .add-book-card:hover { transform: translateY(-16px); box-shadow: var(--card-shadow-hover); }
     .add-book-card i { font-size: 5.5rem; opacity: 0.95; color: white; }
     .add-book-card span { font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 900; line-height: 1.2; }
@@ -139,9 +153,10 @@
     <i class="fas fa-bars"></i>
   </button>
 
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <img src="https://via.placeholder.com/158x158/003087/ffffff?text=Logo" alt="IEP San Luis Gonzaga" class="sidebar-logo-big">
+      <img src="Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga" class="sidebar-logo-big" onerror="this.src='https://via.placeholder.com/158x158/003087/ffffff?text=Logo'">
       <h2>Biblioteca<br><span>Sanluisina</span></h2>
     </div>
     <nav class="sidebar-nav">
@@ -155,6 +170,7 @@
       <a href="#" class="nav-item" data-section="peru"><i class="fas fa-flag"></i> Literatura Peruana</a>
       <a href="#" class="nav-item" data-section="huanuco"><i class="fas fa-mountain"></i> Huánuco</a>
       <a href="#" class="nav-item" data-section="creencias-peru"><i class="fas fa-pray"></i> Creencias</a>
+
       <p>IEP San Luis Gonzaga<br><strong>Huánuco</strong></p>
     </div>
   </aside>
@@ -168,7 +184,7 @@
 
   <section class="hero">
     <div class="hero-content">
-      <img src="https://via.placeholder.com/190x190/003087/ffffff?text=Logo" alt="IEP San Luis Gonzaga" class="hero-logo-big">
+      <img src="Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga" class="hero-logo-big" onerror="this.src='https://via.placeholder.com/190x190/003087/ffffff?text=Logo'">
       <h1>Biblioteca Digital Sanluisina</h1>
       <p>IEP San Luis Gonzaga - Huánuco</p>
       <div class="search-bar">
@@ -206,7 +222,7 @@
         <a id="download-pdf-btn" class="download-btn" style="margin-left:auto;padding:8px 16px;font-size:0.9rem;border-radius:12px;">
           <i class="fas fa-download"></i> Descargar
         </a>
-        <button class="modal-close" aria-label="Cerrar">×</button>
+        <button class="modal-close" aria-label="Cerrar">x</button>
       </div>
       <div id="pdf-canvas-container">
         <canvas id="pdf-canvas"></canvas>
@@ -217,11 +233,10 @@
 
   <div class="upload-modal" id="upload-modal">
     <div class="upload-box">
-      <button class="close-upload" aria-label="Cerrar">×</button>
+      <button class="close-upload" aria-label="Cerrar">x</button>
       <h2>Subir Nuevo Libro</h2>
       <p style="text-align:center;color:#666;margin-top:1rem;">(Función no disponible en GitHub Pages)</p>
       <form id="upload-form">
-        <!-- Formulario solo visual, no envía nada -->
         <div class="form-group"><label>Título del libro *</label><input type="text" required></div>
         <div class="form-group"><label>Autor *</label><input type="text" required></div>
         <div class="form-group"><label>Año *</label><input type="number" required></div>
@@ -234,45 +249,37 @@
         </select></div>
         <div class="form-group"><label>Portada</label><input type="file" class="file-input"></div>
         <div class="form-group"><label>PDF</label><input type="file" class="file-input"></div>
-        <button type="button" class="upload-btn" onclick="alert('Función no disponible en versión estática')">Subir Libro</button>
+        <button type="button" class="upload-btn" onclick="alert('Subida no disponible en versión estática')">Subir Libro</button>
       </form>
     </div>
   </div>
 
+  <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.mjs" type="module"></script>
   <script type="module">
     import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.mjs';
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.worker.min.mjs';
 
-    // ==== DATOS DE EJEMPLO (puedes añadir más libros aquí) ====
-    const librosEjemplo = [
+    // TUS LIBROS REALES AQUÍ (los que tenías en libros.json)
+    const allBooks = [
+      // Aquí pones todos tus libros reales
+      // Ejemplo con algunos para que veas el formato:
       {
-        "id": "libro_1",
-        "titulo": "La Atalaya 2024",
+        "id": "libro_a1b2c3",
+        "titulo": "La Atalaya - Enero 2025",
         "autor": "Testigos de Jehová",
-        "año": 2024,
-        "quote": "La verdad que lleva a vida eterna",
-        "img": "https://assets.jw.org/assets/m/2024/101/1.jpg",
-        "pdf": "https://assets.jw.org/assets/m/20240101/es/20240101.pdf",
+        "año": 2025,
+        "quote": "Jehová es mi pastor, nada me faltará",
+        "img": "uploads/libro_a1b2c3.jpg",
+        "pdf": "uploads/libro_a1b2c3.pdf",
         "categoria": "wol"
       },
-      {
-        "id": "libro_2",
-        "titulo": "Cien Años de Soledad",
-        "autor": "Gabriel García Márquez",
-        "año": 1967,
-        "quote": "Muchos años después, frente al pelotón de fusilamiento...",
-        "img": "https://images.unsplash.com/photo-1544947950-fa07fe1bd8b2?w=400",
-        "pdf": "https://www.gutenberg.org/ebooks/1000.pdf.images",
-        "categoria": "peru"
-      },
-      // Añade aquí todos los libros que quieras
+      // ... todos los demás libros que tenías
     ];
 
-    const allBooks = librosEjemplo;
     let favorites = JSON.parse(localStorage.getItem('biblioteca_fav') || '[]');
     let readCount = parseInt(localStorage.getItem('biblioteca_read') || '0');
-    let currentBooks = allBooks;
+    let currentBooks = [...allBooks];
     let currentView = 'all';
 
     const subCatNames = {
@@ -300,7 +307,7 @@
             <p>"${book.quote}"</p>
             <div class="action-buttons">
               <button class="read-btn" data-pdf="${book.pdf}">Leer ahora</button>
-              <a href="${book.pdf}" target="_blank" class="download-btn">Descargar PDF</a>
+              <a href="${book.pdf}" download class="download-btn">Descargar PDF</a>
             </div>
           </div>
         </div>`;
@@ -310,37 +317,42 @@
       return `<div class="add-book-card">
         <i class="fas fa-cloud-upload-alt"></i>
         <span>Subir nuevo<br>libro</span>
-        <small>Haz clic para agregar (solo versión con servidor)</small>
+        <small>Haz clic para agregar a la biblioteca</small>
       </div>`;
     }
 
     function renderizar(books, grouped = false) {
       const container = $('#all-container');
       let html = '';
+
       if (!grouped) {
-        books.forEach(b => html += crearTarjeta(b));
+        books.forEach(book => html += crearTarjeta(book));
         html += crearBotonSubir();
       } else {
         const groupedBooks = {};
-        books.forEach(b => {
-          const name = subCatNames[b.categoria] || 'Otros';
+        books.forEach(book => {
+          const name = subCatNames[book.categoria] || 'Otros';
           groupedBooks[name] = groupedBooks[name] || [];
-          groupedBooks[name].push(b);
+          groupedBooks[name].push(book);
         });
         for (const [cat, list] of Object.entries(groupedBooks)) {
           if (list.length === 0) continue;
           html += `<h2 class="section-title">${cat}</h2>`;
-          list.forEach(b => html += crearTarjeta(b));
+          list.forEach(book => html += crearTarjeta(book));
           html += crearBotonSubir();
         }
       }
-      container.innerHTML = html || `<div style="grid-column:1/-1;text-align:center;padding:5rem;color:var(--gray);"><h3>No hay resultados</h3></h3></div>`;
-      gsap.fromTo('.card, .add-book-card', { y: 50, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "back.out(1.4)", onComplete: () => $$('.card, .add-book-card').forEach(c => c.classList.add('visible')) });
-      setupCardEvents();
-      $$('.add-book-card').forEach(btn => btn.onclick = () => $('#upload-modal').classList.add('active'));
-    }
 
-    function setupCardEvents() {
+      container.innerHTML = html || `<div style="grid-column:1/-1;text-align:center;padding:5rem;color:var(--gray);"><h3>No hay resultados</h3><p>Prueba otros filtros</p></div>`;
+
+      gsap.fromTo('.card, .add-book-card', 
+        { y: 50, opacity: 0 }, 
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "back.out(1.4)", 
+          onComplete: () => $$('.card, .add-book-card').forEach(c => c.classList.add('visible'))
+        }
+      );
+
+      // Eventos favoritos
       $$('.favorite-btn').forEach(btn => {
         btn.onclick = e => {
           e.stopPropagation();
@@ -357,9 +369,12 @@
           $('#fav-count').textContent = favorites.length;
         };
       });
+
+      // Botón subir libro abre modal
+      $$('.add-book-card').forEach(btn => btn.onclick = () => $('#upload-modal').classList.add('active'));
     }
 
-    // PDF.js Viewer
+    // PDF Viewer
     let pdfDoc = null, pageNum = 1, scale = 1.5;
     const canvas = $('#pdf-canvas');
     const ctx = canvas.getContext('2d');
@@ -392,6 +407,8 @@
           readCount++;
           localStorage.setItem('biblioteca_read', readCount);
           $('#read-count').textContent = readCount;
+        }).catch(() => {
+          $('#loading-message').innerHTML = 'Error al cargar el PDF';
         });
       }
     });
@@ -404,19 +421,25 @@
         canvas.width = 1; canvas.height = 1;
       }
     };
+
     $('.close-upload, #upload-modal').onclick = e => {
       if (e.target === $('#upload-modal') || e.target.classList.contains('close-upload')) {
         $('#upload-modal').classList.remove('active');
       }
     };
 
-    // Resto de la lógica (tema, filtros, menú, etc.) igual que tenías...
-    // (para no hacer el mensaje eterno, te lo resumo: todo funciona igual)
+    document.onkeydown = e => {
+      if (e.key === 'Escape') {
+        $('#pdf-modal').classList.remove('active');
+        $('#upload-modal').classList.remove('active');
+      }
+    };
 
+    // Carga inicial
     document.addEventListener('DOMContentLoaded', () => {
-      // Tema oscuro/claro
-      const savedTheme = localStorage.getItem('biblioteca_theme');
-      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      const isDark = localStorage.getItem('biblioteca_theme') === 'dark' || 
+                     (!localStorage.getItem('biblioteca_theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (isDark) {
         document.body.setAttribute('data-theme', 'dark');
         $('#theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
       }
@@ -426,10 +449,85 @@
       $('#read-count').textContent = readCount;
       $('#fav-count').textContent = favorites.length;
 
+      // Rellenar filtros
+      [...new Set(allBooks.map(b => b.año))].sort((a,b)=>b-a).forEach(y => $('#filter-year').add(new Option(y, y)));
+      [...new Set(allBooks.map(b => b.autor))].sort().forEach(a => $('#filter-author').add(new Option(a, a)));
+      Object.entries(subCatNames).forEach(([k,v]) => $('#filter-category').add(new Option(v, k)));
+
       renderizar(allBooks);
 
-      // Aquí iría el resto del código de filtros, menú, etc. (es muy largo, pero funciona igual que en tu versión PHP)
-      // Si necesitas el código completo de filtros y menú, dime y te lo paso también!
+      // Eventos menú lateral
+      $$('.nav-item[data-section]').forEach(item => {
+        item.onclick = e => {
+          e.preventDefault();
+          $$('.nav-item').forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          const sec = item.dataset.section;
+          currentView = sec;
+
+          if (sec === 'all') {
+            currentBooks = allBooks;
+            renderizar(currentBooks, false);
+          } else if (sec === 'peru') {
+            currentBooks = allBooks.filter(b => ['peru','creencias-peru'].includes(b.categoria));
+            renderizar(currentBooks, true);
+          } else if (sec === 'huanuco') {
+            currentBooks = allBooks.filter(b => ['huanuco','creencias-huanuco'].includes(b.categoria));
+            renderizar(currentBooks, true);
+          } else {
+            currentBooks = allBooks.filter(b => b.categoria === sec);
+            renderizar(currentBooks, true);
+          }
+          $('#filter-category').value = '';
+          filterBooks();
+        };
+      });
+
+      // Filtros y búsqueda
+      const filterBooks = () => {
+        const q = $('#global-search').value.toLowerCase().trim();
+        const y = $('#filter-year').value;
+        const a = $('#filter-author').value;
+        const c = $('#filter-category').value;
+
+        let filtered = currentBooks.filter(b => {
+          const matchQ = !q || [b.titulo, b.autor, b.quote].some(t => t.toLowerCase().includes(q));
+          const matchY = !y || b.año == y;
+          const matchA = !a || b.autor === a;
+          const matchC = !c || b.categoria === c;
+          return matchQ && matchY && matchA && matchC;
+        });
+        renderizar(filtered, currentView !== 'all');
+      };
+
+      $('#global-search').oninput = filterBooks;
+      $('#filter-year,#filter-author,#filter-category').forEach(el => el.onchange = filterBooks);
+      $('#clear-filters').onclick = () => {
+        $('#global-search').value = '';
+        $('#filter-year').value = '';
+        $('#filter-author').value = '';
+        $('#filter-category').value = '';
+        renderizar(currentBooks, currentView !== 'all');
+      };
+
+      // Tema
+      $('#theme-toggle').onclick = () => {
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('biblioteca_theme', newTheme);
+        $('#theme-toggle').innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      };
+
+      // Scroll to top
+      window.onscroll = () => $('#scrollTop').classList.toggle('visible', window.scrollY > 500);
+      $('#scrollTop').onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+
+      // Menú móvil
+      $('#menu-toggle').onclick = () => {
+        $('.sidebar').classList.toggle('active');
+        document.body.classList.toggle('sidebar-open');
+      };
     });
   </script>
 </body>
