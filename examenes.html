@@ -9,133 +9,124 @@
 <style>
 :root{
   --bg:#0f172a;
-  --s:#1e293b;
-  --t:#e2e8f0;
-  --az:#1e40af;
-  --am:#fbbf24;
-  --rojo:#dc2626;
+  --sidebar:#1e293b;
+  --accent:#1e40af;
+  --gold:#fbbf24;
+  --red:#ef4444;
+  --text:#e2e8f0;
+  --hover:#2563eb;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth} /* ← Importante para el centrado suave */
 body{
   font-family:'Inter',sans-serif;
   background:var(--bg);
-  color:var(--t);
-  padding-top:80px;
-  padding-left:280px;
-  overflow-x:hidden;
-  transition:padding-left .4s;
+  color:var(--text);
+  padding-left:300px;
+  padding-top:90px;
+  transition:all .4s;
+  min-height:100vh;
 }
 
-/* ==== MENÚ VERTICAL ==== */
+/* ====== MENÚ VERTICAL PREMIUM ====== */
 .sidebar{
-  position:fixed;
-  top:0;left:0;
-  width:280px;
-  height:100%;
-  background:var(--s);
-  padding-top:100px;
-  box-shadow:4px 0 20px rgba(0,0,0,0.6);
-  z-index:100;
-  transition:transform .4s;
+  position:fixed;top:0;left:0;width:300px;height:100%;
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  box-shadow:8px 0 40px rgba(0,0,0,0.7);z-index:1000;padding:0 20px;
+  transition:transform .4s ease;
 }
 .sidebar .logo{
-  position:absolute;
-  top:0;left:0;width:100%;
-  padding:1.4rem;
-  background:var(--am);
-  color:black;
-  text-align:center;
-  font-size:1.9rem;
-  font-weight:900;
+  text-align:center;padding:25px 0;margin-bottom:20px;font-size:2.1rem;
+  font-weight:900;background:linear-gradient(90deg,#fbbf24,#f59e0b);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
+.sidebar .logo::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:120px;height:4px;background:var(--gold);border-radius:2px;
+}
+.volver-btn{
+  display:block;margin:0 auto 35px;width:85%;padding:16px;
+  background:rgba(239,68,68,0.25);backdrop-filter:blur(10px);
+  border:1px solid rgba(239,68,68,0.4);border-radius:18px;
+  color:white;text-decoration:none;font-weight:700;text-align:center;
+  font-size:1.05rem;transition:all .3s;box-shadow:0 8px 25px rgba(239,68,68,0.2);
+}
+.volver-btn:hover{background:rgba(239,68,68,0.4);transform:translateY(-3px)}
+.volver-btn i{margin-right:10px}
 
-/* Botón Volver dentro del menú */
-.sidebar .volver{
-  position:absolute;
-  top:80px;
-  left:0;
-  width:100%;
-  background:var(--rojo);
-  padding:1rem;
-  text-align:center;
-}
-.sidebar .volver a{
-  color:white;
-  text-decoration:none;
-  font-weight:700;
-  font-size:1.1rem;
-}
-.sidebar .volver i{
-  margin-right:8px;
-}
-
-.sidebar ul{
-  list-style:none;
-  margin-top:70px; /* espacio para el botón volver */
-}
+.sidebar ul li{margin-bottom:8px}
 .sidebar ul li a{
-  display:block;
-  padding:1.2rem 1.8rem;
-  color:var(--t);
-  text-decoration:none;
-  font-weight:500;
-  transition:.3s;
+  display:flex;align-items:center;padding:18px 22px;color:var(--text);
+  text-decoration:none;font-weight:600;border-radius:16px;transition:all .3s;
+  position:relative;overflow:hidden;
 }
-.sidebar ul li a i{width:30px;margin-right:12px}
+.sidebar ul li a::before{
+  content:'';position:absolute;top:0;left:0;width:5px;height:100%;
+  background:var(--gold);transform:scaleY(0);transition:transform .3s;
+}
+.sidebar ul li a i{width:36px;font-size:1.3rem;margin-right:15px;transition:transform .3s}
 .sidebar ul li a:hover,
 .sidebar ul li a.active{
-  background:var(--az);
-  color:white;
-  padding-left:2.8rem;
+  background:linear-gradient(90deg,rgba(30,64,175,0.4),transparent);
+  color:white;transform:translateX(8px);box-shadow:0 8px 25px rgba(30,64,175,0.3);
 }
+.sidebar ul li a:hover::before,
+.sidebar ul li a.active::before{transform:scaleY(1)}
+.sidebar ul li a:hover i{transform:scale(1.2)}
+.sidebar ul li a.active{background:var(--accent);color:white}
 
-/* Hamburguesa móvil */
+/* Botón hamburguesa */
 .menu-toggle{
-  position:fixed;
-  top:20px;left:20px;
-  font-size:2rem;
-  color:white;
-  background:var(--az);
-  width:50px;height:50px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  z-index:101;
-  display:none;
+  position:fixed;top:25px;left:25px;width:55px;height:55px;
+  background:var(--gold);color:black;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;cursor:pointer;z-index:1001;
+  box-shadow:0 8px 25px rgba(251,191,36,0.4);display:none;
 }
+.menu-toggle:hover{transform:scale(1.1)}
 
-/* Header (ya no necesita el botón volver) */
+/* Header */
 header{
-  background:var(--s);
-  position:fixed;
-  top:0;
-  left:280px;
-  right:0;
-  z-index:99;
-  padding:1rem;
-  text-align:center;
-  box-shadow:0 4px 20px rgba(0,0,0,0.5);
-  transition:left .4s;
+  position:fixed;top:0;left:300px;right:0;background:rgba(15,23,42,0.95);
+  backdrop-filter:blur(10px);padding:1.2rem;text-align:center;z-index:999;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);transition:left .4s;
 }
-header h1{font-size:2.5rem;color:var(--am);font-weight:900}
+header h1{
+  font-size:2.6rem;background:linear-gradient(90deg,#fbbf24,#f59e0b);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;
+}
 
-/* Contenido y tarjetas (sin cambios) */
-.container{max-width:1400px;margin:0 auto;padding:2rem}
-.section-title{font-size:2.8rem;color:var(--am);text-align:center;margin:4rem 0 2rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem;margin-bottom:2rem}
-.card{background:var(--s);border-radius:20px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.5);transition:.3s;cursor:pointer}
-.card:hover{transform:translateY(-10px)}
+/* Contenido */
+.container{max-width:1400px;margin:0 auto;padding:3rem 2rem}
+
+/* ← AJUSTE CLAVE: cada sección tiene padding-top para centrar bien al hacer scroll */
+.section-title{
+  font-size:2.8rem;text-align:center;margin:0 0 3rem;
+  padding-top:120px;           /* ← Esto compensa el header fijo */
+  margin-top:-120px;           /* ← Truco para centrar perfecto */
+  background:linear-gradient(90deg,#fbbf24,#f59e0b);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-weight:900;
+  scroll-margin-top:100px;     /* ← Lo más importante para el centrado */
+}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem}
+.card{background:var(--sidebar);border-radius:20px;overflow:hidden;
+  box-shadow:0 15px 35px rgba(0,0,0,0.5);transition:.4s}
+.card:hover{transform:translateY(-12px);box-shadow:0 25px 50px rgba(30,64,175,0.4)}
 .card img{height:200px;width:100%;object-fit:cover}
-.card h3{padding:1rem;font-size:1.35rem;text-align:center;font-weight:700}
+.card h3{padding:1.2rem;font-size:1.35rem;text-align:center;font-weight:700}
 .btns{text-align:center;padding:1rem}
-.btn{padding:0.8rem 1.5rem;margin:0.5rem;border-radius:12px;text-decoration:none;font-weight:700;display:inline-block}
-.ver{background:var(--az);color:white}
-.desc{background:var(--am);color:black}
-.subir{background:var(--s);border:3px dashed var(--az);border-radius:20px;padding:3rem;text-align:center;margin:4rem 0}
-.subir button{background:var(--am);color:black;padding:1.2rem 3.5rem;border:none;border-radius:50px;font-size:1.4rem;font-weight:900;cursor:pointer}
-.loading{text-align:center;padding:6rem;font-size:1.6rem;color:#888}
+.btn{padding:0.9rem 1.8rem;margin:0.5rem;border-radius:14px;font-weight:700}
+.ver{background:var(--accent);color:white}
+.desc{background:var(--gold);color:black}
+.subir{background:var(--sidebar);border:3px dashed var(--accent);
+  border-radius:20px;padding:3.5rem;text-align:center;margin:6rem 0}
+.subir button{background:var(--gold);color:black;padding:1.4rem 4rem;
+  border:none;border-radius:50px;font-size:1.5rem;font-weight:900;cursor:pointer;
+  transition:.3s;box-shadow:0 10px 30px rgba(251,191,36,0.4)}
+.subir button:hover{transform:translateY(-5px)}
+.loading{text-align:center;padding:8rem;font-size:1.7rem;color:#888}
 
 /* Responsive */
 @media (max-width:992px){
@@ -149,22 +140,15 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
 </head>
 <body>
 
-<!-- Botón hamburguesa móvil -->
 <div class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active')">
   <i class="fas fa-bars"></i>
 </div>
 
-<!-- MENÚ VERTICAL con botón VOLVER integrado -->
 <nav class="sidebar">
   <div class="logo">SAN LUIS G.</div>
-  
-  <!-- BOTÓN VOLVER DENTRO DEL MENÚ -->
-  <div class="volver">
-    <a href="index.html">
-      <i class="fas fa-arrow-left"></i> VOLVER AL INICIO
-    </a>
-  </div>
-
+  <a href="index.html" class="volver-btn">
+    <i class="fas fa-home"></i> VOLVER AL INICIO
+  </a>
   <ul>
     <li><a href="#area1" class="active"><i class="fas fa-brain"></i> Área I</a></li>
     <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
@@ -175,72 +159,46 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
   </ul>
 </nav>
 
-<!-- Header limpio (sin botón volver) -->
-<header>
-  <h1>BANCO DE EXÁMENES</h1>
-</header>
+<header><h1>BANCO DE EXÁMENES</h1></header>
 
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- ÁREAS (igual que antes) -->
+  <!-- ÁREAS (solo cambié el id del h2 para que coincida con el enlace) -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="cards" id="cont-area1"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">
-      SUBIR EXAMEN ÁREA I
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">
+    SUBIR EXAMEN ÁREA I</button></div>
 
   <h2 class="section-title" id="area2">Área II</h2>
   <div class="cards" id="cont-area2"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">
-      SUBIR EXAMEN ÁREA II
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">
+    SUBIR EXAMEN ÁREA II</button></div>
 
   <h2 class="section-title" id="area3">Área III</h2>
   <div class="cards" id="cont-area3"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">
-      SUBIR EXAMEN ÁREA III
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">
+    SUBIR EXAMEN ÁREA III</button></div>
 
   <h2 class="section-title" id="area4">Área IV</h2>
   <div class="cards" id="cont-area4"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">
-      SUBIR EXAMEN ÁREA IV
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">
+    SUBIR EXAMEN ÁREA IV</button></div>
 
   <h2 class="section-title" id="area5">Área V</h2>
   <div class="cards" id="cont-area5"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">
-      SUBIR EXAMEN ÁREA V
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">
+    SUBIR EXAMEN ÁREA V</button></div>
 
   <h2 class="section-title" id="area6">Concursos Interescolares</h2>
   <div class="cards" id="cont-area6"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">
-      SUBIR EXAMEN DE CONCURSO
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">
+    SUBIR EXAMEN DE CONCURSO</button></div>
 </div>
 
 <script>
-// (Todo el script sigue exactamente igual que antes)
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-const CARPETAS = [
-  "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ","1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp",
-  "1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N","16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU",
-  "1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77","1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
-];
+const CARPETAS = ["18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ","1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp","1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N","16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU","1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77","1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"];
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
 
 async function cargarTodo() {
@@ -272,17 +230,17 @@ async function cargarTodo() {
   document.getElementById('loading').style.display = 'none';
 }
 
-// Resaltar menú al hacer scroll
+// Resaltar opción activa al hacer scroll
 window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('.section-title');
-  const navLinks = document.querySelectorAll('.sidebar ul a');
+  const links = document.querySelectorAll('.sidebar ul a');
   let current = '';
-  sections.forEach(s => {
-    if (scrollY >= s.offsetTop - 200) current = s.getAttribute('id');
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 150) current = sec.getAttribute('id');
   });
-  navLinks.forEach(a => {
-    a.classList.remove('active');
-    if (a.getAttribute('href') === `#${current}`) a.classList.add('active');
+  links.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === `#${current}`) l.classList.add('active');
   });
 });
 
