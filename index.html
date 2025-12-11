@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
   <style>
-    :root{--primary:#003087;--secondary:#0146c6ff;--accent:#FFD700;--light:#f8f9fa;--dark:#1e293b;--gray:#64748b;--gray-light:#e2e8f0;--success:#10b981;--danger:#ef4444;--card-shadow:0 8px 25px rgba(0,48,135,0.12);--card-shadow-hover:0 25px 50px rgba(0,48,135,0.22);--transition:all .4s cubic-bezier(.4,0,.2,1);--radius:20px}
+    :root{--primary:#003087;--secondary:#0146c6;--accent:#FFD700;--light:#f8f9fa;--dark:#1e293b;--gray:#64748b;--gray-light:#e2e8f0;--success:#10b981;--danger:#ef4444;--card-shadow:0 8px 25px rgba(0,48,135,0.12);--card-shadow-hover:0 25px 50px rgba(0,48,135,0.22);--transition:all .4s cubic-bezier(.4,0,.2,1);--radius:20px}
     [data-theme="dark"]{--light:#0f172a;--dark:#000;--gray:#94a3b8;--gray-light:#334155;--card-shadow:0 8px 25px rgba(0,48,135,0.35);--card-shadow-hover:0 30px 60px rgba(0,48,135,0.5)}
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);line-height:1.6;transition:var(--transition);overflow-x:hidden;padding-left:280px}
@@ -67,7 +67,6 @@
       <h2>Biblioteca<br><span>Sanluisina</span></h2>
     </div>
     <nav class="sidebar-nav">
-      <!-- ENLACE CORREGIDO -->
       <a href="examenes.html" class="nav-item">
         <i class="fas fa-graduation-cap"></i> Banco de Exámenes
       </a>
@@ -83,11 +82,11 @@
   </aside>
 
   <div class="controls">
-    <button class="control-btn" id="theme-toggle">Luna</button>
-    <button class="control-btn" id="favorites-btn">Corazon<span id="fav-count">0</span></button>
+    <button class="control-btn" id="theme-toggle"><i class="fas fa-moon"></i></button>
+    <button class="control-btn" id="favorites-btn"><i class="fas fa-heart"></i><span id="fav-count">0</span></button>
   </div>
 
-  <button id="scrollTop">Flecha arriba</button>
+  <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
   <section class="hero">
     <div class="hero-content">
@@ -96,28 +95,44 @@
       <h1>Biblioteca Digital Sanluisina</h1>
       <p>IEP San Luis Gonzaga - Huánuco</p>
       <div class="search-bar">
-        <input type="text" id="global-search" placeholder="Busca por título o autor"/>
+        <input type="text" id="global-search" placeholder="Busca por título o autor..."/>
       </div>
     </div>
   </section>
 
   <div class="container">
-    <div class="stats">
-      <div class="stat-item"><h3 id="total-books">0</h3><p>Libros</p></div>
-      <div class="stat-item"><h3 id="total-authors">0</h3><p>Autores</p></div>
-      <div class="stat-item"><h3 id="read-count">0</h3><p>Leídos</p></div>
-    </div>
     <div class="cards" id="all-container"></div>
   </div>
 
-  <!-- Aquí va todo tu JavaScript de la biblioteca (el que ya tenías) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.mjs" type="module"></script>
   <script type="module">
-    // Tu código JS completo de la biblioteca (favoritos, PDF.js, filtros, etc.)
-    // Lo omito aquí para no hacer el mensaje eterno, pero lo tienes tú
-    // Solo asegúrate de que esté igual que antes
-    const allBooks = []; // Tus libros aquí
-    // ... resto del código que ya tenías
+    const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbztbSGkOzAxM6634AMXvjS9arvg_kpAd4wH70QDrQfNGmc1gbUuwQLfenp4jEcwsRk8/exec";
+    const CARPETA_BIBLIOTECA = "PEGA_AQUÍ_EL_ID_DE_LA_CARPETA_DE_LIBROS"; // ← Cuando me des el ID te lo cambio en 3 segundos
+
+    // Aquí irá todo tu JS de búsqueda, favoritos, portadas automáticas, etc.
+    // Por ahora solo cargo los libros
+    async function cargarLibros() {
+      const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_BIBLIOTECA}`);
+      const libros = await res.json();
+      const container = document.getElementById('all-container');
+      libros.forEach(libro => {
+        const embed = `https://drive.google.com/file/d/${libro.id}/preview`;
+        container.innerHTML += `
+          <div class="card visible">
+            <img src="https://drive.google.com/thumbnail?id=${libro.id}&sz=w400" alt="${libro.name}" onerror="this.src='https://via.placeholder.com/400x600/003087/ffffff?text=${encodeURIComponent(libro.name)}'">
+            <div class="content">
+              <div class="category-badge">Libro</div>
+              <h3>${libro.name.replace(/\.pdf$/i,'')}</h3>
+              <div class="action-buttons">
+                <button class="read-btn" onclick="window.open('${embed}','_blank')"><i class="fas fa-eye"></i> Leer</button>
+                <a href="https://drive.google.com/uc?id=${libro.id}&export=download" class="download-btn"><i class="fas fa-download"></i> Descargar</a>
+              </div>
+            </div>
+          </div>`;
+      });
+    }
+    // cargarLibros();  // Descomenta cuando pegues el ID
   </script>
+</body>
 </body>
 </html>
