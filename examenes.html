@@ -3,158 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Banco de Exámenes | IEP San Luis Gonzaga</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <title>Banco de Exámenes - San Luis Gonzaga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
   <style>
     :root{--bg-dark:#0f172a;--surface:#1e293b;--text:#e2e8f0;--text-light:#94a3b8;--azul-marino:#1e40af;--amarillo:#fbbf24;--rojo:#dc2626;--border:#334155;--radius:24px;--shadow:0 15px 40px rgba(0,0,0,0.5)}
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Inter',sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh}
-    .sidebar{position:fixed;left:-320px;top:0;width:320px;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);z-index:1000;transition:left .4s ease;box-shadow:5px 0 30px rgba(0,0,0,0.6);display:flex;flex-direction:column}
+    .sidebar{position:fixed;left:-300px;top:0;width:300px;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);transition:left .4s;z-index:1000;box-shadow:5px 0 30px rgba(0,0,0,.6)}
     .sidebar.active{left:0}
-    .sidebar-header{padding:2.5rem 2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,0.1)}
-    .logo{width:140px;border-radius:50%;padding:1rem;background:rgba(251,191,36,0.2);border:5px solid var(--amarillo);margin-bottom:1rem}
-    .sidebar h2{font-size:2rem;font-weight:900;color:white}
-    .nav-container{flex:1;overflow-y:auto;padding:1.5rem 0}
-    .nav a{display:block;padding:1.3rem 2.2rem;color:rgba(255,255,255,0.9);text-decoration:none;font-weight:600;font-size:1.05rem;transition:all .3s}
-    .nav a:hover{background:rgba(251,191,36,0.2);color:var(--amarillo);padding-left:3rem}
-    .nav a.active{background:rgba(251,191,36,0.3);color:var(--amarillo);border-left:6px solid var(--amarillo);font-weight:800}
-    .volver{margin:2rem 2rem 1rem;background:var(--rojo);color:white;border-radius:20px;text-align:center;padding:1.4rem;font-weight:900;box-shadow:0 10px 30px rgba(220,38,38,0.5)}
-    .volver:hover{background:#b91c1c;transform:translateY(-4px)}
-    .menu-toggle{position:fixed;top:20px;left:20px;z-index:1001;width:64px;height:64px;border-radius:50%;background:var(--azul-marino);color:white;border:none;font-size:1.9rem;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
-    .menu-toggle:hover{background:var(--amarillo);color:#000}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);opacity:0;visibility:hidden;transition:all .4s;z-index:999}
+    .sidebar-header{padding:2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.1)}
+    .logo{width:130px;border-radius:50%;padding:1rem;background:rgba(251,191,36,.2);border:4px solid var(--amarillo);margin:0 auto 1rem}
+    .sidebar h2{font-size:1.9rem;color:white;font-weight:900}
+    .nav a{display:block;padding:1.2rem 2rem;color:rgba(255,255,255,.9);text-decoration:none;font-weight:600;transition:.3s}
+    .nav a:hover{background:rgba(251,191,36,.2);color:var(--amarillo);padding-left:2.5rem}
+    .nav a.volver{background:var(--rojo);color:white!important;border-radius:20px;margin:0 2rem 2rem;padding:1.4rem;box-shadow:0 10px 30px rgba(220,38,38,.5)}
+    .menu-toggle{position:fixed;top:20px;left:20px;z-index:1001;background:var(--azul-marino);color:white;border:none;width:60px;height:60px;border-radius:50%;font-size:1.8rem;cursor:pointer;box-shadow:0 8px 25px rgba(0,0,0,.5)}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);opacity:0;visibility:hidden;transition:.4s;z-index:999}
     .overlay.active{opacity:1;visibility:visible}
-    .hero{min-height:100vh;background:linear-gradient(rgba(15,23,42,0.95),rgba(15,23,42,0.88)),url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920') center/cover;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem}
-    .hero h1{font-size:clamp(4rem,10vw,8.5rem);font-weight:900;color:var(--amarillo);text-shadow:0 10px 30px rgba(0,0,0,0.8)}
-    .hero p{font-size:1.8rem;color:var(--text-light);margin-top:1rem}
-    .container{max-width:1500px;margin:0 auto;padding:4rem 2rem}
-    .section-title{font-size:3.5rem;font-weight:900;color:var(--amarillo);text-align:center;margin:5rem 0 4rem}
-    .section-title::after{content:'';display:block;width:180px;height:10px;background:linear-gradient(90deg,var(--amarillo),var(--rojo));margin:1.5rem auto;border-radius:5px}
-    .area-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-bottom:4rem}
-    .tab-btn{padding:1rem 2rem;background:var(--surface);color:var(--text-light);border:none;border-radius:50px;font-weight:700;cursor:pointer;transition:all .3s}
-    .tab-btn.active,.tab-btn:hover{background:var(--amarillo);color:#000;transform:translateY(-3px);box-shadow:0 10px 25px rgba(251,191,36,0.4)}
-    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:3rem;justify-items:center}
-    .card{width:100%;max-width:400px;background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .4s}
-    .card:hover{transform:translateY(-16px)}
-    .card-img{width:100%;height:240px;object-fit:cover;background:#000}
-    .card-content{padding:2.2rem;text-align:center}
-    .badge{background:var(--azul-marino);color:white;padding:0.7rem 1.8rem;border-radius:50px;font-weight:700;font-size:0.9rem;margin-bottom:1.2rem;display:inline-block}
-    .card h3{font-size:1.6rem;font-weight:800;color:white;margin:1rem 0;line-height:1.3}
-    .card p{color:var(--text-light);margin-bottom:1.8rem;font-size:1.05rem}
-    .btns{display:flex;justify-content:center;gap:1.2rem}
-    .btn{padding:1rem 1.8rem;border-radius:16px;font-weight:700;text-decoration:none;transition:all .3s;font-size:1rem}
+    .hero{min-height:100vh;background:linear-gradient(rgba(15,23,42,.95),rgba(15,23,42,.85)),url('https://images.unsplash.com/photo-1523050858586-39f6d5e6b870?w=1920') center/cover;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;color:white}
+    .hero h1{font-size:clamp(3.8rem,9vw,8rem);font-weight:900;color:var(--amarillo)}
+    .container{max-width:1400px;margin:0 auto;padding:4rem 2rem}
+    .section-title{font-size:3.2rem;color:var(--amarillo);margin:6rem 0 4rem;position:relative;display:inline-block}
+    .section-title::after{content:'';display:block;width:150px;height:8px;background:linear-gradient(90deg,var(--amarillo),var(--rojo));margin:1rem auto;border-radius:4px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:3rem}
+    .card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.4s;cursor:pointer}
+    .card:hover{transform:translateY(-15px)}
+    .card-img-container{height:220px;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .card-img-container canvas{max-width:100%;max-height:100%}
+    .card-content{padding:2rem;text-align:center}
+    .badge{background:var(--azul-marino);color:white;padding:.6rem 1.6rem;border-radius:50px;font-weight:700;margin-bottom:1rem;display:inline-block}
+    .card h3{font-size:1.55rem;color:white;margin:1rem 0;font-weight:800}
+    .btns{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem}
+    .btn{padding:1rem;flex:1;border-radius:16px;font-weight:700;text-decoration:none;transition:.3s}
     .btn-primary{background:var(--azul-marino);color:white}
-    .btn-danger{background:var(--rojo);color:white}
-    .btn:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
-    .upload-box{text-align:center;background:var(--surface);border:4px dashed var(--amarillo);border-radius:var(--radius);padding:5rem 3rem;margin:8rem auto;max-width:1000px;box-shadow:var(--shadow)}
-    .upload-box h3{font-size:2.8rem;color:var(--amarillo);margin-bottom:1rem}
-    .btn-upload{background:linear-gradient(135deg,var(--azul-marino),var(--amarillo));color:white;padding:1.6rem 5rem;border:none;border-radius:50px;font-size:1.5rem;font-weight:900;cursor:pointer;margin-top:2rem;box-shadow:var(--shadow)}
-    .btn-upload:hover{transform:translateY(-8px) scale(1.1)}
-    @media (max-width:768px){.cards{grid-template-columns:1fr}.area-tabs{gap:0.8rem}.tab-btn{padding:0.8rem 1.5rem;font-size:0.95rem}}
+    .btn-success{background:var(--amarillo);color:#000}
+    .empty{text-align:center;padding:5rem;color:var(--text-light);font-size:1.4rem}
   </style>
 </head>
 <body>
 
-  <button class="menu-toggle" id="menuToggle">Menu</button>
-  <div class="overlay" id="overlay"></div>
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active');document.querySelector('.overlay').classList.toggle('active')">
+  <i class="fas fa-bars"></i>
+</button>
+<div class="overlay" onclick="document.querySelector('.sidebar').classList.remove('active');this.classList.remove('active')"></div>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <img src="Insignia-New-cuadrado.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/140/FFD700/000?text=SLG'">
-      <h2>Banco de<br>Exámenes</h2>
-    </div>
-    <div class="nav-container">
-      <nav class="nav">
-        <a href="index.html" class="volver">Volver a Biblioteca</a>
-        <a href="#" class="active" data-area="todos">Todos los Exámenes</a>
-        <a href="#" data-area="1">Área 1 - Comunicación</a>
-        <a href="#" data-area="2">Área 2 - Matemática</a>
-        <a href="#" data-area="3">Área 3 - Ciencia y Tecnología</a>
-        <a href="#" data-area="4">Área 4 - Ciencias Sociales</a>
-        <a href="#" data-area="5">Área 5 - Desarrollo Personal</a>
-        <a href="#" data-area="6">Admisión y Concursos</a>
-      </nav>
-    </div>
-  </aside>
-
-  <section class="hero">
-    <h1>Banco de Exámenes</h1>
-    <p>IEP San Luis Gonzaga - Huánuco</p>
-  </section>
-
-  <div class="container">
-    <h2 class="section-title">Explora por Área</h2>
-    <div class="area-tabs">
-      <button class="tab-btn active" data-area="todos">Todos</button>
-      <button class="tab-btn" data-area="1">Área 1</button>
-      <button class="tab-btn" data-area="2">Área 2</button>
-      <button class="tab-btn" data-area="3">Área 3</button>
-      <button class="tab-btn" data-area="4">Área 4</button>
-      <button class="tab-btn" data-area="5">Área 5</button>
-      <button class="tab-btn" data-area="6">Admisión</button>
-    </div>
-
-    <div class="cards" id="examsContainer"></div>
-
-    <div class="upload-box">
-      <h3>¿Tienes un examen para compartir?</h3>
-      <p>Ayúdanos a crecer la comunidad</p>
-      <button class="btn-upload" id="openModal">Subir Examen PDF</button>
-    </div>
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <img src="Insignia-New-cuadrado.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+    <h2>Banco de<br>Exámenes</h2>
   </div>
+  <nav class="nav">
+    <a href="biblioteca.html" class="volver">Ir a Biblioteca Digital</a>
+    <a href="#area1">Área I</a>
+    <a href="#area2">Área II</a>
+    <a href="#area3">Área III</a>
+    <a href="#area4">Área IV</a>
+    <a href="#area5">Área V</a>
+    <a href="#area6">Concursos</a>
+  </nav>
+</aside>
 
-  <script>
-    const examenes = [
-      // Añade aquí tus exámenes reales
-      { titulo: "Área 2 - Trigonometría 2024", area: "2", curso: "Matemática", nivel: "5° Sec", pdf: "pdfs/mate_trigo.pdf", portada: "https://via.placeholder.com/600x400/fbbf24/000?text=TRIGONOMETRÍA" },
-      { titulo: "Área 1 - Comprensión Lectora", area: "1", curso: "Comunicación", nivel: "4° Sec", pdf: "pdfs/comunicacion.pdf", portada: "https://via.placeholder.com/600x400/1e40af/fff?text=COMUNICACIÓN" },
-      { titulo: "Examen Admisión UNI 2025", area: "6", curso: "Admisión", nivel: "Preuniversitario", pdf: "pdfs/admision_uni.pdf", portada: "https://via.placeholder.com/600x400/dc2626/fff?text=UNI+2025" }
-    ];
+<section class="hero">
+  <h1>BANCO DE EXÁMENES</h1>
+  <p>Organizado por áreas • Actualizado automáticamente desde Google Drive</p>
+</section>
 
-    function crearCard(e) {
-      return `
-        <div class="card" data-area="${e.area}">
-          <img src="${e.portada}" alt="${e.titulo}" class="card-img">
-          <div class="card-content">
-            <div class="badge">Área ${e.area} - ${e.curso}</div>
-            <h3>${e.titulo}</h3>
-            <p>${e.nivel}</p>
-            <div class="btns">
-              <a href="${e.pdf}" target="_blank" class="btn btn-primary">Ver PDF</a>
-              <a href="${e.pdf}" download class="btn btn-danger">Descargar</a>
-            </div>
-          </div>
-        </div>`;
-    }
+<div class="container">
+  <h2 class="section-title" id="area1">Área I</h2><div class="cards" id="cards1"></div>
+  <h2 class="section-title" id="area2">Área II</h2><div class="cards" id="cards2"></div>
+  <h2 class="section-title" id="area3">Área III</h2><div class="cards" id="cards3"></div>
+  <h2 class="section-title" id="area4">Área IV</h2><div class="cards" id="cards4"></div>
+  <h2 class="section-title" id="area5">Área V</h2><div class="cards" id="cards5"></div>
+  <h2 class="section-title" id="area6">Concursos Interescolares</h2><div class="cards" id="cards6"></div>
+</div>
 
-    function render(area = "todos") {
-      const filtrados = area === "todos" ? examenes : examenes.filter(e => e.area === area);
-      $('#examsContainer').innerHTML = filtrados.map(crearCard).join('');
-      gsap.fromTo('.card', {y:100,opacity:0}, {y:0,opacity:1,stagger:0.12,duration:0.8,ease:"power3.out"});
-    }
+<script>
+  const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbztbSGkOzAxM6634AMXvjS9arvg_kpAd4wH70QDrQfNGmc1gbUuwQLfenp4jEcwsRk8/exec";
+  const CARPETA_ID = "1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm";  // TU CARPETA DE EXÁMENES
 
-    $$('.tab-btn').forEach(b => b.onclick = () => {
-      $$('.tab-btn').forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      render(b.dataset.area);
+  async function cargar() {
+    const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_ID}`);
+    const archivos = await res.json();
+
+    const areas = {1:[],2:[],3:[],4:[],5:[],6:[]};
+    archivos.forEach(f => {
+      const name = f.name.toLowerCase();
+      let area = 6;
+      if(/área\s*1|area\s*1|area i/i.test(name)) area=1;
+      else if(/área\s*2|area\s*2|area ii/i.test(name)) area=2;
+      else if(/área\s*3|area\s*3|area iii/i.test(name)) area=3;
+      else if(/área\s*4|area\s*4|area iv/i.test(name)) area=4;
+      else if(/área\s*5|area\s*5|area v/i.test(name)) area=5;
+      else if(/concurso|interescolar/i.test(name)) area=6;
+      areas[area].push(f);
     });
 
-    $('#menuToggle').onclick = () => {
-      $('#sidebar').classList.toggle('active');
-      $('#overlay').classList.toggle('active');
-    };
-    $('#overlay').onclick = () => {
-      $('#sidebar').classList.remove('active');
-      $('#overlay').classList.remove('active');
-    };
-
-    $('#openModal').onclick = () => $('#uploadModal').style.display = 'flex';
-    $('#closeModal').onclick = () => $('#uploadModal').style.display = 'none';
-    window.onclick = e => { if(e.target === $('#uploadModal')) $('#uploadModal').style.display = 'none'; };
-
-    render();
-  </script>
+    for(let i=1;i<=6;i++){
+      const cont = document.getElementById('cards'+i);
+      if(areas[i].length===0){ cont.innerHTML='<p class="empty">Aún no hay exámenes en esta área</p>'; continue; }
+      areas[i].forEach(ex=>{
+        const embed = `https://drive.google.com/file/d/${ex.id}/preview`;
+        cont.innerHTML += `
+          <div class="card">
+            <div class="card-img-container"><canvas></canvas></div>
+            <div class="card-content">
+              <div class="badge">${i===6?'Concursos':'Área '+i}</div>
+              <h3>${ex.name.replace(/\.pdf$/i,'')}</h3>
+              <div class="btns">
+                <a href="${embed}" target="_blank" class="btn btn-primary">Ver</a>
+                <a href="https://drive.google.com/uc?id=${ex.id}&export=download" class="btn btn-success">Descargar</a>
+              </div>
+            </div>
+          </div>`;
+      });
+    }
+  }
+  cargar();
+</script>
 </body>
 </html>
