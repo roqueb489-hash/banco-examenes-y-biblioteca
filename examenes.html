@@ -24,7 +24,7 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
 .ver{background:var(--az);color:white}
 .desc{background:var(--am);color:black}
 .subir{background:var(--s);border:3px dashed var(--az);border-radius:20px;padding:3rem;text-align:center;margin:4rem 0}
-.subir button{background:var(--am);color:black;padding:1rem 3rem;border:none;border-radius:50px;font-size:1.4rem;font-weight:900;cursor:pointer}
+.subir button{background:var(--am);color:black;padding:1.2rem 3.5rem;border:none;border-radius:50px;font-size:1.4rem;font-weight:900;cursor:pointer}
 .loading{text-align:center;padding:6rem;font-size:1.6rem;color:#888}
 </style>
 </head>
@@ -44,7 +44,7 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
   <h2 class="section-title">Área I</h2>
   <div class="cards" id="area1"></div>
   <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm','_blank')">
+    <button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">
       SUBIR EXAMEN ÁREA I
     </button>
   </div>
@@ -53,7 +53,7 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
   <h2 class="section-title">Área II</h2>
   <div class="cards" id="area2"></div>
   <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm','_blank')">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">
       SUBIR EXAMEN ÁREA II
     </button>
   </div>
@@ -62,7 +62,7 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
   <h2 class="section-title">Área III</h2>
   <div class="cards" id="area3"></div>
   <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm','_blank')">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">
       SUBIR EXAMEN ÁREA III
     </button>
   </div>
@@ -71,7 +71,7 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
   <h2 class="section-title">Área IV</h2>
   <div class="cards" id="area4"></div>
   <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm','_blank')">
+    <button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">
       SUBIR EXAMEN ÁREA IV
     </button>
   </div>
@@ -80,7 +80,7 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
   <h2 class="section-title">Área V</h2>
   <div class="cards" id="area5"></div>
   <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm','_blank')">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">
       SUBIR EXAMEN ÁREA V
     </button>
   </div>
@@ -89,7 +89,7 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
   <h2 class="section-title">Concursos Interescolares</h2>
   <div class="cards" id="area6"></div>
   <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm','_blank')">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">
       SUBIR EXAMEN DE CONCURSO
     </button>
   </div>
@@ -97,68 +97,57 @@ header h1{font-size:2.5rem;color:var(--am);font-weight:900}
 
 <script>
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-const CARPETA_ID = "1dyNvIL3nEfyjUVLyKgSbwIj-GF6KcNCm";
 
-const areas = {
-  1: document.getElementById('area1'),
-  2: document.getElementById('area2'),
-  3: document.getElementById('area3'),
-  4: document.getElementById('area4'),
-  5: document.getElementById('area5'),
-  6: document.getElementById('area6')
-};
+// IDs de tus 6 carpetas (en orden)
+const CARPETAS = [
+  "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ",    // Área I
+  "1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp",    // Área II
+  "1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N",    // Área III
+  "16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU",    // Área IV
+  "1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77",    // Área V
+  "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"     // Concursos
+];
 
-async function cargar() {
-  try {
-    const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_ID}`);
-    const archivos = await res.json();
+const contenedores = [
+  document.getElementById('area1'),
+  document.getElementById('area2'),
+  document.getElementById('area3'),
+  document.getElementById('area4'),
+  document.getElementById('area5'),
+  document.getElementById('area6')
+];
 
-    // Limpiar todas las áreas
-    Object.values(areas).forEach(a => a.innerHTML = '');
+async function cargarTodo() {
+  for (let i = 0; i < 6; i++) {
+    try {
+      const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
+      const archivos = await res.json();
 
-    if (archivos.length === 0) {
-      Object.values(areas).forEach(a => {
-        a.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#888">Aún no hay exámenes</p>';
-      });
-      return;
+      if (archivos.length === 0) {
+        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#888">Aún no hay exámenes</p>';
+      } else {
+        archivos.forEach(f => {
+          const nombre = f.name.replace(/\.pdf$/i, '');
+          contenedores[i].innerHTML += `
+            <div class="card">
+              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400" alt="${nombre}"
+                   onerror="this.src='https://via.placeholder.com/340x200/1e293b/ffffff?text=Examen'">
+              <h3>${nombre}</h3>
+              <div class="btns">
+                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">Ver</a>
+                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">Descargar</a>
+              </div>
+            </div>`;
+        });
+      }
+    } catch (e) {
+      contenedores[i].innerHTML = '<p style="color:#ff6b6b;text-align:center">Error al cargar esta área</p>';
     }
-
-    archivos.forEach(f => {
-      const nombre = f.name.replace(/\.pdf$/i, '');
-      const minus = nombre.toLowerCase();
-
-      // CLASIFICACIÓN MUY FUERTE (ya no se confunde nada)
-      let area = 6; // por defecto concursos
-      if (/(^|\s)área\s*1\b|(^|\s)area\s*1\b|área\s*i\b/i.test(minus)) area = 1;
-      else if (/(^|\s)área\s*2\b|(^|\s)area\s*2\b|área\s*ii\b/i.test(minus)) area = 2;
-      else if (/(^|\s)área\s*3\b|(^|\s)area\s*3\b|área\s*iii\b/i.test(minus)) area = 3;
-      else if (/(^|\s)área\s*4\b|(^|\s)area\s*4\b|área\s*iv\b/i.test(minus)) area = 4;
-      else if (/(^|\s)área\s*5\b|(^|\s)area\s*5\b|área\s*v\b/i.test(minus)) area = 5;
-
-      const card = `
-        <div class="card">
-          <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400" alt="${nombre}"
-               onerror="this.src='https://via.placeholder.com/340x200/1e293b/ffffff?text=Examen'">
-          <h3>${nombre}</h3>
-          <div class="btns">
-            <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">Ver</a>
-            <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">Descargar</a>
-          </div>
-        </div>`;
-
-      areas[area].innerHTML += card;
-    });
-
-  } catch (e) {
-    Object.values(areas).forEach(a => {
-      a.innerHTML = '<p style="color:#ff6b6b;text-align:center">Error de conexión</p>';
-    });
-  } finally {
-    document.getElementById('loading').style.display = 'none';
   }
+  document.getElementById('loading').style.display = 'none';
 }
 
-cargar();
+cargarTodo();
 </script>
 </body>
 </html>
