@@ -23,7 +23,7 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:80px;
+  padding-bottom:90px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -78,9 +78,12 @@ header h1{
   display:flex;flex-direction:column;overflow-y:auto;
 }
 .sidebar.active{left:0}
+
+/* OVERLAY MÁS SUAVE EN PC - menos oscuro y más blur */
 .overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.8);
-  opacity:0;visibility:hidden;transition:.3s;z-index:999;
+  position:fixed;inset:0;background:rgba(0,0,0,0.45); /* menos opaco */
+  backdrop-filter:blur(8px); /* más blur para transición suave */
+  opacity:0;visibility:hidden;transition:all .4s;z-index:999;
 }
 .overlay.active{opacity:1;visibility:visible}
 
@@ -120,37 +123,43 @@ header h1{
   transform:translateX(4px);
 }
 
-/* BARRA INFERIOR MÓVIL - ESTILO BRAVE/CHROME */
+/* BARRA INFERIOR MÓVIL - MÁS DELGADA, CON NOMBRES DEBAJO */
 .mobile-bottom-nav{
   position:fixed;bottom:0;left:0;right:0;
   background:rgba(0,31,63,0.95);backdrop-filter:blur(20px);
-  padding:8px 0;border-top:1px solid rgba(255,215,0,0.15);
+  padding:6px 0;border-top:1px solid rgba(255,215,0,0.15);
   z-index:998;display:none;box-shadow:0 -8px 25px rgba(0,0,0,0.5);
 }
 .mobile-bottom-nav .nav-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);
-  gap:4px;padding:0 12px;max-width:500px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:2px;padding:0 8px;max-width:500px;margin:0 auto;
 }
 .mobile-bottom-nav a{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  color:rgba(240,248,255,0.7);text-decoration:none;
-  padding:10px 4px;border-radius:12px;position:relative;transition:.3s;
+  color:rgba(240,248,255,0.75);text-decoration:none;
+  padding:8px 4px;border-radius:10px;position:relative;transition:.3s;font-size:0.68rem;font-weight:700;
 }
 .mobile-bottom-nav a i{
-  font-size:1.8rem;
+  font-size:1.7rem;margin-bottom:3px;
+}
+.mobile-bottom-nav a span{
+  font-size:0.65rem;opacity:0.9;
 }
 .mobile-bottom-nav a:hover{
-  color:var(--gold);
+  color:var(--gold);background:rgba(255,215,0,0.1);
 }
 .mobile-bottom-nav a.active{
   color:var(--accent);
 }
 .mobile-bottom-nav a.active::after{
-  content:'';position:absolute;top:-6px;width:6px;height:6px;
-  background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);
+  content:'';position:absolute;top:-4px;width:5px;height:5px;
+  background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);
+}
+.mobile-bottom-nav a.home span{
+  font-size:0.7rem;
 }
 
-/* CARGANDO MEJORADO */
+/* CARGANDO */
 .loading{
   text-align:center;padding:6rem 2rem;font-size:1.6rem;font-weight:700;
   color:var(--gold);
@@ -206,7 +215,7 @@ header h1{
 @media (max-width:1024px){
   .menu-btn,.sidebar,.overlay{display:none!important;}
   .mobile-bottom-nav{display:block;}
-  body{padding-bottom:100px;}
+  body{padding-bottom:110px;}
   .cards{gap:1.5rem;}
   .card{max-width:100%;}
 }
@@ -217,7 +226,7 @@ header h1{
 </head>
 <body>
 
-<!-- Overlay PC -->
+<!-- Overlay PC más suave -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
 <!-- Menú PC -->
@@ -237,16 +246,16 @@ header h1{
   </ul>
 </nav>
 
-<!-- BARRA INFERIOR MÓVIL ESTILO BRAVE -->
+<!-- BARRA INFERIOR MÓVIL CON NOMBRES DEBAJO -->
 <nav class="mobile-bottom-nav">
   <div class="nav-grid">
-    <a href="#area1"><i class="fas fa-brain"></i></a>
-    <a href="#area2"><i class="fas fa-calculator"></i></a>
-    <a href="#area3"><i class="fas fa-flask"></i></a>
-    <a href="#area4"><i class="fas fa-book"></i></a>
-    <a href="#area5"><i class="fas fa-globe"></i></a>
-    <a href="#area6"><i class="fas fa-trophy"></i></a>
-    <a href="index.html"><i class="fas fa-home"></i></a>
+    <a href="#area1"><i class="fas fa-brain"></i><span>Área I</span></a>
+    <a href="#area2"><i class="fas fa-calculator"></i><span>Área II</span></a>
+    <a href="#area3"><i class="fas fa-flask"></i><span>Área III</span></a>
+    <a href="#area4"><i class="fas fa-book"></i><span>Área IV</span></a>
+    <a href="#area5"><i class="fas fa-globe"></i><span>Área V</span></a>
+    <a href="#area6"><i class="fas fa-trophy"></i><span>Concursos</span></a>
+    <a href="index.html" class="home"><i class="fas fa-home"></i><span>Inicio</span></a>
   </div>
 </nav>
 
@@ -259,7 +268,6 @@ header h1{
 </header>
 
 <div class="container">
-  <!-- CARGANDO MEJORADO -->
   <div class="loading" id="loading">
     <div class="spinner"></div>
     Cargando exámenes...
@@ -280,7 +288,7 @@ header h1{
 
   <h2 class="section-title" id="area4">Área IV</h2>
   <div class="cards" id="cont-area4"></div>
-  <div class="subir petite"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA IV</button></div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA IV</button></div>
 
   <h2 class="section-title" id="area5">Área V</h2>
   <div class="cards" id="cont-area5"></div>
@@ -310,11 +318,10 @@ function toggleMenu(){
 }
 function cerrarMenu(){
   document.getElementById('sidebar').classList.remove('active');
-  document.querySelector('.overlay').class.remove('active');
+  document.querySelector('.overlay').classList.remove('active');
   document.querySelector('.menu-btn').classList.remove('active');
 }
 
-// Resaltar activo en barra móvil y menú PC
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
@@ -331,7 +338,6 @@ async function cargarTodo() {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
       let archivos = await res.json();
 
-      // Ordenar del más reciente al más antiguo
       archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
 
       if (archivos.length === 0) {
