@@ -8,12 +8,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
-  --bg: #0d1b2a;
-  --card: #1b263b;
-  --accent: #e63946;
-  --gold: #f4a261;
-  --text: #f1faee;
-  --header: rgba(13,27,42,0.96);
+  --bg: #001f3f; /* Azul marino profundo para fondo */
+  --card: #003366; /* Azul más claro para tarjetas */
+  --accent: #ff0000; /* Rojo para acentos principales (botones, highlights) */
+  --gold: #ffd700; /* Amarillo oro para highlights, botones secundarios y detalles */
+  --text: #f0f8ff; /* Blanco azulado suave para texto */
+  --header: rgba(0,31,63,0.96); /* Azul semi-transparente para header */
+  --filter-active: var(--accent); /* Rojo para filtros activos */
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -23,7 +24,10 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:70px;
+  padding-bottom:100px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 header{
   position:fixed;top:0;left:0;right:0;
@@ -33,6 +37,7 @@ header{
   text-align:center;
   z-index:999;
   box-shadow:0 6px 30px rgba(0,0,0,0.5);
+  width:100%;
 }
 header h1{
   font-size:clamp(2.1rem,6vw,3.2rem);
@@ -40,22 +45,24 @@ header h1{
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:900;
+  margin:0 auto;
+  max-width:90%;
 }
 
-/* MENÚ LATERAL PC (igual de bonito) */
+/* MENÚ LATERAL PC */
 .menu-btn{
   position:fixed;top:18px;left:18px;width:58px;height:58px;
   background:var(--gold);color:#000;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   font-size:1.9rem;cursor:pointer;z-index:1001;
-  box-shadow:0 10px 30px rgba(244,162,97,0.6);transition:.3s;
+  box-shadow:0 10px 30px rgba(255,215,0,0.6);transition:.3s;
 }
 .menu-btn:hover{transform:scale(1.15)}
 .menu-btn.active{background:var(--accent);color:white}
 
 .sidebar{
   position:fixed;top:0;left:-360px;width:360px;height:100%;
-  background:linear-gradient(135deg,#1b263b,#0d1b2a);
+  background:linear-gradient(135deg,var(--card),var(--bg));
   box-shadow:12px 0 50px rgba(0,0,0,0.7);
   z-index:1000;padding:30px;transition:left .45s cubic-bezier(0.68,-.55,.27,1.55);
   display:flex;flex-direction:column;overflow-y:auto;
@@ -68,24 +75,24 @@ header h1{
 .overlay.active{opacity:1;visibility:visible}
 
 .sidebar .logo img{
-  width:220px;padding:16px;background:rgba(244,162,97,0.15);
-  border:3px solid var(--gold) solid;border-radius:30px;
-  box-shadow:0 15px 40px rgba(244,162,97,0.4);margin:0 auto 25px;display:block;
+  width:220px;padding:16px;background:rgba(255,215,0,0.15);
+  border:3px solid var(--gold);border-radius:30px;
+  box-shadow:0 15px 40px rgba(255,215,0,0.4);margin:0 auto 25px;display:block;
 }
 .volver-btn{
   display:block;width:85%;margin:20px auto;padding:16px;
   background:var(--accent);color:white;text-align:center;
   border-radius:20px;font-weight:700;text-decoration:none;
-  box-shadow:0 10px 30px rgba(230,57,70,0.5);transition:.3s;
+  box-shadow:0 10px 30px rgba(255,0,0,0.5);transition:.3s;
 }
 .volver-btn:hover{transform:translateY(-5px)}
 
-/* MENÚ DESPLEGABLE MÓVIL (el que te encanta) */
+/* MENÚ MÓVIL */
 .fab-trigger{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
   width:66px;height:66px;background:var(--gold);color:#000;
   border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:2.1rem;box-shadow:0 12px 35px rgba(244,162,97,0.7);
+  font-size:2.1rem;box-shadow:0 12px 35px rgba(255,215,0,0.7);
   z-index:999;cursor:pointer;transition:.4s;
 }
 .fab-trigger.active{
@@ -93,10 +100,12 @@ header h1{
 }
 .mobile-menu{
   position:fixed;bottom:0;left:0;right:0;
-  background:rgba(27,38,59,0.98);backdrop-filter:blur(20px);
+  background:rgba(0,51,102,0.98);backdrop-filter:blur(20px);
   border-radius:30px 30px 0 0;padding:100px 20px 30px;
   transform:translateY(100%);transition:transform .45s cubic-bezier(0.32,1.2,0.32,1);
   z-index:998;box-shadow:0 -15px 50px rgba(0,0,0,0.6);
+  width:100%;
+  max-width:480px;margin:0 auto;
 }
 .mobile-menu.active{transform:translateY(0);}
 .mobile-menu::before{
@@ -110,7 +119,7 @@ header h1{
   background:rgba(255,255,255,0.08);color:var(--text);
   padding:18px 8px;border-radius:20px;text-align:center;
   text-decoration:none;font-weight:700;font-size:0.88rem;
-  transition:.3s;border-radius:18px;
+  transition:.3s;
 }
 .mobile-menu-item i{font-size:1.9rem;display:block;margin-bottom:8px;}
 .mobile-menu-item:hover,.mobile-menu-item.active{
@@ -120,57 +129,78 @@ header h1{
   background:var(--accent);color:white;grid-column:1/-1;
 }
 
-/* CONTENIDO + NUEVO: AÑO EN CADA TARJETA */
-.container{max-width:1400px;margin:0 auto;padding:2rem 1.5rem;}
+/* FILTRO POR AÑO */
+.filter-bar{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:12px;
+  margin:1rem 0 2rem;padding:0 1rem;
+  width:100%;max-width:800px;
+}
+.filter-btn{
+  background:rgba(255,255,255,0.1);color:var(--text);
+  border:2px solid transparent;padding:0.75rem 1.6rem;
+  border-radius:50px;font-weight:700;font-size:0.95rem;
+  cursor:pointer;transition:.3s;
+}
+.filter-btn:hover{
+  background:var(--gold);color:#000;transform:translateY(-3px);
+}
+.filter-btn.active{
+  background:var(--filter-active);color:white;border-color:var(--filter-active);
+}
+
+/* CONTENIDO */
+.container{max-width:1400px;margin:0 auto;padding:1rem 1rem;width:100%;}
 .section-title{
   font-size:clamp(2.5rem,7vw,3.6rem);text-align:center;
-  margin:5rem 0 3.5rem;padding-top:100px;margin-top:-100px;
+  margin:3rem 0 1rem;padding-top:100px;margin-top:-100px;
   background:linear-gradient(90deg,var(--gold),var(--accent));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   font-weight:900;scroll-margin-top:140px;
 }
 .cards{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:2.4rem;margin-bottom:4rem;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:2rem;margin-bottom:3rem;
+  justify-items:center;
 }
 .card{
   background:var(--card);border-radius:28px;overflow:hidden;
   box-shadow:0 15px 45px rgba(0,0,0,0.5);transition:.4s;
+  opacity:1;transform:translateY(0);width:100%;max-width:340px;
 }
-.card:hover{transform:translateY(-16px);box-shadow:0 35px 80px rgba(230,57,70,0.45);}
-.card img{width:100%;height:220px;object-fit:cover;background:#1b263b;}
-.card-content{
-  padding:1.4rem 1.2rem;
+.card.hidden{
+  opacity:0;transform:translateY(20px);pointer-events:none;height:0;
+  margin:0;padding:0;overflow:hidden;
 }
-.card h3{
-  font-size:1.45rem;text-align:center;margin-bottom:8px;
-  font-weight:700;color:var(--text);
-}
-.year-tag{
-  text-align:center;font-size:0.95rem;color:var(--gold);
-  font-weight:700;margin-bottom:12px;opacity:0.9;
-}
+.card:hover{transform:translateY(-16px);box-shadow:0 35px 80px rgba(255,0,0,0.45);}
+.card img{width:100%;height:220px;object-fit:cover;background:var(--card);}
+.card-content{padding:1.4rem 1.2rem;}
+.card h3{font-size:1.45rem;text-align:center;margin-bottom:8px;font-weight:700;}
+.year-tag{text-align:center;font-size:0.95rem;color:var(--gold);font-weight:700;margin-bottom:12px;opacity:0.9;}
 .btns{padding:1.3rem;display:flex;gap:14px;justify-content:center;}
 .btn{padding:0.95rem 2.1rem;border-radius:18px;font-weight:700;text-decoration:none;}
 .ver{background:var(--accent);color:white}
 .desc{background:var(--gold);color:#000}
 
 .subir{
-  background:var(--card);border:4px dashed var(--accent);
-  border-radius:28px;padding:4rem 2rem;text-align:center;
-  margin:5rem auto;max-width:700px;
+  background:var(--card);border:4px dashed var(--gold);
+  border-radius:28px;padding:3rem 1rem;text-align:center;
+  margin:3rem auto;max-width:90%;width:100%;
 }
 .subir button{
-  background:var(--gold);color:#000;padding:1.6rem 5rem;
-  border:none;border-radius:50px;font-size:1.55rem;font-weight:900;
-  cursor:pointer;box-shadow:0 15px 40px rgba(244,162,97,0.7);transition:.3s;
+  background:var(--gold);color:#000;padding:1.2rem 4rem;
+  border:none;border-radius:50px;font-size:1.4rem;font-weight:900;
+  cursor:pointer;box-shadow:0 15px 40px rgba(255,215,0,0.7);transition:.3s;
 }
-.subir button:hover{transform:scale(1.06);background:#e07a5f;}
+.subir button:hover{transform:scale(1.06);background:var(--accent);color:white;}
 
-/* RESPONSIVE */
+/* RESPONSIVE - Optimizado para móvil */
 @media (max-width:1024px){
   .menu-btn,.sidebar,.overlay{display:none!important;}
-  body{padding-bottom:100px;}
+  body{padding-bottom:120px;}
+  .cards{gap:1.5rem;}
+  .card{max-width:100%;}
+  .filter-bar{gap:8px;}
+  .filter-btn{padding:0.6rem 1.2rem;font-size:0.9rem;}
 }
 @media (min-width:1025px){
   .fab-trigger,.mobile-menu{display:none!important;}
@@ -183,33 +213,33 @@ header h1{
 <div class="overlay" onclick="cerrarMenu()"></div>
 
 <!-- Menú PC -->
-<div class="menu-btn" onclick="toggleMenu()">Menu Icon</div>
+<div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
 <nav class="sidebar" id="sidebar">
   <div class="logo">
     <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
   </div>
-  <a href="index.html" class="volver-btn">Home Icon VOLVER A LA BIBLIOTECA</a>
+  <a href="index.html" class="volver-btn"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
   <ul>
-    <li><a href="#area1" class="active">Brain Icon Área I</a></li>
-    <li><a href="#area2">Calculator Icon Área II</a></li>
-    <li><a href="#area3">Flask Icon Área III</a></li>
-    <li><a href="#area4">Book Icon Área IV</a></li>
-    <li><a href="#area5">Globe Icon Área V</a></li>
-    <li><a href="#area6">Trophy Icon Concursos</a></li>
+    <li><a href="#area1"><i class="fas fa-brain"></i> Área I</a></li>
+    <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
+    <li><a href="#area3"><i class="fas fa-flask"></i> Área III</a></li>
+    <li><a href="#area4"><i class="fas fa-book"></i> Área IV</a></li>
+    <li><a href="#area5"><i class="fas fa-globe"></i> Área V</a></li>
+    <li><a href="#area6"><i class="fas fa-trophy"></i> Concursos</a></li>
   </ul>
 </nav>
 
-<!-- Menú móvil desplegable -->
-<div class="fab-trigger" onclick="toggleMobileMenu()">Shield Icon</div>
+<!-- Menú móvil -->
+<div class="fab-trigger" onclick="toggleMobileMenu()"><i class="fas fa-shield-alt"></i></div>
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu-grid">
-    <a href="#area1" class="mobile-menu-item">Brain Icon Área I</a>
-    <a href="#area2" class="mobile-menu-item">Calculator Icon Área II</a>
-    <a href="#area3" class="mobile-menu-item">Flask Icon Área III</a>
-    <a href="#area4" class="mobile-menu-item">Book Icon Área IV</a>
-    <a href="#area5" class="mobile-menu-item">Globe Icon Área V</a>
-    <a href="#area6" class="mobile-menu-item">Trophy Icon Concursos</a>
-    <a href="index.html" class="mobile-menu-item volver">Home Icon VOLVER A LA BIBLIOTECA</a>
+    <a href="#area1" class="mobile-menu-item"><i class="fas fa-brain"></i> Área I</a>
+    <a href="#area2" class="mobile-menu-item"><i class="fas fa-calculator"></i> Área II</a>
+    <a href="#area3" class="mobile-menu-item"><i class="fas fa-flask"></i> Área III</a>
+    <a href="#area4" class="mobile-menu-item"><i class="fas fa-book"></i> Área IV</a>
+    <a href="#area5" class="mobile-menu-item"><i class="fas fa-globe"></i> Área V</a>
+    <a href="#area6" class="mobile-menu-item"><i class="fas fa-trophy"></i> Concursos</a>
+    <a href="index.html" class="mobile-menu-item volver"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
   </div>
 </div>
 
@@ -220,31 +250,38 @@ header h1{
 
   <!-- ÁREAS -->
   <h2 class="section-title" id="area1">Área I</h2>
+  <div class="filter-bar" id="filter-area1"></div>
   <div class="cards" id="cont-area1"></div>
-  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">SUBIR EXAMEN ÁREA I</button></div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA I</button></div>
 
   <h2 class="section-title" id="area2">Área II</h2>
+  <div class="filter-bar" id="filter-area2"></div>
   <div class="cards" id="cont-area2"></div>
-  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">SUBIR EXAMEN ÁREA II</button></div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA II</button></div>
 
   <h2 class="section-title" id="area3">Área III</h2>
+  <div class="filter-bar" id="filter-area3"></div>
   <div class="cards" id="cont-area3"></div>
-  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">SUBIR EXAMEN ÁREA III</button></div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA III</button></div>
 
   <h2 class="section-title" id="area4">Área IV</h2>
+  <div class="filter-bar" id="filter-area4"></div>
   <div class="cards" id="cont-area4"></div>
-  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">SUBIR EXAMEN ÁREA IV</button></div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA IV</button></div>
 
   <h2 class="section-title" id="area5">Área V</h2>
+  <div class="filter-bar" id="filter-area5"></div>
   <div class="cards" id="cont-area5"></div>
-  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">SUBIR EXAMEN ÁREA V</button></div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA V</button></div>
 
   <h2 class="section-title" id="area6">Concursos Interescolares</h2>
+  <div class="filter-bar" id="filter-area6"></div>
   <div class="cards" id="cont-area6"></div>
-  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">SUBIR EXAMEN DE CONCURSO</button></div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN DE CONCURSO</button></div>
 </div>
 
 <script>
+// El script permanece igual, solo ajusté íconos en HTML para consistencia
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
 const CARPETAS = [
   "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ",
@@ -254,7 +291,8 @@ const CARPETAS = [
   "1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77",
   "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
 ];
-const contenedores = [1,2,3,4,5,6].map(n=>document.getElementById('cont-area'+n));
+const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
+const filtros = [1,2,3,4,5,6].map(n => document.getElementById('filter-area'+n));
 
 function toggleMenu(){
   document.getElementById('sidebar').classList.toggle('active');
@@ -274,7 +312,8 @@ function toggleMobileMenu(){
   btn.classList.toggle('active');
 }
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('.mobile-menu') && !e.target.closest('.fab-trigger')) {
+  if (!e.target.closest('.mobile-menu') && !e.target.closest('.fab-trigger') && !e.target.closest('.menu-btn')) {
+    cerrarMenu();
     document.getElementById('mobileMenu').classList.remove('active');
     document.querySelector('.fab-trigger').classList.remove('active');
   }
@@ -284,7 +323,7 @@ document.addEventListener('click', (e) => {
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
-    if (window.scrollY >= sec.offsetTop - 180) current = sec.id;
+    if (window.scrollY >= sec.offsetTop - 140) current = sec.id;
   });
   document.querySelectorAll('.sidebar a, .mobile-menu-item').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
@@ -297,24 +336,30 @@ async function cargarTodo() {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
       let archivos = await res.json();
 
-      // ORDENAR DEL MÁS NUEVO AL MÁS ANTIGUO
       archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
 
       if (archivos.length === 0) {
-        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:6rem;color:#778899;font-size:1.4rem">Aún no hay exámenes</p>';
+        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:6rem;color:#a9a9a9;font-size:1.4rem">Aún no hay exámenes</p>';
         continue;
       }
 
+      const años = [...new Set(archivos.map(f => new Date(f.modifiedTime).getFullYear()))].sort((a,b) => b-a);
+
+      let filterHTML = `<button class="filter-btn active" data-year="all">Todos</button>`;
+      años.forEach(year => {
+        filterHTML += `<button class="filter-btn" data-year="${year}">${year}</button>`;
+      });
+      filtros[i].innerHTML = filterHTML;
+
       archivos.forEach(f => {
         const nombre = f.name.replace(/\.pdf$/i, '');
-        // Extraer año de la fecha (o del nombre si lo prefieres)
         const fecha = new Date(f.modifiedTime);
         const año = fecha.getFullYear();
 
         contenedores[i].innerHTML += `
-          <div class="card">
+          <div class="card" data-year="${año}">
             <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w800" alt="${nombre}"
-                 onerror="this.src='https://via.placeholder.com/400x220/1b263b/f4a261?text=EXAMEN'">
+                 onerror="this.src='https://via.placeholder.com/400x220/003366/ffd700?text=EXAMEN'">
             <div class="card-content">
               <h3>${nombre}</h3>
               <div class="year-tag">Año ${año}</div>
@@ -325,8 +370,22 @@ async function cargarTodo() {
             </div>
           </div>`;
       });
+
+      filtros[i].querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const year = btn.getAttribute('data-year');
+          filtros[i].querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          contenedores[i].querySelectorAll('.card').forEach(card => {
+            const cardYear = card.getAttribute('data-year');
+            card.classList.toggle('hidden', year !== 'all' && cardYear !== year);
+          });
+        });
+      });
+
     } catch (e) {
-      contenedores[i].innerHTML = '<p style="color:#e63946;text-align:center;padding:4rem">Error al cargar</p>';
+      contenedores[i].innerHTML = '<p style="color:#ff0000;text-align:center;padding:4rem">Error al cargar</p>';
     }
   }
   document.getElementById('loading').style.display = 'none';
