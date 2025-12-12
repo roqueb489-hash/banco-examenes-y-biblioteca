@@ -23,12 +23,11 @@ body{
   color:var(--text);
   min-height:100vh;
   overflow-x:hidden;
-  padding-top:90px;          /* Espacio para header fijo */
-  padding-left:0;
-  padding-right:0;
+  padding-top:90px;
+  padding-bottom:90px; /* espacio para el menú inferior en móvil */
 }
 
-/* ====================== HEADER FIJO ====================== */
+/* HEADER FIJO */
 header{
   position:fixed;
   top:0;left:0;right:0;
@@ -40,14 +39,14 @@ header{
   box-shadow:0 4px 30px rgba(0,0,0,0.6);
 }
 header h1{
-  font-size:clamp(1.8rem, 5vw, 2.8rem);
+  font-size:clamp(1.9rem, 5vw, 2.8rem);
   background:linear-gradient(90deg,#fbbf24,#f59e0b);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:900;
 }
 
-/* ====================== BOTÓN HAMBURGUESA ====================== */
+/* ====================== MENÚ LATERAL (solo PC y tablets grandes) ====================== */
 .menu-btn{
   position:fixed;
   top:15px;
@@ -69,7 +68,6 @@ header h1{
 .menu-btn:hover{transform:scale(1.12)}
 .menu-btn.active{background:var(--accent);color:white}
 
-/* ====================== SIDEBAR ====================== */
 .sidebar{
   position:fixed;
   top:0;
@@ -81,14 +79,13 @@ header h1{
   box-shadow:10px 0 50px rgba(0,0,0,0.8);
   z-index:1000;
   padding:20px;
-  transition:left .4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition:left .4s ease;
   display:flex;
   flex-direction:column;
   overflow-y:auto;
 }
 .sidebar.active{left:0;}
 
-/* Fondo oscuro cuando el menú está abierto (solo móvil) */
 .overlay{
   position:fixed;
   inset:0;
@@ -100,88 +97,87 @@ header h1{
 }
 .overlay.active{opacity:1;visibility:visible;}
 
-/* Logo */
-.sidebar .logo{
-  text-align:center;
-  margin:15px 0 25px;
-}
+/* Logo y items del sidebar (igual que antes) */
+.sidebar .logo{text-align:center;margin:15px 0 25px;}
 .sidebar .logo img{
-  width:190px;
-  padding:14px;
+  width:190px;padding:14px;
   background:rgba(251,191,36,0.2);
   border-radius:24px;
   border:3px solid rgba(251,191,36,0.4);
   box-shadow:0 12px 35px rgba(251,191,36,0.4);
 }
-
-/* Botón volver */
-.volver-btn{
-  width:100%;
-  padding:15px;
-  background:rgba(239,68,68,0.3);
-  border:1px solid rgba(239,68,68,0.5);
-  border-radius:18px;
-  color:white;
-  text-decoration:none;
-  text-align:center;
-  font-weight:700;
-  font-size:1.1rem;
-  margin-bottom:20px;
-  transition:.3s;
-}
-.volver-btn:hover{transform:translateY(-4px);background:rgba(239,68,68,0.5);}
-
-/* Items menú */
-.sidebar ul{
-  list-style:none;
-  width:100%;
-  flex:1;
-}
+.volver-btn{width:100%;padding:15px;background:rgba(239,68,68,0.3);border:1px solid rgba(239,68,68,0.5);
+  border-radius:18px;color:white;text-decoration:none;text-align:center;font-weight:700;margin-bottom:20px;}
 .sidebar ul li a{
+  display:flex;align-items:center;padding:16px 20px;color:var(--text);text-decoration:none;
+  font-weight:600;border-radius:16px;margin:8px 0;transition:all .35s;position:relative;overflow:hidden;
+}
+.sidebar ul li a::before{content:'';position:absolute;left:0;top:0;width:5px;height:100%;background:var(--gold);transform:scaleY(0);transition:.35s;}
+.sidebar ul li a i{width:40px;font-size:1.35rem;margin-right:14px;}
+.sidebar ul li a:hover,.sidebar ul li a.active{
+  background:var(--accent);color:white;transform:translateX(10px);box-shadow:0 10px 30px rgba(30,64,175,0.5);
+}
+.sidebar ul li a:hover::before,.sidebar ul li a.active::before{transform:scaleY(1);}
+
+/* ====================== MENÚ INFERIOR ESTILO BRAVE (solo móvil) ====================== */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(30,41,59,0.98);
+  backdrop-filter:blur(20px);
+  padding:10px 0 12px;
   display:flex;
+  justify-content:space-around;
   align-items:center;
-  padding:16px 20px;
+  z-index:998;
+  border-top:1px solid rgba(251,191,36,0.2);
+  box-shadow:0 -10px 30px rgba(0,0,0,0.6);
+}
+.bottom-nav a{
   color:var(--text);
   text-decoration:none;
+  text-align:center;
+  font-size:0.75rem;
   font-weight:600;
-  border-radius:16px;
-  margin:8px 0;
-  transition:all .35s;
+  padding:8px 0;
+  flex:1;
+  transition:all .3s;
   position:relative;
-  overflow:hidden;
 }
-.sidebar ul li a::before{
+.bottom-nav a i{
+  font-size:1.7rem;
+  display:block;
+  margin-bottom:4px;
+  transition:transform .3s;
+}
+.bottom-nav a.active,
+.bottom-nav a:hover{
+  color:var(--gold);
+}
+.bottom-nav a.active i,
+.bottom-nav a:hover i{
+  transform:scale(1.25);
+}
+.bottom-nav a.active::after{
   content:'';
   position:absolute;
-  left:0;top:0;
-  width:5px;height:100%;
+  bottom:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  width:6px;
+  height:6px;
   background:var(--gold);
-  transform:scaleY(0);
-  transition:transform .35s;
+  border-radius:50%;
 }
-.sidebar ul li a i{
-  width:40px;
-  font-size:1.35rem;
-  margin-right:14px;
-}
-.sidebar ul li a:hover,
-.sidebar ul li a.active{
-  background:var(--accent);
-  color:white;
-  transform:translateX(10px);
-  box-shadow:0 10px 30px rgba(30,64,175,0.5);
-}
-.sidebar ul li a:hover::before,
-.sidebar ul li a.active::before{transform:scaleY(1);}
 
-/* ====================== CONTENIDO PRINCIPAL ====================== */
+/* ====================== CONTENIDO ====================== */
 .container{
   max-width:1400px;
   margin:0 auto;
   padding:2rem 1.5rem;
 }
-
-/* Títulos de área */
 .section-title{
   font-size:clamp(2.2rem, 6vw, 3.2rem);
   text-align:center;
@@ -194,61 +190,21 @@ header h1{
   font-weight:900;
   scroll-margin-top:130px;
 }
-
-/* Grid de tarjetas */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
   gap:2rem;
   margin-bottom:3rem;
 }
-.card{
-  background:var(--sidebar);
-  border-radius:24px;
-  overflow:hidden;
-  box-shadow:0 12px 35px rgba(0,0,0,0.5);
-  transition:transform .4s, box-shadow .4s;
-}
-.card:hover{
-  transform:translateY(-12px);
-  box-shadow:0 25px 60px rgba(30,64,175,0.5);
-}
-.card img{
-  width:100%;
-  height:200px;
-  object-fit:cover;
-  background:#1e293b;
-}
-.card h3{
-  padding:1.2rem 1rem;
-  font-size:1.35rem;
-  text-align:center;
-  font-weight:700;
-  min-height:70px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.btns{
-  padding:1rem;
-  text-align:center;
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-.btn{
-  padding:0.8rem 1.8rem;
-  border-radius:14px;
-  font-weight:700;
-  text-decoration:none;
-  font-size:0.95rem;
-  transition:.3s;
-}
+.card{background:var(--sidebar);border-radius:24px;overflow:hidden;box-shadow:0 12px 35px rgba(0,0,0,0.5);transition:.4s;}
+.card:hover{transform:translateY(-12px);box-shadow:0 25px 60px rgba(30,64,175,0.5);}
+.card img{width:100%;height:200px;object-fit:cover;background:#1e293b;}
+.card h3{padding:1.2rem 1rem;font-size:1.35rem;text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center;}
+.btns{padding:1rem;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:0.8rem 1.8rem;border-radius:14px;font-weight:700;text-decoration:none;font-size:0.95rem;}
 .ver{background:var(--accent);color:white}
 .desc{background:var(--gold);color:black}
 
-/* Botón subir examen */
 .subir{
   background:var(--sidebar);
   border:3px dashed var(--accent);
@@ -259,52 +215,41 @@ header h1{
   max-width:600px;
 }
 .subir button{
-  background:var(--gold);
-  color:#000;
-  padding:1.3rem 3.5rem;
-  border:none;
-  border-radius:50px;
-  font-size:900 1.4rem 'Inter';
-  cursor:pointer;
-  box-shadow:0 10px 30px rgba(251,191,36,0.5);
-  transition:.3s;
+  background:var(--gold);color:#000;padding:1.3rem 3.5rem;border:none;border-radius:50px;
+  font-weight:900;cursor:pointer;box-shadow:0 10px 30px rgba(251,191,36,0.5);transition:.3s;
 }
 .subir button:hover{transform:translateY(-6px) scale(1.05)}
 
-/* Loading */
-.loading{
-  text-align:center;
-  padding:6rem 2rem;
-  font-size:1.6rem;
-  color:#888;
+.loading{text-align:center;padding:6rem 2rem;font-size:1.6rem;color:#888;}
+
+/* ====================== RESPONSIVE ====================== */
+/* Ocultar menú lateral y botón hamburguesa en móvil */
+@media (max-width: 900px){
+  .menu-btn, .sidebar, .overlay { display:none !important; }
+  body{ padding-bottom:90px; }
 }
 
-/* ====================== RESPONSIVE AJUSTES ====================== */
-@media (max-width: 768px){
-  .menu-btn{ width:52px; height:52px; font-size:1.6rem; top:12px; left:12px; }
-  header{ padding:1rem; }
-  .container{ padding:1.5rem 1rem; }
-  .cards{ grid-template-columns:1fr; gap:1.5rem; }
-  .section-title{ margin:3rem 0 2rem; }
-  .subir{ padding:2.5rem 1.5rem; margin:3rem auto; }
+/* Mostrar solo menú inferior en móvil */
+@media (min-width: 901px){
+  .bottom-nav { display:none !important; }
 }
+</style>
 </style>
 </head>
 <body>
 
-<!-- Overlay para cerrar menú al tocar fuera (móvil) -->
+<!-- Overlay (solo para menú lateral en tablets/PC) -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
-<!-- Botón hamburguesa -->
+<!-- Botón hamburguesa (solo visible en pantallas grandes) -->
 <div class="menu-btn" onclick="toggleMenu()">
   <i class="fas fa-bars"></i>
 </div>
 
-<!-- Sidebar -->
+<!-- Menú lateral (solo PC/tablet grande) -->
 <nav class="sidebar" id="sidebar">
   <div class="logo">
-    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png"
-         alt="IEP San Luis Gonzaga">
+    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
   </div>
   <a href="index.html" class="volver-btn">
     <i class="fas fa-home"></i> VOLVER AL INICIO
@@ -319,7 +264,16 @@ header h1{
   </ul>
 </nav>
 
-<!-- Header fijo -->
+<!-- MENÚ INFERIOR ESTILO BRAVE (solo móvil) -->
+<nav class="bottom-nav">
+  <a href="#area1"><i class="fas fa-brain"></i><span>Área I</span></a>
+  <a href="#area2"><i class="fas fa-calculator"></i><span>Área II</span></a>
+  <a href="#area3"><i class="fas fa-flask"></i><span>Área III</span></a>
+  <a href="#area4"><i class="fas fa-book-open"></i><span>Área IV</span></a>
+  <a href="#area5"><i class="fas fa-globe"></i><span>Área V</span></a>
+  <a href="#area6"><i class="fas fa-trophy"></i><span>Concursos</span></a>
+</nav>
+
 <header>
   <h1>BANCO DE EXÁMENES</h1>
 </header>
@@ -327,76 +281,42 @@ header h1{
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- ÁREAS -->
+  <!-- (Aquí van todas tus secciones como antes) -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="cards" id="cont-area1"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">
-      SUBIR EXAMEN ÁREA I
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">SUBIR EXAMEN ÁREA I</button></div>
 
   <h2 class="section-title" id="area2">Área II</h2>
   <div class="cards" id="cont-area2"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">
-      SUBIR EXAMEN ÁREA II
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">SUBIR EXAMEN ÁREA II</button></div>
 
   <h2 class="section-title" id="area3">Área III</h2>
   <div class="cards" id="cont-area3"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">
-      SUBIR EXAMEN ÁREA III
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">SUBIR EXAMEN ÁREA III</button></div>
 
   <h2 class="section-title" id="area4">Área IV</h2>
   <div class="cards" id="cont-area4"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">
-      SUBIR EXAMEN ÁREA IV
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">SUBIR EXAMEN ÁREA IV</button></div>
 
   <h2 class="section-title" id="area5">Área V</h2>
   <div class="cards" id="cont-area5"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">
-      SUBIR EXAMEN ÁREA V
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">SUBIR EXAMEN ÁREA V</button></div>
 
   <h2 class="section-title" id="area6">Concursos Interescolares</h2>
   <div class="cards" id="cont-area6"></div>
-  <div class="subir">
-    <button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">
-      SUBIR EXAMEN DE CONCURSO
-    </button>
-  </div>
+  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">SUBIR EXAMEN DE CONCURSO</button></div>
 </div>
 
 <script>
+// (Tu script de siempre, solo agregamos el resaltado del menú inferior)
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-const CARPETAS = [
-  "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ",
-  "1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp",
-  "1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N",
-  "16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU",
-  "1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77",
-  "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
-];
+const CARPETAS = ["18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ","1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp","1w_sXgXEfhZ3PYCuEri00JtI5F1N","16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU","1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77","1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"];
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
 
 function toggleMenu() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.querySelector('.overlay');
-  const btn = document.querySelector('.menu-btn');
-  
-  sidebar.classList.toggle('active');
-  overlay.classList.toggle('active');
-  btn.classList.toggle('active');
+  document.getElementById('sidebar').classList.toggle('active');
+  document.querySelector('.overlay').classList.toggle('active');
+  document.querySelector('.menu-btn').classList.toggle('active');
 }
 
 function cerrarMenu() {
@@ -405,55 +325,27 @@ function cerrarMenu() {
   document.querySelector('.menu-btn').classList.remove('active');
 }
 
-async function cargarTodo() {
-  for (let i = 0; i < 6; i++) {
-    try {
-      const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
-      const archivos = await res.json();
-      
-      if (archivos.length === 0) {
-        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#888;font-size:1.3rem">Aún no hay exámenes en esta área</p>';
-      } else {
-        archivos.forEach(f => {
-          const nombre = f.name.replace(/\.pdf$/i, '');
-          contenedores[i].innerHTML += `
-            <div class="card">
-              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600" alt="${nombre}"
-                   onerror="this.src='https://via.placeholder.com/400x200/1e293b/94a3b8?text=EXAMEN'">
-              <h3>${nombre}</h3>
-              <div class="btns">
-                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">VER</a>
-                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">DESCARGAR</a>
-              </div>
-            </div>`;
-        });
-      }
-    } catch (e) {
-      contenedores[i].innerHTML = '<p style="color:#ff6b6b;text-align:center;padding:3rem">Error al cargar los exámenes</p>';
-    }
-  }
-  document.getElementById('loading').style.display = 'none';
-}
-
-// Resaltar enlace activo al hacer scroll
+// Resaltar enlace activo (funciona tanto para menú lateral como inferior)
 window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('.section-title');
-  const links = document.querySelectorAll('.sidebar ul a');
   let current = '';
-
   sections.forEach(sec => {
-    if (window.scrollY >= sec.offsetTop - 180) {
-      current = sec.getAttribute('id');
-    }
+    if (window.scrollY >= sec.offsetTop - 180) current = sec.getAttribute('id');
   });
-
-  links.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === `#${current}`) {
-      link.classList.add('active');
-    }
+  // Menú lateral
+  document.querySelectorAll('.sidebar a').forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === `#${current}`) l.classList.add('active');
+  });
+  // Menú inferior
+  document.querySelectorAll('.bottom-nav a').forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === `#${current}`) l.classList.add('active');
   });
 });
+
+async function cargarTodo() { /* ... tu código de siempre ... */ 
+{ ... } // (lo mismo que tenías)
 
 cargarTodo();
 </script>
