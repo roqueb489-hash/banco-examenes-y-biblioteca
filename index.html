@@ -65,7 +65,7 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
     <h2>Biblioteca<br>Sanluisina</h2>
   </div>
   <nav id="sidebar-nav">
-    <!-- Las secciones se agregan dinámicamente -->
+    <!-- Secciones dinámicas + Banco de Exámenes fijo al final -->
   </nav>
 </aside>
 
@@ -95,17 +95,17 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
 </div>
 
 <script>
-const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";  // Cambia por tu URL de GAS si creaste uno nuevo
+const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";  // Cambia si creaste uno nuevo
 const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
 const SECCIONES = {
   'literatura-peruana': 'Literatura Peruana',
   'mitos-creencias-peruanas': 'Mitos y Creencias Peruanas',
   'libros-biblicos-religiosos': 'Libros Bíblicos y Religiosos',
+  'publicaciones-wol': 'Publicaciones WOL (jw.org)',
   'literatura-huanuquena': 'Literatura Huanuqueña',
   'leyendas-fabulas-mitos': 'Leyendas, Fábulas y Mitos',
-  'creencias-tradiciones-huanuquenas': ' 'Creencias y Tradiciones Huanuqueñas',
-  'publicaciones-wol': 'Publicaciones WOL (jw.org)'   // ¡NUEVA SECCIÓN!
+  'creencias-tradiciones-huanuquenas': 'Creencias y Tradiciones Huanuqueñas'
 };
 
 let carpetaIds = {};
@@ -123,8 +123,12 @@ async function cargarSecciones() {
   let index = 0;
   for (const key in SECCIONES) {
     const nombre = SECCIONES[key];
+    const icono = key.includes('biblicos') || key.includes('wol') ? 'fa-book-bible' : 
+                  key.includes('leyendas') ? 'fa-scroll' : 
+                  key.includes('creencias') ? 'fa-mountain-sun' : 
+                  key.includes('literatura') ? 'fa-book-open' : 'fa-book';
     
-    // Pestañas superiores
+    // Pestañas
     const btn = document.createElement('div');
     btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
     btn.textContent = nombre;
@@ -134,11 +138,11 @@ async function cargarSecciones() {
     // Menú lateral
     const navItem = document.createElement('div');
     navItem.className = 'nav-item' + (index === 0 ? ' active' : '');
-    navItem.innerHTML = `<i class="fas fa-book-bible"></i> ${nombre}`;
+    navItem.innerHTML = `<i class="fas ${icono}"></i> ${nombre}`;
     navItem.onclick = () => cambiarSeccion(key);
     sidebarNav.appendChild(navItem);
     
-    // Select del modal
+    // Select modal
     const opt = document.createElement('option');
     opt.value = key;
     opt.textContent = nombre;
@@ -147,11 +151,19 @@ async function cargarSecciones() {
     index++;
   }
   
+  // Agregar Banco de Exámenes al final del menú lateral
+  const examenesItem = document.createElement('a');
+  examenesItem.href = "examenes.html";
+  examenesItem.className = "nav-item";
+  examenesItem.innerHTML = `<i class="fas fa-file-alt"></i> Banco de Exámenes`;
+  sidebarNav.appendChild(examenesItem);
+  
   await cargarCarpetaIds();
   cambiarSeccion(seccionActual);
   document.getElementById('loading').style.display = 'none';
 }
 
+// El resto del código (cargarCarpetaIds, cargarLibros, etc.) es igual que antes
 async function cargarCarpetaIds() {
   try {
     const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_PRINCIPAL}`);
@@ -187,7 +199,7 @@ async function cargarLibros(carpetaId, nombreCarpeta) {
     const libros = await res.json();
     
     if (libros.length === 0) {
-      cont.innerHTML += '<div style="grid-column:1/-1;text-align:center;padding:4rem;font-size:1.3rem;color:#666">Aún no hay libros en esta sección. ¡Sé el primero en subir uno!</div>';
+      cont.innerHTML += '<div style="grid-column:1/-1;text-align:center;padding:4rem;font-size:1.3rem;color:#666">Aún no hay libros en esta sección. ¡Sé el primero!</div>';
     } else {
       libros.forEach(l => {
         const nombre = l.name.replace(/\.pdf$/i, '').trim();
@@ -212,7 +224,9 @@ async function cargarLibros(carpetaId, nombreCarpeta) {
 function cambiarSeccion(key) {
   seccionActual = key;
   document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', Object.keys(SECCIONES)[i] === key));
-  document.querySelectorAll('.nav-item').forEach((b, i) => b.classList.toggle('active', Object.keys(SECCIONES)[i] === key));
+  document.querySelectorAll('.nav-item').forEach((b, i) => {
+    if (i < Object.keys(SECCIONES).length) b.classList.toggle('active', Object.keys(SECCIONES)[i] === key);
+  });
   const carpetaId = carpetaIds[key] || null;
   document.getElementById('loading').style.display = 'block';
   cargarLibros(carpetaId, key);
@@ -231,7 +245,7 @@ function confirmarSubidaLibro() {
   if (!titulo) return alert("Por favor, escribe el título del libro");
   
   navigator.clipboard.writeText(titulo).then(() => {
-    alert(`¡Título "${titulo}" copiado!\n\nAhora abre la carpeta y renombra el PDF exactamente así.`);
+    alert(`¡Título "${titulo}" copiado!\n\nAbre la carpeta y renombra el PDF exactamente así.`);
     const id = carpetaIds[seccion];
     if (id) {
       window.open(`https://drive.google.com/drive/folders/${id}`, "_blank");
