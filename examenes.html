@@ -24,7 +24,7 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:100px;
+  padding-bottom:90px; /* Espacio para la nueva barra inferior */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -33,23 +33,34 @@ header{
   position:fixed;top:0;left:0;right:0;
   background:var(--header);
   backdrop-filter:blur(15px);
-  padding:1.2rem;
+  padding:1rem;
   text-align:center;
   z-index:999;
   box-shadow:0 6px 30px rgba(0,0,0,0.5);
   width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.header-content{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  max-width:90%;
+}
+.header-content img{
+  width:58px;height:58px;border-radius:12px;object-fit:contain;
 }
 header h1{
-  font-size:clamp(2.1rem,6vw,3.2rem);
+  font-size:clamp(1.8rem,5vw,2.8rem);
   background:linear-gradient(90deg, var(--gold), var(--accent));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:900;
-  margin:0 auto;
-  max-width:90%;
+  margin:0;
 }
 
-/* ================== MENÚ LATERAL PC - MEJORADO ================== */
+/* MENÚ LATERAL PC (igual que antes, mejorado) */
 .menu-btn{
   position:fixed;top:18px;left:18px;width:58px;height:58px;
   background:var(--gold);color:#000;border-radius:50%;
@@ -110,59 +121,37 @@ header h1{
   transform:translateX(4px);
 }
 
-/* ================== MENÚ MÓVIL - MEJORADO ================== */
-.fab-trigger{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  width:66px;height:66px;background:var(--gold);color:#000;
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:2.3rem;box-shadow:0 12px 35px rgba(255,215,0,0.7);
-  z-index:999;cursor:pointer;transition:.4s;
-}
-.fab-trigger.active{
-  background:var(--accent);color:white;transform:translateX(-50%) rotate(45deg);
-}
-.mobile-menu{
+/* NUEVA BARRA INFERIOR FIJA PARA MÓVIL */
+.mobile-bottom-nav{
   position:fixed;bottom:0;left:0;right:0;
-  background:linear-gradient(135deg,#002b55,#001f3f);backdrop-filter:blur(20px);
-  border-radius:30px 30px 0 0;padding:100px 24px 34px;
-  transform:translateY(100%);transition:transform .45s cubic-bezier(0.32,1.2,0.32,1);
-  z-index:998;box-shadow:0 -15px 50px rgba(0,0,0,0.7);
-  width:100%;max-width:480px;margin:0 auto;left:50%;transform:translateX(-50%) translateY(100%);
+  background:rgba(0,31,63,0.98);backdrop-filter:blur(15px);
+  padding:10px 0;border-top:1px solid rgba(255,215,0,0.2);
+  z-index:998;display:none;box-shadow:0 -10px 30px rgba(0,0,0,0.6);
 }
-.mobile-menu.active{transform:translateX(-50%) translateY(0);}
-.mobile-menu::before{
-  content:'';position:absolute;top:18px;left:50%;transform:translateX(-50%);
-  width:50px;height:5px;background:#666;border-radius:10px;
+.mobile-bottom-nav .nav-grid{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:0 10px;
 }
-.mobile-menu-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;
-}
-.mobile-menu-item{
-  background:rgba(255,255,255,0.08);color:var(--text);
-  padding:22px 10px;border-radius:22px;text-align:center;
-  text-decoration:none;font-weight:800;font-size:0.92rem;
-  transition:all .35s;box-shadow:0 4px 15px rgba(0,0,0,0.2);
+.mobile-bottom-nav a{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--text);text-decoration:none;font-size:0.75rem;font-weight:700;
+  padding:8px 4px;border-radius:12px;transition:.3s;
 }
-.mobile-menu-item i{
-  font-size:2.1rem;margin-bottom:10px;
+.mobile-bottom-nav a i{
+  font-size:1.6rem;margin-bottom:4px;
 }
-.mobile-menu-item:hover{
-  background:rgba(255,215,0,0.2);color:var(--gold);transform:scale(1.08);
+.mobile-bottom-nav a:hover{
+  background:rgba(255,215,0,0.15);color:var(--gold);
 }
-.mobile-menu-item.active{
-  background:var(--accent);color:white;transform:scale(1.08);
-  box-shadow:0 10px 30px rgba(255,0,0,0.5);
+.mobile-bottom-nav a.active{
+  color:var(--accent);
 }
-.mobile-menu-item.volver{
-  background:var(--accent);color:white;grid-column:1/-1;
-  padding:20px;font-size:1.05rem;
+.mobile-bottom-nav a.volver{
+  grid-column:span 6;background:var(--accent);color:white;margin-top:8px;
+  padding:12px;border-radius:16px;font-size:0.9rem;
 }
-.mobile-menu-item.volver:hover{
-  background:#cc0000;transform:scale(1.03);
-}
+.mobile-bottom-nav a.volver i{font-size:1.8rem;}
 
-/* EL RESTO DEL CSS QUEDA IGUAL QUE ANTES */
+/* FILTRO Y CONTENIDO (igual) */
 .filter-bar{
   display:flex;justify-content:center;flex-wrap:wrap;gap:12px;
   margin:1rem 0 2rem;padding:0 1rem;
@@ -228,14 +217,15 @@ header h1{
 /* RESPONSIVE */
 @media (max-width:1024px){
   .menu-btn,.sidebar,.overlay{display:none!important;}
-  body{padding-bottom:120px;}
+  .mobile-bottom-nav{display:block;}
+  body{padding-bottom:140px;}
   .cards{gap:1.5rem;}
   .card{max-width:100%;}
   .filter-bar{gap:8px;}
   .filter-btn{padding:0.6rem 1.2rem;font-size:0.9rem;}
 }
 @media (min-width:1025px){
-  .fab-trigger,.mobile-menu{display:none!important;}
+  .mobile-bottom-nav{display:none!important;}
 }
 </style>
 </head>
@@ -244,7 +234,7 @@ header h1{
 <!-- Overlay PC -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
-<!-- Menú PC MEJORADO -->
+<!-- Menú PC (lateral) -->
 <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
 <nav class="sidebar" id="sidebar">
   <div class="logo">
@@ -261,26 +251,31 @@ header h1{
   </ul>
 </nav>
 
-<!-- Menú móvil MEJORADO -->
-<div class="fab-trigger" onclick="toggleMobileMenu()"><i class="fas fa-shield-alt"></i></div>
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-menu-grid">
-    <a href="#area1" class="mobile-menu-item"><i class="fas fa-brain"></i><span>Área I</span></a>
-    <a href="#area2" class="mobile-menu-item"><i class="fas fa-calculator"></i><span>Área II</span></a>
-    <a href="#area3" class="mobile-menu-item"><i class="fas fa-flask"></i><span>Área III</span></a>
-    <a href="#area4" class="mobile-menu-item"><i class="fas fa-book"></i><span>Área IV</span></a>
-    <a href="#area5" class="mobile-menu-item"><i class="fas fa-globe"></i><span>Área V</span></a>
-    <a href="#area6" class="mobile-menu-item"><i class="fas fa-trophy"></i><span>Concursos</span></a>
-    <a href="index.html" class="mobile-menu-item volver"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
+<!-- NUEVA BARRA INFERIOR FIJA PARA MÓVIL -->
+<nav class="mobile-bottom-nav">
+  <div class="nav-grid">
+    <a href="#area1"><i class="fas fa-brain"></i><span>Área I</span></a>
+    <∙a href="#area2"><i class="fas fa-calculator"></i><span>Área II</span></a>
+    <a href="#area3"><i class="fas fa-flask"></i><span>Área III</span></a>
+    <a href="#area4"><i class="fas fa-book"></i><span>Área IV</span></a>
+    <a href="#area5"><i class="fas fa-globe"></i><span>Área V</span></a>
+    <a href="#area6"><i class="fas fa-trophy"></i><span>Concursos</span></a>
+    <a href="index.html" class="volver"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
   </div>
-</div>
+</nav>
 
-<header><h1>BANCO DE EXÁMENES</h1></header>
+<!-- Header con logo -->
+<header>
+  <div class="header-content">
+    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
+    <h1>BANCO DE EXÁMENES</h1>
+  </div>
+</header>
 
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- ÁREAS (igual que antes) -->
+  <!-- ÁREAS -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="filter-bar" id="filter-area1"></div>
   <div class="cards" id="cont-area1"></div>
@@ -313,7 +308,6 @@ header h1{
 </div>
 
 <script>
-// Script igual que antes (solo agregué cierre automático al tocar fuera del menú móvil)
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
 const CARPETAS = [
   "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ",
@@ -324,7 +318,7 @@ const CARPETAS = [
   "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
 ];
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
-const filtros = [1,2,3,4,5,6].map(n => minte.document.getElementById('filter-area'+n));
+const filtros = [1,2,3,4,5,6].map(n => document.getElementById('filter-area'+n));
 
 function toggleMenu(){
   document.getElementById('sidebar').classList.toggle('active');
@@ -337,27 +331,13 @@ function cerrarMenu(){
   document.querySelector('.menu-btn').classList.remove('active');
 }
 
-function toggleMobileMenu(){
-  const menu = document.getElementById('mobileMenu');
-  const btn = document.querySelector('.fab-trigger');
-  menu.classList.toggle('active');
-  btn.classList.toggle('active');
-}
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.mobile-menu') && !e.target.closest('.fab-trigger') && !e.target.closest('.menu-btn') && !e.target.closest('.sidebar')) {
-    cerrarMenu();
-    document.getElementById('mobileMenu').classList.remove('active');
-    document.querySelector('.fab-trigger').classList.remove('active');
-  }
-});
-
-// Resaltar menú activo (scroll)
+// Resaltar ítem activo en barra inferior y menú lateral
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
-    if (window.scrollY >= sec.offsetTop - 140) current = sec.id;
+    if (window.scrollY >= sec.offsetTop - 180) current = sec.id;
   });
-  document.querySelectorAll('.sidebar a, .mobile-menu-item').forEach(a => {
+  document.querySelectorAll('.sidebar a, .mobile-bottom-nav a').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
   });
 });
