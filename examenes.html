@@ -10,13 +10,11 @@
 :root{
   --bg: #0d1b2a;
   --card: #1b263b;
-  --accent: #e63946;     /* rojo escudo */
-  --gold: #f4a261;       /* dorado cálido */
+  --accent: #e63946;
+  --gold: #f4a261;
   --text: #f1faee;
   --header: rgba(13,27,42,0.96);
 }
-
-/* Base */
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -25,10 +23,8 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:70px; /* solo botón flotante */
+  padding-bottom:70px;
 }
-
-/* HEADER */
 header{
   position:fixed;top:0;left:0;right:0;
   background:var(--header);
@@ -46,7 +42,7 @@ header h1{
   font-weight:900;
 }
 
-/* ==================== MENÚ LATERAL PC (intacto) ==================== */
+/* MENÚ LATERAL PC (igual de bonito) */
 .menu-btn{
   position:fixed;top:18px;left:18px;width:58px;height:58px;
   background:var(--gold);color:#000;border-radius:50%;
@@ -73,7 +69,7 @@ header h1{
 
 .sidebar .logo img{
   width:220px;padding:16px;background:rgba(244,162,97,0.15);
-  border:3px solid var(--gold);border-radius:30px;
+  border:3px solid var(--gold) solid;border-radius:30px;
   box-shadow:0 15px 40px rgba(244,162,97,0.4);margin:0 auto 25px;display:block;
 }
 .volver-btn{
@@ -83,100 +79,79 @@ header h1{
   box-shadow:0 10px 30px rgba(230,57,70,0.5);transition:.3s;
 }
 .volver-btn:hover{transform:translateY(-5px)}
-.sidebar ul li a{
-  display:flex;align-items:center;padding:18px 22px;color:var(--text);
-  text-decoration:none;font-weight:600;border-radius:18px;margin:10px 0;
-  transition:.35s;position:relative;overflow:hidden;
-}
-.sidebar ul li a::before{
-  content:'';position:absolute;left:0;top:0;width:6px;height:100%;
-  background:var(--gold);transform:scaleY(0);transition:.35s;
-}
-.sidebar ul li a i{width:45px;font-size:1.5rem;margin-right:16px;}
-.sidebar ul li a:hover,.sidebar ul li a.active{
-  background:var(--accent);color:white;transform:translateX(12px);
-  box-shadow:0 12px 35px rgba(230,57,70,0.5);
-}
-.sidebar ul li a:hover::before,.sidebar ul li a.active::before{transform:scaleY(1);}
 
-/* ==================== MENÚ INFERIOR DESPLEGABLE MÓVIL (NUEVO) ==================== */
+/* MENÚ DESPLEGABLE MÓVIL (el que te encanta) */
 .fab-trigger{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  width:64px;height:64px;background:var(--gold);color:#000;
+  width:66px;height:66px;background:var(--gold);color:#000;
   border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:2rem;box-shadow:0 12px 35px rgba(244,162,97,0.7);
+  font-size:2.1rem;box-shadow:0 12px 35px rgba(244,162,97,0.7);
   z-index:999;cursor:pointer;transition:.4s;
 }
 .fab-trigger.active{
   background:var(--accent);color:white;transform:translateX(-50%) rotate(45deg);
 }
-
 .mobile-menu{
   position:fixed;bottom:0;left:0;right:0;
   background:rgba(27,38,59,0.98);backdrop-filter:blur(20px);
-  border-radius:30px 30px 0 0;
-  padding:100px 20px 30px;
-  transform:translateY(100%);
-  transition:transform .45s cubic-bezier(0.32,1.2,0.32,1);
-  z-index:998;
-  box-shadow:0 -15px 50px rgba(0,0,0,0.6);
+  border-radius:30px 30px 0 0;padding:100px 20px 30px;
+  transform:translateY(100%);transition:transform .45s cubic-bezier(0.32,1.2,0.32,1);
+  z-index:998;box-shadow:0 -15px 50px rgba(0,0,0,0.6);
 }
 .mobile-menu.active{transform:translateY(0);}
-
 .mobile-menu::before{
-  content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  content:'';position:absolute;top:18px;left:50%;transform:translateX(-50%);
   width:50px;height:5px;background:#666;border-radius:10px;
 }
-
 .mobile-menu-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem);
-  gap:1.2rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;
 }
 .mobile-menu-item{
   background:rgba(255,255,255,0.08);color:var(--text);
-  padding:16px 8px;border-radius:18px;text-align:center;
-  text-decoration:none;font-weight:700;font-size:0.85rem;
-  transition:.3s;backdrop-filter:blur(10px);
+  padding:18px 8px;border-radius:20px;text-align:center;
+  text-decoration:none;font-weight:700;font-size:0.88rem;
+  transition:.3s;border-radius:18px;
 }
 .mobile-menu-item i{font-size:1.9rem;display:block;margin-bottom:8px;}
 .mobile-menu-item:hover,.mobile-menu-item.active{
   background:var(--accent);color:white;transform:scale(1.08);
 }
 .mobile-menu-item.volver{
-  background:var(--accent);color:white;
-  grid-column:1 / -1;
+  background:var(--accent);color:white;grid-column:1/-1;
 }
 
-/* ==================== CONTENIDO ==================== */
+/* CONTENIDO + NUEVO: AÑO EN CADA TARJETA */
 .container{max-width:1400px;margin:0 auto;padding:2rem 1.5rem;}
 .section-title{
-  font-size:clamp(2.4rem,6.5vw,3.5rem);text-align:center;
-  margin:4.5rem 0 3rem;padding-top:100px;margin-top:-100px;
+  font-size:clamp(2.5rem,7vw,3.6rem);text-align:center;
+  margin:5rem 0 3.5rem;padding-top:100px;margin-top:-100px;
   background:linear-gradient(90deg,var(--gold),var(--accent));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   font-weight:900;scroll-margin-top:140px;
 }
 .cards{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:2.3rem;margin-bottom:4rem;
+  gap:2.4rem;margin-bottom:4rem;
 }
 .card{
   background:var(--card);border-radius:28px;overflow:hidden;
-  box-shadow:0 15px 45px rgba(0,0,0,0.5);
-  transition:.4s;
+  box-shadow:0 15px 45px rgba(0,0,0,0.5);transition:.4s;
 }
 .card:hover{transform:translateY(-16px);box-shadow:0 35px 80px rgba(230,57,70,0.45);}
 .card img{width:100%;height:220px;object-fit:cover;background:#1b263b;}
+.card-content{
+  padding:1.4rem 1.2rem;
+}
 .card h3{
-  padding:1.4rem 1rem;font-size:1.42rem;text-align:center;
-  min-height:85px;display:flex;align-items:center;justify-content:center;
-  font-weight:700;
+  font-size:1.45rem;text-align:center;margin-bottom:8px;
+  font-weight:700;color:var(--text);
 }
-.btns{padding:1.3rem;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
-.btn{
-  padding:0.95rem 2.1rem;border-radius:18px;font-weight:700;
-  text-decoration:none;transition:.3s;
+.year-tag{
+  text-align:center;font-size:0.95rem;color:var(--gold);
+  font-weight:700;margin-bottom:12px;opacity:0.9;
 }
+.btns{padding:1.3rem;display:flex;gap:14px;justify-content:center;}
+.btn{padding:0.95rem 2.1rem;border-radius:18px;font-weight:700;text-decoration:none;}
 .ver{background:var(--accent);color:white}
 .desc{background:var(--gold);color:#000}
 
@@ -188,20 +163,17 @@ header h1{
 .subir button{
   background:var(--gold);color:#000;padding:1.6rem 5rem;
   border:none;border-radius:50px;font-size:1.55rem;font-weight:900;
-  cursor:pointer;box-shadow:0 15px 40px rgba(244,162,97,0.7);
-  transition:.3s;
+  cursor:pointer;box-shadow:0 15px 40px rgba(244,162,97,0.7);transition:.3s;
 }
-.subir button:hover{transform:translateY(-8px) scale(1.06);background:#e07a5f;}
-
-.loading{text-align:center;padding:8rem;font-size:1.8rem;color:#778899;}
+.subir button:hover{transform:scale(1.06);background:#e07a5f;}
 
 /* RESPONSIVE */
-@media (max-width: 1024px){
-  .menu-btn,.sidebar,.overlay{display:none !important;}
+@media (max-width:1024px){
+  .menu-btn,.sidebar,.overlay{display:none!important;}
   body{padding-bottom:100px;}
 }
-@media (min-width: 1025px){
-  .fab-trigger,.mobile-menu{display:none !important;}
+@media (min-width:1025px){
+  .fab-trigger,.mobile-menu{display:none!important;}
 }
 </style>
 </head>
@@ -210,43 +182,34 @@ header h1{
 <!-- Overlay PC -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
-<!-- Botón hamburguesa PC -->
-<div class="menu-btn" onclick="toggleMenu()">
-  <i class="fas fa-bars"></i>
-</div>
-
-<!-- Menú lateral PC -->
+<!-- Menú PC -->
+<div class="menu-btn" onclick="toggleMenu()">Menu Icon</div>
 <nav class="sidebar" id="sidebar">
   <div class="logo">
     <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
   </div>
-  <a href="index.html" class="volver-btn">
-    <i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA
-  </a>
+  <a href="index.html" class="volver-btn">Home Icon VOLVER A LA BIBLIOTECA</a>
   <ul>
-    <li><a href="#area1" class="active"><i class="fas fa-brain"></i> Área I</a></li>
-    <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
-    <li><a href="#area3"><i class="fas fa-flask"></i> Área III</a></li>
-    <li><a href="#area4"><i class="fas fa-book-open"></i> Área IV</a></li>
-    <li><a href="#area5"><i class="fas fa-globe"></i> Área V</a></li>
-    <li><a href="#area6"><i class="fas fa-trophy"></i> Concursos</a></li>
+    <li><a href="#area1" class="active">Brain Icon Área I</a></li>
+    <li><a href="#area2">Calculator Icon Área II</a></li>
+    <li><a href="#area3">Flask Icon Área III</a></li>
+    <li><a href="#area4">Book Icon Área IV</a></li>
+    <li><a href="#area5">Globe Icon Área V</a></li>
+    <li><a href="#area6">Trophy Icon Concursos</a></li>
   </ul>
 </nav>
 
-<!-- BOTÓN DESPLEGABLE MÓVIL + MENÚ -->
-<div class="fab-trigger" onclick="toggleMobileMenu()">
-  <i class="fas fa-shield-alt"></i>
-</div>
-
+<!-- Menú móvil desplegable -->
+<div class="fab-trigger" onclick="toggleMobileMenu()">Shield Icon</div>
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu-grid">
-    <a href="#area1" class="mobile-menu-item"><i class="fas fa-brain"></i>Área I</a>
-    <a href="#area2" class="mobile-menu-item"><i class="fas fa-calculator"></i>Área II</a>
-    <a href="#area3" class="mobile-menu-item"><i class="fas fa-flask"></i>Área III</a>
-    <a href="#area4" class="mobile-menu-item"><i class="fas fa-book-open"></i>Área IV</a>
-    <a href="#area5" class="mobile-menu-item"><i class="fas fa-globe"></i>Área V</a>
-    <a href="#area6" class="mobile-menu-item"><i class="fas fa-trophy"></i>Concursos</a>
-    <a href="index.html" class="mobile-menu-item volver"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
+    <a href="#area1" class="mobile-menu-item">Brain Icon Área I</a>
+    <a href="#area2" class="mobile-menu-item">Calculator Icon Área II</a>
+    <a href="#area3" class="mobile-menu-item">Flask Icon Área III</a>
+    <a href="#area4" class="mobile-menu-item">Book Icon Área IV</a>
+    <a href="#area5" class="mobile-menu-item">Globe Icon Área V</a>
+    <a href="#area6" class="mobile-menu-item">Trophy Icon Concursos</a>
+    <a href="index.html" class="mobile-menu-item volver">Home Icon VOLVER A LA BIBLIOTECA</a>
   </div>
 </div>
 
@@ -255,7 +218,7 @@ header h1{
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- Tus áreas aquí (igual que antes) -->
+  <!-- ÁREAS -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="cards" id="cont-area1"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">SUBIR EXAMEN ÁREA I</button></div>
@@ -283,7 +246,14 @@ header h1{
 
 <script>
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-const CARPETAS = ["18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ","1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp","1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N","16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU","1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77","1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"];
+const CARPETAS = [
+  "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ",
+  "1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp",
+  "1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N",
+  "16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU",
+  "1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77",
+  "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
+];
 const contenedores = [1,2,3,4,5,6].map(n=>document.getElementById('cont-area'+n));
 
 function toggleMenu(){
@@ -303,8 +273,6 @@ function toggleMobileMenu(){
   menu.classList.toggle('active');
   btn.classList.toggle('active');
 }
-
-// Cerrar menú móvil al tocar fuera
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.mobile-menu') && !e.target.closest('.fab-trigger')) {
     document.getElementById('mobileMenu').classList.remove('active');
@@ -312,7 +280,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Resaltar activo en ambos menús
+// Resaltar menú activo
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
@@ -327,26 +295,38 @@ async function cargarTodo() {
   for (let i = 0; i < 6; i++) {
     try {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
-      const archivos = await res.json();
+      let archivos = await res.json();
+
+      // ORDENAR DEL MÁS NUEVO AL MÁS ANTIGUO
+      archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+
       if (archivos.length === 0) {
-        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:5rem;color:#778899">Aún no hay exámenes</p>';
-      } else {
-        archivos.forEach(f => {
-          const nombre = f.name.replace(/\.pdf$/i, '');
-          contenedores[i].innerHTML += `
-            <div class="card">
-              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w800" alt="${nombre}"
-                   onerror="this.src='https://via.placeholder.com/400x220/1b263b/f4a261?text=EXAMEN'">
+        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:6rem;color:#778899;font-size:1.4rem">Aún no hay exámenes</p>';
+        continue;
+      }
+
+      archivos.forEach(f => {
+        const nombre = f.name.replace(/\.pdf$/i, '');
+        // Extraer año de la fecha (o del nombre si lo prefieres)
+        const fecha = new Date(f.modifiedTime);
+        const año = fecha.getFullYear();
+
+        contenedores[i].innerHTML += `
+          <div class="card">
+            <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w800" alt="${nombre}"
+                 onerror="this.src='https://via.placeholder.com/400x220/1b263b/f4a261?text=EXAMEN'">
+            <div class="card-content">
               <h3>${nombre}</h3>
+              <div class="year-tag">Año ${año}</div>
               <div class="btns">
                 <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">VER</a>
                 <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">DESCARGAR</a>
               </div>
-            </div>`;
-        });
-      }
+            </div>
+          </div>`;
+      });
     } catch (e) {
-      contenedores[i].innerHTML = '<p style="color:#e63946;text-align:center">Error al cargar</p>';
+      contenedores[i].innerHTML = '<p style="color:#e63946;text-align:center;padding:4rem">Error al cargar</p>';
     }
   }
   document.getElementById('loading').style.display = 'none';
