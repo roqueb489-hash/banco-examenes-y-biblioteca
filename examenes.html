@@ -23,7 +23,7 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:90px;
+  padding-bottom:50px; /* Reducido porque ya no hay barra fija */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -59,7 +59,7 @@ header h1{
   margin:0;
 }
 
-/* MENÚ LATERAL PC */
+/* MENÚ LATERAL PC (igual) */
 .menu-btn{
   position:fixed;top:18px;left:18px;width:58px;height:58px;
   background:var(--gold);color:#000;border-radius:50%;
@@ -79,10 +79,10 @@ header h1{
 }
 .sidebar.active{left:0}
 
-/* OVERLAY MÁS SUAVE EN PC - menos oscuro y más blur */
+/* Overlay suave PC */
 .overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.45); /* menos opaco */
-  backdrop-filter:blur(8px); /* más blur para transición suave */
+  position:fixed;inset:0;background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(8px);
   opacity:0;visibility:hidden;transition:all .4s;z-index:999;
 }
 .overlay.active{opacity:1;visibility:visible}
@@ -123,40 +123,60 @@ header h1{
   transform:translateX(4px);
 }
 
-/* BARRA INFERIOR MÓVIL - MÁS DELGADA, CON NOMBRES DEBAJO */
-.mobile-bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;
-  background:rgba(0,31,63,0.95);backdrop-filter:blur(20px);
-  padding:6px 0;border-top:1px solid rgba(255,215,0,0.15);
-  z-index:998;display:none;box-shadow:0 -8px 25px rgba(0,0,0,0.5);
+/* NUEVO MENÚ MÓVIL DESLIZANTE DE DERECHA A IZQUIERDA */
+.mobile-menu-btn{
+  position:fixed;bottom:20px;right:20px;width:58px;height:58px;
+  background:var(--gold);color:#000;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.9rem;cursor:pointer;z-index:1001;
+  box-shadow:0 10px 30px rgba(255,215,0,0.7);transition:.3s;
+  display:none;
 }
-.mobile-bottom-nav .nav-grid{
-  display:grid;grid-template-columns:repeat(6,1fr);
-  gap:2px;padding:0 8px;max-width:500px;margin:0 auto;
+.mobile-menu-btn:hover{transform:scale(1.15)}
+.mobile-menu-btn.active{background:var(--accent);color:white}
+
+.mobile-sidebar{
+  position:fixed;top:0;right:-300px;width:300px;height:100%;
+  background:linear-gradient(135deg,#002b55,#001f3f);
+  box-shadow:-12px 0 50px rgba(0,0,0,0.8);
+  z-index:1000;padding:30px;transition:right .45s cubic-bezier(0.68,-.55,.27,1.55);
+  display:flex;flex-direction:column;overflow-y:auto;display:none;
 }
-.mobile-bottom-nav a{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  color:rgba(240,248,255,0.75);text-decoration:none;
-  padding:8px 4px;border-radius:10px;position:relative;transition:.3s;font-size:0.68rem;font-weight:700;
+.mobile-sidebar.active{right:0}
+
+/* Overlay móvil también suave */
+.mobile-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(8px);
+  opacity:0;visibility:hidden;transition:all .4s;z-index:999;display:none;
 }
-.mobile-bottom-nav a i{
-  font-size:1.7rem;margin-bottom:3px;
+.mobile-overlay.active{opacity:1;visibility:visible}
+
+.mobile-sidebar .logo img{
+  width:180px;padding:14px;background:rgba(255,215,0,0.15);
+  border:3px solid var(--gold);border-radius:30px;
+  box-shadow:0 15px 40px rgba(255,215,0,0.4);margin:0 auto 30px;display:block;
 }
-.mobile-bottom-nav a span{
-  font-size:0.65rem;opacity:0.9;
+.mobile-sidebar ul{
+  list-style:none;
 }
-.mobile-bottom-nav a:hover{
-  color:var(--gold);background:rgba(255,215,0,0.1);
+.mobile-sidebar ul li{
+  margin-bottom:10px;
 }
-.mobile-bottom-nav a.active{
-  color:var(--accent);
+.mobile-sidebar ul li a{
+  display:flex;align-items:center;padding:16px 20px;
+  color:var(--text);font-weight:700;font-size:1.05rem;
+  text-decoration:none;border-radius:18px;
+  transition:all .35s;background:rgba(255,255,255,0.08);
 }
-.mobile-bottom-nav a.active::after{
-  content:'';position:absolute;top:-4px;width:5px;height:5px;
-  background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);
+.mobile-sidebar ul li a i{
+  font-size:1.7rem;margin-right:16px;width:36px;text-align:center;
 }
-.mobile-bottom-nav a.home span{
-  font-size:0.7rem;
+.mobile-sidebar ul li a:hover{
+  background:rgba(255,215,0,0.2);color:var(--gold);transform:translateX(-6px);
+}
+.mobile-sidebar ul li a.active{
+  background:var(--accent);color:white;
 }
 
 /* CARGANDO */
@@ -214,19 +234,18 @@ header h1{
 /* RESPONSIVE */
 @media (max-width:1024px){
   .menu-btn,.sidebar,.overlay{display:none!important;}
-  .mobile-bottom-nav{display:block;}
-  body{padding-bottom:110px;}
+  .mobile-menu-btn, .mobile-sidebar, .mobile-overlay{display:block!important;}
   .cards{gap:1.5rem;}
   .card{max-width:100%;}
 }
 @media (min-width:1025px){
-  .mobile-bottom-nav{display:none!important;}
+  .mobile-menu-btn, .mobile-sidebar, .mobile-overlay{display:none!important;}
 }
 </style>
 </head>
 <body>
 
-<!-- Overlay PC más suave -->
+<!-- Overlay PC -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
 <!-- Menú PC -->
@@ -246,17 +265,22 @@ header h1{
   </ul>
 </nav>
 
-<!-- BARRA INFERIOR MÓVIL CON NOMBRES DEBAJO -->
-<nav class="mobile-bottom-nav">
-  <div class="nav-grid">
-    <a href="#area1"><i class="fas fa-brain"></i><span>Área I</span></a>
-    <a href="#area2"><i class="fas fa-calculator"></i><span>Área II</span></a>
-    <a href="#area3"><i class="fas fa-flask"></i><span>Área III</span></a>
-    <a href="#area4"><i class="fas fa-book"></i><span>Área IV</span></a>
-    <a href="#area5"><i class="fas fa-globe"></i><span>Área V</span></a>
-    <a href="#area6"><i class="fas fa-trophy"></i><span>Concursos</span></a>
-    <a href="index.html" class="home"><i class="fas fa-home"></i><span>Inicio</span></a>
+<!-- NUEVO MENÚ MÓVIL DESLIZANTE DE DERECHA -->
+<div class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
+<div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
+<nav class="mobile-sidebar" id="mobileSidebar">
+  <div class="logo">
+    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
   </div>
+  <ul>
+    <li><a href="#area1"><i class="fas fa-brain"></i> Área I</a></li>
+    <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
+    <li><a href="#area3"><i class="fas fa-flask"></i> Área III</a></li>
+    <li><a href="#area4"><i class="fas fa-book"></i> Área IV</a></li>
+    <li><a href="#area5"><i class="fas fa-globe"></i> Área V</a></li>
+    <li><a href="#area6"><i class="fas fa-trophy"></i> Concursos</a></li>
+    <li><a href="index.html"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a></li>
+  </ul>
 </nav>
 
 <!-- Header con logo -->
@@ -294,7 +318,7 @@ header h1{
   <div class="cards" id="cont-area5"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA V</button></div>
 
-  <h2 class="section-title" id="area6">Concursos Interescolares</h2>
+  <h2 class="section-title" id="area6">Concursos Interescolares u otros</h2>
   <div class="cards" id="cont-area6"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN DE CONCURSO</button></div>
 </div>
@@ -322,12 +346,19 @@ function cerrarMenu(){
   document.querySelector('.menu-btn').classList.remove('active');
 }
 
+function toggleMobileMenu(){
+  document.getElementById('mobileSidebar').classList.toggle('active');
+  document.querySelector('.mobile-overlay').classList.toggle('active');
+  document.querySelector('.mobile-menu-btn').classList.toggle('active');
+}
+
+// Resaltar activo
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
     if (window.scrollY >= sec.offsetTop - 180) current = sec.id;
   });
-  document.querySelectorAll('.sidebar a, .mobile-bottom-nav a').forEach(a => {
+  document.querySelectorAll('.sidebar a, .mobile-sidebar a').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
   });
 });
