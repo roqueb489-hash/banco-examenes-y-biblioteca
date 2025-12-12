@@ -23,7 +23,7 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:50px; /* Reducido porque ya no hay barra fija */
+  padding-bottom:100px; /* Espacio para la barra inferior */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -44,22 +44,25 @@ header{
 .header-content{
   display:flex;
   align-items:center;
-  gap:12px;
-  max-width:90%;
+  gap:10px;
+  max-width:95%;
 }
 .header-content img{
-  width:58px;height:58px;border-radius:12px;object-fit:contain;
+  width:52px;height:52px;border-radius:12px;object-fit:contain;flex-shrink:0;
 }
 header h1{
-  font-size:clamp(1.8rem,5vw,2.8rem);
+  font-size:clamp(1.6rem,4.5vw,2.6rem); /* Mejor ajuste para móvil */
   background:linear-gradient(90deg, var(--gold), var(--accent));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:900;
   margin:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-/* MENÚ LATERAL PC (igual) */
+/* MENÚ LATERAL PC */
 .menu-btn{
   position:fixed;top:18px;left:18px;width:58px;height:58px;
   background:var(--gold);color:#000;border-radius:50%;
@@ -123,60 +126,37 @@ header h1{
   transform:translateX(4px);
 }
 
-/* NUEVO MENÚ MÓVIL DESLIZANTE DE DERECHA A IZQUIERDA */
-.mobile-menu-btn{
-  position:fixed;bottom:20px;right:20px;width:58px;height:58px;
-  background:var(--gold);color:#000;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.9rem;cursor:pointer;z-index:1001;
-  box-shadow:0 10px 30px rgba(255,215,0,0.7);transition:.3s;
-  display:none;
+/* BARRA INFERIOR MÓVIL FIJA */
+.mobile-bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(0,31,63,0.97);backdrop-filter:blur(20px);
+  padding:8px 0;border-top:1px solid rgba(255,215,0,0.15);
+  z-index:998;display:none;box-shadow:0 -8px 25px rgba(0,0,0,0.5);
 }
-.mobile-menu-btn:hover{transform:scale(1.15)}
-.mobile-menu-btn.active{background:var(--accent);color:white}
-
-.mobile-sidebar{
-  position:fixed;top:0;right:-300px;width:300px;height:100%;
-  background:linear-gradient(135deg,#002b55,#001f3f);
-  box-shadow:-12px 0 50px rgba(0,0,0,0.8);
-  z-index:1000;padding:30px;transition:right .45s cubic-bezier(0.68,-.55,.27,1.55);
-  display:flex;flex-direction:column;overflow-y:auto;display:none;
+.mobile-bottom-nav .nav-grid{
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:4px;padding:0 10px;max-width:600px;margin:0 auto;
 }
-.mobile-sidebar.active{right:0}
-
-/* Overlay móvil también suave */
-.mobile-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.45);
-  backdrop-filter:blur(8px);
-  opacity:0;visibility:hidden;transition:all .4s;z-index:999;display:none;
+.mobile-bottom-nav a{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:rgba(240,248,255,0.8);text-decoration:none;
+  padding:8px 4px;border-radius:12px;transition:.3s;font-size:0.68rem;font-weight:700;
 }
-.mobile-overlay.active{opacity:1;visibility:visible}
-
-.mobile-sidebar .logo img{
-  width:180px;padding:14px;background:rgba(255,215,0,0.15);
-  border:3px solid var(--gold);border-radius:30px;
-  box-shadow:0 15px 40px rgba(255,215,0,0.4);margin:0 auto 30px;display:block;
+.mobile-bottom-nav a i{
+  font-size:1.75rem;margin-bottom:4px;
 }
-.mobile-sidebar ul{
-  list-style:none;
+.mobile-bottom-nav a span{
+  font-size:0.65rem;
 }
-.mobile-sidebar ul li{
-  margin-bottom:10px;
+.mobile-bottom-nav a:hover{
+  color:var(--gold);background:rgba(255,215,0,0.1);
 }
-.mobile-sidebar ul li a{
-  display:flex;align-items:center;padding:16px 20px;
-  color:var(--text);font-weight:700;font-size:1.05rem;
-  text-decoration:none;border-radius:18px;
-  transition:all .35s;background:rgba(255,255,255,0.08);
+.mobile-bottom-nav a.active{
+  color:var(--accent);
 }
-.mobile-sidebar ul li a i{
-  font-size:1.7rem;margin-right:16px;width:36px;text-align:center;
-}
-.mobile-sidebar ul li a:hover{
-  background:rgba(255,215,0,0.2);color:var(--gold);transform:translateX(-6px);
-}
-.mobile-sidebar ul li a.active{
-  background:var(--accent);color:white;
+.mobile-bottom-nav a.active::after{
+  content:'';position:absolute;top:-5px;width:6px;height:6px;
+  background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);
 }
 
 /* CARGANDO */
@@ -234,12 +214,13 @@ header h1{
 /* RESPONSIVE */
 @media (max-width:1024px){
   .menu-btn,.sidebar,.overlay{display:none!important;}
-  .mobile-menu-btn, .mobile-sidebar, .mobile-overlay{display:block!important;}
+  .mobile-bottom-nav{display:block;}
+  body{padding-bottom:120px;}
   .cards{gap:1.5rem;}
   .card{max-width:100%;}
 }
 @media (min-width:1025px){
-  .mobile-menu-btn, .mobile-sidebar, .mobile-overlay{display:none!important;}
+  .mobile-bottom-nav{display:none!important;}
 }
 </style>
 </head>
@@ -265,25 +246,20 @@ header h1{
   </ul>
 </nav>
 
-<!-- NUEVO MENÚ MÓVIL DESLIZANTE DE DERECHA -->
-<div class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
-<div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
-<nav class="mobile-sidebar" id="mobileSidebar">
-  <div class="logo">
-    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
+<!-- BARRA INFERIOR MÓVIL FIJA -->
+<nav class="mobile-bottom-nav">
+  <div class="nav-grid">
+    <a href="#area1"><i class="fas fa-brain"></i><span>Área I</span></a>
+    <a href="#area2"><i class="fas fa-calculator"></i><span>Área II</span></a>
+    <a href="#area3"><i class="fas fa-flask"></i><span>Área III</span></a>
+    <a href="#area4"><i class="fas fa-book"></i><span>Área IV</span></a>
+    <a href="#area5"><i class="fas fa-globe"></i><span>Área V</span></a>
+    <a href="#area6"><i class="fas fa-trophy"></i><span>Concursos</span></a>
+    <a href="index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
   </div>
-  <ul>
-    <li><a href="#area1"><i class="fas fa-brain"></i> Área I</a></li>
-    <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
-    <li><a href="#area3"><i class="fas fa-flask"></i> Área III</a></li>
-    <li><a href="#area4"><i class="fas fa-book"></i> Área IV</a></li>
-    <li><a href="#area5"><i class="fas fa-globe"></i> Área V</a></li>
-    <li><a href="#area6"><i class="fas fa-trophy"></i> Concursos</a></li>
-    <li><a href="index.html"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a></li>
-  </ul>
 </nav>
 
-<!-- Header con logo -->
+<!-- Header con logo y título acomodado -->
 <header>
   <div class="header-content">
     <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
@@ -346,20 +322,14 @@ function cerrarMenu(){
   document.querySelector('.menu-btn').classList.remove('active');
 }
 
-function toggleMobileMenu(){
-  document.getElementById('mobileSidebar').classList.toggle('active');
-  document.querySelector('.mobile-overlay').classList.toggle('active');
-  document.querySelector('.mobile-menu-btn').classList.toggle('active');
-}
-
-// Resaltar activo
+// Resaltar activo en barra móvil y menú PC
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
     if (window.scrollY >= sec.offsetTop - 180) current = sec.id;
   });
-  document.querySelectorAll('.sidebar a, .mobile-sidebar a').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+  document.querySelectorAll('.sidebar a, .mobile-bottom-nav a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === `#${current}` || (a.getAttribute('href') === 'index.html' && current === ''));
   });
 });
 
