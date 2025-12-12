@@ -14,7 +14,6 @@
   --gold: #ffd700;
   --text: #f0f8ff;
   --header: rgba(0,31,63,0.96);
-  --filter-active: var(--accent);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -24,7 +23,7 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:90px; /* Espacio para la nueva barra inferior */
+  padding-bottom:80px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -60,7 +59,7 @@ header h1{
   margin:0;
 }
 
-/* MENÚ LATERAL PC (igual que antes, mejorado) */
+/* MENÚ LATERAL PC */
 .menu-btn{
   position:fixed;top:18px;left:18px;width:58px;height:58px;
   background:var(--gold);color:#000;border-radius:50%;
@@ -106,7 +105,7 @@ header h1{
 }
 .sidebar ul li a{
   display:flex;align-items:center;padding:18px 22px;
-  color:var(--text);font-weight:700;font-size:1.05rem;
+  color:var(--text);font-weight:700;
   text-decoration:none;border-radius:18px;
   transition:all .35s;background:rgba(255,255,255,0.05);
 }
@@ -121,59 +120,53 @@ header h1{
   transform:translateX(4px);
 }
 
-/* NUEVA BARRA INFERIOR FIJA PARA MÓVIL */
+/* BARRA INFERIOR MÓVIL - ESTILO BRAVE/CHROME */
 .mobile-bottom-nav{
   position:fixed;bottom:0;left:0;right:0;
-  background:rgba(0,31,63,0.98);backdrop-filter:blur(15px);
-  padding:10px 0;border-top:1px solid rgba(255,215,0,0.2);
-  z-index:998;display:none;box-shadow:0 -10px 30px rgba(0,0,0,0.6);
+  background:rgba(0,31,63,0.95);backdrop-filter:blur(20px);
+  padding:8px 0;border-top:1px solid rgba(255,215,0,0.15);
+  z-index:998;display:none;box-shadow:0 -8px 25px rgba(0,0,0,0.5);
 }
 .mobile-bottom-nav .nav-grid{
-  display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:0 10px;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:4px;padding:0 12px;max-width:500px;margin:0 auto;
 }
 .mobile-bottom-nav a{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  color:var(--text);text-decoration:none;font-size:0.75rem;font-weight:700;
-  padding:8px 4px;border-radius:12px;transition:.3s;
+  color:rgba(240,248,255,0.7);text-decoration:none;
+  padding:10px 4px;border-radius:12px;position:relative;transition:.3s;
 }
 .mobile-bottom-nav a i{
-  font-size:1.6rem;margin-bottom:4px;
+  font-size:1.8rem;
 }
 .mobile-bottom-nav a:hover{
-  background:rgba(255,215,0,0.15);color:var(--gold);
+  color:var(--gold);
 }
 .mobile-bottom-nav a.active{
   color:var(--accent);
 }
-.mobile-bottom-nav a.volver{
-  grid-column:span 6;background:var(--accent);color:white;margin-top:8px;
-  padding:12px;border-radius:16px;font-size:0.9rem;
-}
-.mobile-bottom-nav a.volver i{font-size:1.8rem;}
-
-/* FILTRO Y CONTENIDO (igual) */
-.filter-bar{
-  display:flex;justify-content:center;flex-wrap:wrap;gap:12px;
-  margin:1rem 0 2rem;padding:0 1rem;
-  width:100%;max-width:800px;
-}
-.filter-btn{
-  background:rgba(255,255,255,0.1);color:var(--text);
-  border:2px solid transparent;padding:0.75rem 1.6rem;
-  border-radius:50px;font-weight:700;font-size:0.95rem;
-  cursor:pointer;transition:.3s;
-}
-.filter-btn:hover{
-  background:var(--gold);color:#000;transform:translateY(-3px);
-}
-.filter-btn.active{
-  background:var(--filter-active);color:white;border-color:var(--filter-active);
+.mobile-bottom-nav a.active::after{
+  content:'';position:absolute;top:-6px;width:6px;height:6px;
+  background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);
 }
 
+/* CARGANDO MEJORADO */
+.loading{
+  text-align:center;padding:6rem 2rem;font-size:1.6rem;font-weight:700;
+  color:var(--gold);
+}
+.spinner{
+  width:50px;height:50px;border:5px solid rgba(255,215,0,0.3);
+  border-top:5px solid var(--gold);border-radius:50%;
+  animation:spin 1s linear infinite;margin:0 auto 20px;
+}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+/* CONTENIDO */
 .container{max-width:1400px;margin:0 auto;padding:1rem 1rem;width:100%;}
 .section-title{
   font-size:clamp(2.5rem,7vw,3.6rem);text-align:center;
-  margin:3rem 0 1rem;padding-top:100px;margin-top:-100px;
+  margin:3rem 0 2rem;padding-top:100px;margin-top:-100px;
   background:linear-gradient(90deg,var(--gold),var(--accent));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   font-weight:900;scroll-margin-top:140px;
@@ -186,17 +179,12 @@ header h1{
 .card{
   background:var(--card);border-radius:28px;overflow:hidden;
   box-shadow:0 15px 45px rgba(0,0,0,0.5);transition:.4s;
-  opacity:1;transform:translateY(0);width:100%;max-width:340px;
-}
-.card.hidden{
-  opacity:0;transform:translateY(20px);pointer-events:none;height:0;
-  margin:0;padding:0;overflow:hidden;
+  width:100%;max-width:340px;
 }
 .card:hover{transform:translateY(-16px);box-shadow:0 35px 80px rgba(255,0,0,0.45);}
 .card img{width:100%;height:220px;object-fit:cover;background:var(--card);}
 .card-content{padding:1.4rem 1.2rem;}
-.card h3{font-size:1.45rem;text-align:center;margin-bottom:8px;font-weight:700;}
-.year-tag{text-align:center;font-size:0.95rem;color:var(--gold);font-weight:700;margin-bottom:12px;opacity:0.9;}
+.card h3{font-size:1.45rem;text-align:center;margin-bottom:12px;font-weight:700;}
 .btns{padding:1.3rem;display:flex;gap:14px;justify-content:center;}
 .btn{padding:0.95rem 2.1rem;border-radius:18px;font-weight:700;text-decoration:none;}
 .ver{background:var(--accent);color:white}
@@ -218,11 +206,9 @@ header h1{
 @media (max-width:1024px){
   .menu-btn,.sidebar,.overlay{display:none!important;}
   .mobile-bottom-nav{display:block;}
-  body{padding-bottom:140px;}
+  body{padding-bottom:100px;}
   .cards{gap:1.5rem;}
   .card{max-width:100%;}
-  .filter-bar{gap:8px;}
-  .filter-btn{padding:0.6rem 1.2rem;font-size:0.9rem;}
 }
 @media (min-width:1025px){
   .mobile-bottom-nav{display:none!important;}
@@ -234,7 +220,7 @@ header h1{
 <!-- Overlay PC -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
-<!-- Menú PC (lateral) -->
+<!-- Menú PC -->
 <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
 <nav class="sidebar" id="sidebar">
   <div class="logo">
@@ -251,16 +237,16 @@ header h1{
   </ul>
 </nav>
 
-<!-- NUEVA BARRA INFERIOR FIJA PARA MÓVIL -->
+<!-- BARRA INFERIOR MÓVIL ESTILO BRAVE -->
 <nav class="mobile-bottom-nav">
   <div class="nav-grid">
-    <a href="#area1"><i class="fas fa-brain"></i><span>Área I</span></a>
-    <∙a href="#area2"><i class="fas fa-calculator"></i><span>Área II</span></a>
-    <a href="#area3"><i class="fas fa-flask"></i><span>Área III</span></a>
-    <a href="#area4"><i class="fas fa-book"></i><span>Área IV</span></a>
-    <a href="#area5"><i class="fas fa-globe"></i><span>Área V</span></a>
-    <a href="#area6"><i class="fas fa-trophy"></i><span>Concursos</span></a>
-    <a href="index.html" class="volver"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
+    <a href="#area1"><i class="fas fa-brain"></i></a>
+    <a href="#area2"><i class="fas fa-calculator"></i></a>
+    <a href="#area3"><i class="fas fa-flask"></i></a>
+    <a href="#area4"><i class="fas fa-book"></i></a>
+    <a href="#area5"><i class="fas fa-globe"></i></a>
+    <a href="#area6"><i class="fas fa-trophy"></i></a>
+    <a href="index.html"><i class="fas fa-home"></i></a>
   </div>
 </nav>
 
@@ -273,36 +259,34 @@ header h1{
 </header>
 
 <div class="container">
-  <div class="loading" id="loading">Cargando exámenes...</div>
+  <!-- CARGANDO MEJORADO -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    Cargando exámenes...
+  </div>
 
   <!-- ÁREAS -->
   <h2 class="section-title" id="area1">Área I</h2>
-  <div class="filter-bar" id="filter-area1"></div>
   <div class="cards" id="cont-area1"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA I</button></div>
 
   <h2 class="section-title" id="area2">Área II</h2>
-  <div class="filter-bar" id="filter-area2"></div>
   <div class="cards" id="cont-area2"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA II</button></div>
 
   <h2 class="section-title" id="area3">Área III</h2>
-  <div class="filter-bar" id="filter-area3"></div>
   <div class="cards" id="cont-area3"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA III</button></div>
 
   <h2 class="section-title" id="area4">Área IV</h2>
-  <div class="filter-bar" id="filter-area4"></div>
   <div class="cards" id="cont-area4"></div>
-  <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA IV</button></div>
+  <div class="subir petite"><button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA IV</button></div>
 
   <h2 class="section-title" id="area5">Área V</h2>
-  <div class="filter-bar" id="filter-area5"></div>
   <div class="cards" id="cont-area5"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN ÁREA V</button></div>
 
   <h2 class="section-title" id="area6">Concursos Interescolares</h2>
-  <div class="filter-bar" id="filter-area6"></div>
   <div class="cards" id="cont-area6"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')"><i class="fas fa-upload"></i> SUBIR EXAMEN DE CONCURSO</button></div>
 </div>
@@ -318,7 +302,6 @@ const CARPETAS = [
   "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
 ];
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
-const filtros = [1,2,3,4,5,6].map(n => document.getElementById('filter-area'+n));
 
 function toggleMenu(){
   document.getElementById('sidebar').classList.toggle('active');
@@ -327,11 +310,11 @@ function toggleMenu(){
 }
 function cerrarMenu(){
   document.getElementById('sidebar').classList.remove('active');
-  document.querySelector('.overlay').classList.remove('active');
+  document.querySelector('.overlay').class.remove('active');
   document.querySelector('.menu-btn').classList.remove('active');
 }
 
-// Resaltar ítem activo en barra inferior y menú lateral
+// Resaltar activo en barra móvil y menú PC
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
@@ -348,6 +331,7 @@ async function cargarTodo() {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
       let archivos = await res.json();
 
+      // Ordenar del más reciente al más antiguo
       archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
 
       if (archivos.length === 0) {
@@ -355,26 +339,15 @@ async function cargarTodo() {
         continue;
       }
 
-      const años = [...new Set(archivos.map(f => new Date(f.modifiedTime).getFullYear()))].sort((a,b) => b-a);
-
-      let filterHTML = `<button class="filter-btn active" data-year="all">Todos</button>`;
-      años.forEach(year => {
-        filterHTML += `<button class="filter-btn" data-year="${year}">${year}</button>`;
-      });
-      filtros[i].innerHTML = filterHTML;
-
       archivos.forEach(f => {
         const nombre = f.name.replace(/\.pdf$/i, '');
-        const fecha = new Date(f.modifiedTime);
-        const año = fecha.getFullYear();
 
         contenedores[i].innerHTML += `
-          <div class="card" data-year="${año}">
+          <div class="card">
             <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w800" alt="${nombre}"
                  onerror="this.src='https://via.placeholder.com/400x220/003366/ffd700?text=EXAMEN'">
             <div class="card-content">
               <h3>${nombre}</h3>
-              <div class="year-tag">Año ${año}</div>
               <div class="btns">
                 <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">VER</a>
                 <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">DESCARGAR</a>
@@ -382,20 +355,6 @@ async function cargarTodo() {
             </div>
           </div>`;
       });
-
-      filtros[i].querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const year = btn.getAttribute('data-year');
-          filtros[i].querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-
-          contenedores[i].querySelectorAll('.card').forEach(card => {
-            const cardYear = card.getAttribute('data-year');
-            card.classList.toggle('hidden', year !== 'all' && cardYear !== year);
-          });
-        });
-      });
-
     } catch (e) {
       contenedores[i].innerHTML = '<p style="color:#ff0000;text-align:center;padding:4rem">Error al cargar</p>';
     }
