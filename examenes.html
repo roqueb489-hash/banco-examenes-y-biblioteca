@@ -8,15 +8,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
-  --bg: #0d1b2a;           /* azul marino elegante */
-  --card: #1b263b;          /* tarjetas un poco más claras */
-  --accent: #e63946;       /* rojo vivo del escudo */
-  --gold: #f4a261;          /* dorado cálido del escudo */
-  --text: #f1faee;          /* blanco suave */
-  --header: rgba(13,27,42,0.95);
+  --bg: #0d1b2a;
+  --card: #1b263b;
+  --accent: #e63946;     /* rojo escudo */
+  --gold: #f4a261;       /* dorado cálido */
+  --text: #f1faee;
+  --header: rgba(13,27,42,0.96);
 }
 
-/* Reset y base */
+/* Base */
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -25,10 +25,10 @@ body{
   color:var(--text);
   min-height:100vh;
   padding-top:85px;
-  padding-bottom:90px; /* para menú inferior móvil */
+  padding-bottom:70px; /* solo botón flotante */
 }
 
-/* HEADER FIJO */
+/* HEADER */
 header{
   position:fixed;top:0;left:0;right:0;
   background:var(--header);
@@ -36,27 +36,23 @@ header{
   padding:1.2rem;
   text-align:center;
   z-index:999;
-  box-shadow:0 4px 30px rgba(0,0,0,0.5);
+  box-shadow:0 6px 30px rgba(0,0,0,0.5);
 }
 header h1{
-  font-size:clamp(2rem,5.5vw,3rem);
-  background:linear-gradient(90deg, #f4a261, #e63946);
+  font-size:clamp(2.1rem,6vw,3.2rem);
+  background:linear-gradient(90deg, var(--gold), var(--accent));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:900;
-  letter-spacing:1px;
 }
 
-/* ==================== MENÚ LATERAL (PC y tablets grandes) ==================== */
+/* ==================== MENÚ LATERAL PC (intacto) ==================== */
 .menu-btn{
-  position:fixed;top:18px;left:18px;
-  width:58px;height:58px;
-  background:var(--gold);
-  color:#000;border-radius:50%;
+  position:fixed;top:18px;left:18px;width:58px;height:58px;
+  background:var(--gold);color:#000;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:1.9rem;cursor:pointer;
-  z-index:1001;box-shadow:0 8px 30px rgba(244,162,97,0.6);
-  transition:.3s;
+  font-size:1.9rem;cursor:pointer;z-index:1001;
+  box-shadow:0 10px 30px rgba(244,162,97,0.6);transition:.3s;
 }
 .menu-btn:hover{transform:scale(1.15)}
 .menu-btn.active{background:var(--accent);color:white}
@@ -65,42 +61,32 @@ header h1{
   position:fixed;top:0;left:-360px;width:360px;height:100%;
   background:linear-gradient(135deg,#1b263b,#0d1b2a);
   box-shadow:12px 0 50px rgba(0,0,0,0.7);
-  z-index:1000;padding:30px 25px;
-  transition:left .45s cubic-bezier(0.68,-.55,.27,1.55);
+  z-index:1000;padding:30px;transition:left .45s cubic-bezier(0.68,-.55,.27,1.55);
   display:flex;flex-direction:column;overflow-y:auto;
 }
 .sidebar.active{left:0}
 .overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);
   opacity:0;visibility:hidden;transition:.3s;z-index:999;
 }
 .overlay.active{opacity:1;visibility:visible}
 
-/* Logo y botón volver en sidebar */
-.sidebar .logo{text-align:center;margin-bottom:25px;}
 .sidebar .logo img{
-  width:220px;padding:16px;
-  background:rgba(244,162,97,0.15);
-  border:3px solid var(--gold);
-  border-radius:30px;
-  box-shadow:0 15px 40px rgba(244,162,97,0.4);
+  width:220px;padding:16px;background:rgba(244,162,97,0.15);
+  border:3px solid var(--gold);border-radius:30px;
+  box-shadow:0 15px 40px rgba(244,162,97,0.4);margin:0 auto 25px;display:block;
 }
 .volver-btn{
   display:block;width:85%;margin:20px auto;padding:16px;
   background:var(--accent);color:white;text-align:center;
   border-radius:20px;font-weight:700;text-decoration:none;
-  box-shadow:0 10px 30px rgba(230,57,70,0.5);
-  transition:.3s;
+  box-shadow:0 10px 30px rgba(230,57,70,0.5);transition:.3s;
 }
-.volver-btn:hover{transform:translateY(-5px);background:#c1121f;}
-
-/* Items del menú lateral */
-.sidebar ul{list-style:none;width:85%;margin:0 auto;flex:1;}
+.volver-btn:hover{transform:translateY(-5px)}
 .sidebar ul li a{
-  display:flex;align-items:center;padding:18px 22px;
-  color:var(--text);text-decoration:none;font-weight:600;
-  border-radius:18px;margin:10px 0;transition:.35s;
-  position:relative;overflow:hidden;
+  display:flex;align-items:center;padding:18px 22px;color:var(--text);
+  text-decoration:none;font-weight:600;border-radius:18px;margin:10px 0;
+  transition:.35s;position:relative;overflow:hidden;
 }
 .sidebar ul li a::before{
   content:'';position:absolute;left:0;top:0;width:6px;height:100%;
@@ -113,70 +99,82 @@ header h1{
 }
 .sidebar ul li a:hover::before,.sidebar ul li a.active::before{transform:scaleY(1);}
 
-/* ==================== MENÚ INFERIOR MÓVIL (estilo Brave) ==================== */
-.bottom-nav{
+/* ==================== MENÚ INFERIOR DESPLEGABLE MÓVIL (NUEVO) ==================== */
+.fab-trigger{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  width:64px;height:64px;background:var(--gold);color:#000;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:2rem;box-shadow:0 12px 35px rgba(244,162,97,0.7);
+  z-index:999;cursor:pointer;transition:.4s;
+}
+.fab-trigger.active{
+  background:var(--accent);color:white;transform:translateX(-50%) rotate(45deg);
+}
+
+.mobile-menu{
   position:fixed;bottom:0;left:0;right:0;
-  background:rgba(27,38,59,0.98);
-  backdrop-filter:blur(20px);
-  padding:12px 0 16px;
-  display:flex;justify-content:space-around;align-items:center;
+  background:rgba(27,38,59,0.98);backdrop-filter:blur(20px);
+  border-radius:30px 30px 0 0;
+  padding:100px 20px 30px;
+  transform:translateY(100%);
+  transition:transform .45s cubic-bezier(0.32,1.2,0.32,1);
   z-index:998;
-  border-top:2px solid var(--gold);
-  box-shadow:0 -10px 40px rgba(0,0,0,0.6);
+  box-shadow:0 -15px 50px rgba(0,0,0,0.6);
 }
-.bottom-nav a{
-  color:var(--text);text-decoration:none;text-align:center;
-  font-size:0.75rem;font-weight:700;transition:.3s;flex:1;
+.mobile-menu.active{transform:translateY(0);}
+
+.mobile-menu::before{
+  content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  width:50px;height:5px;background:#666;border-radius:10px;
 }
-.bottom-nav a i{
-  font-size:1.85rem;display:block;margin-bottom:6px;
-  transition:transform .3s;
+
+.mobile-menu-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem);
+  gap:1.2rem;
 }
-.bottom-nav a.active,.bottom-nav a:hover{color:var(--gold);}
-.bottom-nav a.active i{transform:scale(1.35);}
-.bottom-nav a.active::after{
-  content:'';position:absolute;bottom:6px;left:50%;
-  transform:translateX(-50%);width:8px;height:8px;
-  background:var(--gold);border-radius:50%;
+.mobile-menu-item{
+  background:rgba(255,255,255,0.08);color:var(--text);
+  padding:16px 8px;border-radius:18px;text-align:center;
+  text-decoration:none;font-weight:700;font-size:0.85rem;
+  transition:.3s;backdrop-filter:blur(10px);
 }
-/* Botón rojo especial al final */
-.bottom-nav a.last{
-  background:var(--accent);
-  border-radius:12px;
-  padding:10px 0;
-  margin:0 8px;
-  color:white !important;
+.mobile-menu-item i{font-size:1.9rem;display:block;margin-bottom:8px;}
+.mobile-menu-item:hover,.mobile-menu-item.active{
+  background:var(--accent);color:white;transform:scale(1.08);
 }
-.bottom-nav a.last i{color:white;}
+.mobile-menu-item.volver{
+  background:var(--accent);color:white;
+  grid-column:1 / -1;
+}
 
 /* ==================== CONTENIDO ==================== */
 .container{max-width:1400px;margin:0 auto;padding:2rem 1.5rem;}
 .section-title{
-  font-size:clamp(2.4rem,6vw,3.4rem);text-align:center;
-  margin:4rem 0 3rem;padding-top:100px;margin-top:-100px;
+  font-size:clamp(2.4rem,6.5vw,3.5rem);text-align:center;
+  margin:4.5rem 0 3rem;padding-top:100px;margin-top:-100px;
   background:linear-gradient(90deg,var(--gold),var(--accent));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   font-weight:900;scroll-margin-top:140px;
 }
 .cards{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:2.2rem;margin-bottom:4rem;
+  gap:2.3rem;margin-bottom:4rem;
 }
 .card{
-  background:var(--card);border-radius:26px;overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,0.5);
+  background:var(--card);border-radius:28px;overflow:hidden;
+  box-shadow:0 15px 45px rgba(0,0,0,0.5);
   transition:.4s;
 }
-.card:hover{transform:translateY(-15px);box-shadow:0 30px 70px rgba(230,57,70,0.4);}
-.card img{width:100%;height:210px;object-fit:cover;background:#1b263b;}
+.card:hover{transform:translateY(-16px);box-shadow:0 35px 80px rgba(230,57,70,0.45);}
+.card img{width:100%;height:220px;object-fit:cover;background:#1b263b;}
 .card h3{
-  padding:1.3rem 1rem;font-size:1.4rem;text-align:center;
-  min-height:80px;display:flex;align-items:center;justify-content:center;
-  font-weight:700;color:var(--text);
+  padding:1.4rem 1rem;font-size:1.42rem;text-align:center;
+  min-height:85px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;
 }
-.btns{padding:1.2rem;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btns{padding:1.3rem;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 .btn{
-  padding:0.9rem 2rem;border-radius:16px;font-weight:700;
+  padding:0.95rem 2.1rem;border-radius:18px;font-weight:700;
   text-decoration:none;transition:.3s;
 }
 .ver{background:var(--accent);color:white}
@@ -184,41 +182,40 @@ header h1{
 
 .subir{
   background:var(--card);border:4px dashed var(--accent);
-  border-radius:26px;padding:3.5rem;text-align:center;
-  margin:5rem auto;max-width:650px;
+  border-radius:28px;padding:4rem 2rem;text-align:center;
+  margin:5rem auto;max-width:700px;
 }
 .subir button{
-  background:var(--gold);color:#000;padding:1.5rem 4.5rem;
-  border:none;border-radius:50px;font-size:1.5rem;font-weight:900;
-  cursor:pointer;box-shadow:0 15px 40px rgba(244,162,97,0.6);
+  background:var(--gold);color:#000;padding:1.6rem 5rem;
+  border:none;border-radius:50px;font-size:1.55rem;font-weight:900;
+  cursor:pointer;box-shadow:0 15px 40px rgba(244,162,97,0.7);
   transition:.3s;
 }
-.subir button:hover{transform:translateY(-8px) scale(1.05)}
+.subir button:hover{transform:translateY(-8px) scale(1.06);background:#e07a5f;}
 
 .loading{text-align:center;padding:8rem;font-size:1.8rem;color:#778899;}
 
-/* ==================== RESPONSIVE ==================== */
+/* RESPONSIVE */
 @media (max-width: 1024px){
   .menu-btn,.sidebar,.overlay{display:none !important;}
   body{padding-bottom:100px;}
 }
 @media (min-width: 1025px){
-  .bottom-nav{display:none !important;}
-  body{padding-bottom:0;}
+  .fab-trigger,.mobile-menu{display:none !important;}
 }
 </style>
 </head>
 <body>
 
-<!-- Overlay solo para menú lateral PC -->
+<!-- Overlay PC -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
-<!-- Botón hamburguesa (solo PC) -->
+<!-- Botón hamburguesa PC -->
 <div class="menu-btn" onclick="toggleMenu()">
   <i class="fas fa-bars"></i>
 </div>
 
-<!-- MENÚ LATERAL PC -->
+<!-- Menú lateral PC -->
 <nav class="sidebar" id="sidebar">
   <div class="logo">
     <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga">
@@ -236,23 +233,29 @@ header h1{
   </ul>
 </nav>
 
-<!-- MENÚ INFERIOR MÓVIL (7 íconos) -->
-<nav class="bottom-nav">
-  <a href="#area1"><i class="fas fa-brain"></i><span>Área I</span></a>
-  <a href="#area2"><i class="fas fa-calculator"></i><span>Área II</span></a>
-  <a href="#area3"><i class="fas fa-flask"></i><span>Área III</span></a>
-  <a href="#area4"><i class="fas fa-book-open"></i><span>Área IV</span></a>
-  <a href="#area5"><i class="fas fa-globe"></i><span>Área V</span></a>
-  <a href="#area6"><i class="fas fa-trophy"></i><span>Concursos</span></a>
-  <a href="index.html" class="last"><i class="fas fa-home"></i><span>Volver</span></a>
-</nav>
+<!-- BOTÓN DESPLEGABLE MÓVIL + MENÚ -->
+<div class="fab-trigger" onclick="toggleMobileMenu()">
+  <i class="fas fa-shield-alt"></i>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-grid">
+    <a href="#area1" class="mobile-menu-item"><i class="fas fa-brain"></i>Área I</a>
+    <a href="#area2" class="mobile-menu-item"><i class="fas fa-calculator"></i>Área II</a>
+    <a href="#area3" class="mobile-menu-item"><i class="fas fa-flask"></i>Área III</a>
+    <a href="#area4" class="mobile-menu-item"><i class="fas fa-book-open"></i>Área IV</a>
+    <a href="#area5" class="mobile-menu-item"><i class="fas fa-globe"></i>Área V</a>
+    <a href="#area6" class="mobile-menu-item"><i class="fas fa-trophy"></i>Concursos</a>
+    <a href="index.html" class="mobile-menu-item volver"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
+  </div>
+</div>
 
 <header><h1>BANCO DE EXÁMENES</h1></header>
 
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- ÁREAS (igual que siempre) -->
+  <!-- Tus áreas aquí (igual que antes) -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="cards" id="cont-area1"></div>
   <div class="subir"><button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">SUBIR EXAMEN ÁREA I</button></div>
@@ -294,13 +297,28 @@ function cerrarMenu(){
   document.querySelector('.menu-btn').classList.remove('active');
 }
 
+function toggleMobileMenu(){
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.querySelector('.fab-trigger');
+  menu.classList.toggle('active');
+  btn.classList.toggle('active');
+}
+
+// Cerrar menú móvil al tocar fuera
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.mobile-menu') && !e.target.closest('.fab-trigger')) {
+    document.getElementById('mobileMenu').classList.remove('active');
+    document.querySelector('.fab-trigger').classList.remove('active');
+  }
+});
+
 // Resaltar activo en ambos menús
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
     if (window.scrollY >= sec.offsetTop - 180) current = sec.id;
   });
-  document.querySelectorAll('.sidebar a, .bottom-nav a').forEach(a => {
+  document.querySelectorAll('.sidebar a, .mobile-menu-item').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
   });
 });
@@ -311,14 +329,14 @@ async function cargarTodo() {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
       const archivos = await res.json();
       if (archivos.length === 0) {
-        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:5rem;color:#778899;font-size:1.4rem">Aún no hay exámenes aquí</p>';
+        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:5rem;color:#778899">Aún no hay exámenes</p>';
       } else {
         archivos.forEach(f => {
           const nombre = f.name.replace(/\.pdf$/i, '');
           contenedores[i].innerHTML += `
             <div class="card">
               <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w800" alt="${nombre}"
-                   onerror="this.src='https://via.placeholder.com/400x210/1b263b/f4a261?text=EXAMEN'">
+                   onerror="this.src='https://via.placeholder.com/400x220/1b263b/f4a261?text=EXAMEN'">
               <h3>${nombre}</h3>
               <div class="btns">
                 <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">VER</a>
@@ -328,7 +346,7 @@ async function cargarTodo() {
         });
       }
     } catch (e) {
-      contenedores[i].innerHTML = '<p style="color:#e63946;text-align:center;padding:3rem">Error al cargar</p>';
+      contenedores[i].innerHTML = '<p style="color:#e63946;text-align:center">Error al cargar</p>';
     }
   }
   document.getElementById('loading').style.display = 'none';
