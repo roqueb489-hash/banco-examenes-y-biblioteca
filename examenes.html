@@ -21,111 +21,131 @@ body{
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  padding-top:80px;
-  padding-left:0;
   min-height:100vh;
   overflow-x:hidden;
+  padding-top:90px;          /* Espacio para header fijo */
+  padding-left:0;
+  padding-right:0;
 }
 
-/* BOTÓN HAMBURGUESA FIJO */
+/* ====================== HEADER FIJO ====================== */
+header{
+  position:fixed;
+  top:0;left:0;right:0;
+  background:rgba(15,23,42,0.97);
+  backdrop-filter:blur(15px);
+  padding:1.2rem 1rem;
+  text-align:center;
+  z-index:999;
+  box-shadow:0 4px 30px rgba(0,0,0,0.6);
+}
+header h1{
+  font-size:clamp(1.8rem, 5vw, 2.8rem);
+  background:linear-gradient(90deg,#fbbf24,#f59e0b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:900;
+}
+
+/* ====================== BOTÓN HAMBURGUESA ====================== */
 .menu-btn{
   position:fixed;
   top:15px;
   left:15px;
-  width:58px;
-  height:58px;
+  width:56px;
+  height:56px;
   background:var(--gold);
-  color:black;
+  color:#000;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:1.9rem;
+  font-size:1.8rem;
   cursor:pointer;
   z-index:1001;
-  box-shadow:0 10px 30px rgba(251,191,36,0.5);
+  box-shadow:0 8px 25px rgba(251,191,36,0.5);
   transition:all .3s;
 }
-.menu-btn:hover{transform:scale(1.1)}
+.menu-btn:hover{transform:scale(1.12)}
 .menu-btn.active{background:var(--accent);color:white}
 
-/* MENÚ DESPLEGABLE LATERAL */
+/* ====================== SIDEBAR ====================== */
 .sidebar{
   position:fixed;
   top:0;
-  left:-320px;
+  left:-100%;
   width:320px;
+  max-width:85vw;
   height:100%;
   background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
   box-shadow:10px 0 50px rgba(0,0,0,0.8);
   z-index:1000;
-  padding:25px 20px;
+  padding:20px;
   transition:left .4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   display:flex;
   flex-direction:column;
-  align-items:center;
   overflow-y:auto;
 }
-.sidebar.active{
-  left:0;
-}
+.sidebar.active{left:0;}
 
-/* Logo del colegio */
+/* Fondo oscuro cuando el menú está abierto (solo móvil) */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s;
+  z-index:999;
+}
+.overlay.active{opacity:1;visibility:visible;}
+
+/* Logo */
 .sidebar .logo{
-  margin:10px 0 30px;
+  text-align:center;
+  margin:15px 0 25px;
 }
 .sidebar .logo img{
-  width:210px;
-  padding:16px;
+  width:190px;
+  padding:14px;
   background:rgba(251,191,36,0.2);
-  border-radius:28px;
+  border-radius:24px;
   border:3px solid rgba(251,191,36,0.4);
-  box-shadow:0 15px 40px rgba(251,191,36,0.4);
-  transition:transform .3s;
+  box-shadow:0 12px 35px rgba(251,191,36,0.4);
 }
-.sidebar .logo img:hover{transform:scale(1.05)}
 
-/* Botón Volver */
+/* Botón volver */
 .volver-btn{
-  display:block;
-  width:88%;
-  margin:20px 0;
-  padding:16px;
+  width:100%;
+  padding:15px;
   background:rgba(239,68,68,0.3);
-  backdrop-filter:blur(12px);
   border:1px solid rgba(239,68,68,0.5);
-  border-radius:22px;
+  border-radius:18px;
   color:white;
   text-decoration:none;
   text-align:center;
   font-weight:700;
   font-size:1.1rem;
-  box-shadow:0 10px 30px rgba(239,68,68,0.3);
-  transition:all .3s;
+  margin-bottom:20px;
+  transition:.3s;
 }
-.volver-btn:hover{
-  transform:translateY(-5px);
-  background:rgba(239,68,68,0.5);
-}
+.volver-btn:hover{transform:translateY(-4px);background:rgba(239,68,68,0.5);}
 
-/* Items del menú */
+/* Items menú */
 .sidebar ul{
-  width:88%;
   list-style:none;
+  width:100%;
   flex:1;
-}
-.sidebar ul li{
-  margin:10px 0;
 }
 .sidebar ul li a{
   display:flex;
   align-items:center;
-  padding:18px 24px;
+  padding:16px 20px;
   color:var(--text);
   text-decoration:none;
   font-weight:600;
-  font-size:1.1rem;
-  border-radius:20px;
+  border-radius:16px;
+  margin:8px 0;
   transition:all .35s;
   position:relative;
   overflow:hidden;
@@ -134,147 +154,161 @@ body{
   content:'';
   position:absolute;
   left:0;top:0;
-  width:6px;height:100%;
+  width:5px;height:100%;
   background:var(--gold);
   transform:scaleY(0);
   transition:transform .35s;
 }
 .sidebar ul li a i{
-  width:42px;
-  font-size:1.4rem;
-  margin-right:16px;
-  transition:transform .3s;
+  width:40px;
+  font-size:1.35rem;
+  margin-right:14px;
 }
 .sidebar ul li a:hover,
 .sidebar ul li a.active{
   background:var(--accent);
   color:white;
-  transform:translateX(12px);
-  box-shadow:0 12px 35px rgba(30,64,175,0.5);
+  transform:translateX(10px);
+  box-shadow:0 10px 30px rgba(30,64,175,0.5);
 }
 .sidebar ul li a:hover::before,
-.sidebar ul li a.active::before{
-  transform:scaleY(1);
-}
-.sidebar ul li a:hover i{
-  transform:scale(1.2);
-}
+.sidebar ul li a.active::before{transform:scaleY(1);}
 
-/* Header fijo */
-header{
-  position:fixed;
-  top:0;left:0;right:0;
-  background:rgba(15,23,42,0.97);
-  backdrop-filter:blur(15px);
-  padding:1.4rem;
-  text-align:center;
-  z-index:999;
-  box-shadow:0 4px 30px rgba(0,0,0,0.6);
-}
-header h1{
-  font-size:2.6rem;
-  background:linear-gradient(90deg,#fbbf24,#f59e0b);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  font-weight:900;
-}
-
-/* Contenido centrado perfecto */
+/* ====================== CONTENIDO PRINCIPAL ====================== */
 .container{
   max-width:1400px;
   margin:0 auto;
   padding:2rem 1.5rem;
 }
+
+/* Títulos de área */
 .section-title{
-  font-size:2.9rem;
+  font-size:clamp(2.2rem, 6vw, 3.2rem);
   text-align:center;
-  margin:4rem 0 3rem;
+  margin:4rem 0 2.5rem;
   padding-top:100px;
   margin-top:-100px;
   background:linear-gradient(90deg,#fbbf24,#f59e0b);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:900;
-  scroll-margin-top:120px;
+  scroll-margin-top:130px;
 }
 
+/* Grid de tarjetas */
 .cards{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
   gap:2rem;
-  margin-bottom:2rem;
+  margin-bottom:3rem;
 }
 .card{
   background:var(--sidebar);
   border-radius:24px;
   overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,0.5);
-  transition:all .4s;
+  box-shadow:0 12px 35px rgba(0,0,0,0.5);
+  transition:transform .4s, box-shadow .4s;
 }
 .card:hover{
-  transform:translateY(-15px);
-  box-shadow:0 30px 70px rgba(30,64,175,0.5);
+  transform:translateY(-12px);
+  box-shadow:0 25px 60px rgba(30,64,175,0.5);
 }
-.card img{height:200px;width:100%;object-fit:cover}
-.card h3{padding:1.3rem;font-size:1.4rem;text-align:center;font-weight:700}
-.btns{text-align:center;padding:1.2rem}
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  background:#1e293b;
+}
+.card h3{
+  padding:1.2rem 1rem;
+  font-size:1.35rem;
+  text-align:center;
+  font-weight:700;
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.btns{
+  padding:1rem;
+  text-align:center;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 .btn{
-  padding:0.9rem 2rem;
-  margin:0.5rem;
-  border-radius:16px;
+  padding:0.8rem 1.8rem;
+  border-radius:14px;
   font-weight:700;
   text-decoration:none;
-  display:inline-block;
+  font-size:0.95rem;
+  transition:.3s;
 }
 .ver{background:var(--accent);color:white}
 .desc{background:var(--gold);color:black}
+
+/* Botón subir examen */
 .subir{
   background:var(--sidebar);
   border:3px dashed var(--accent);
   border-radius:24px;
-  padding:3.5rem;
+  padding:3rem 2rem;
   text-align:center;
-  margin:5rem 0;
+  margin:4rem auto;
+  max-width:600px;
 }
 .subir button{
   background:var(--gold);
-  color:black;
-  padding:1.4rem 4rem;
+  color:#000;
+  padding:1.3rem 3.5rem;
   border:none;
   border-radius:50px;
-  font-size:1.5rem;
-  font-weight:900;
+  font-size:900 1.4rem 'Inter';
   cursor:pointer;
-  box-shadow:0 12px 35px rgba(251,191,36,0.5);
+  box-shadow:0 10px 30px rgba(251,191,36,0.5);
   transition:.3s;
 }
-.subir button:hover{transform:translateY(-6px)}
+.subir button:hover{transform:translateY(-6px) scale(1.05)}
+
+/* Loading */
 .loading{
   text-align:center;
-  padding:8rem;
-  font-size:1.8rem;
+  padding:6rem 2rem;
+  font-size:1.6rem;
   color:#888;
+}
+
+/* ====================== RESPONSIVE AJUSTES ====================== */
+@media (max-width: 768px){
+  .menu-btn{ width:52px; height:52px; font-size:1.6rem; top:12px; left:12px; }
+  header{ padding:1rem; }
+  .container{ padding:1.5rem 1rem; }
+  .cards{ grid-template-columns:1fr; gap:1.5rem; }
+  .section-title{ margin:3rem 0 2rem; }
+  .subir{ padding:2.5rem 1.5rem; margin:3rem auto; }
 }
 </style>
 </head>
 <body>
 
+<!-- Overlay para cerrar menú al tocar fuera (móvil) -->
+<div class="overlay" onclick="cerrarMenu()"></div>
+
 <!-- Botón hamburguesa -->
-<div class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('active'); this.classList.toggle('active')">
+<div class="menu-btn" onclick="toggleMenu()">
   <i class="fas fa-bars"></i>
 </div>
 
-<!-- Menú desplegable -->
-<nav class="sidebar">
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
   <div class="logo">
-    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" 
-         alt="IEP San Luis Gonzaga - Huánuco">
+    <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png"
+         alt="IEP San Luis Gonzaga">
   </div>
-
   <a href="index.html" class="volver-btn">
     <i class="fas fa-home"></i> VOLVER AL INICIO
   </a>
-
   <ul>
     <li><a href="#area1" class="active"><i class="fas fa-brain"></i> Área I</a></li>
     <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
@@ -285,6 +319,7 @@ header h1{
   </ul>
 </nav>
 
+<!-- Header fijo -->
 <header>
   <h1>BANCO DE EXÁMENES</h1>
 </header>
@@ -292,7 +327,7 @@ header h1{
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- ÁREA I -->
+  <!-- ÁREAS -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="cards" id="cont-area1"></div>
   <div class="subir">
@@ -301,7 +336,6 @@ header h1{
     </button>
   </div>
 
-  <!-- ÁREA II -->
   <h2 class="section-title" id="area2">Área II</h2>
   <div class="cards" id="cont-area2"></div>
   <div class="subir">
@@ -310,7 +344,6 @@ header h1{
     </button>
   </div>
 
-  <!-- ÁREA III -->
   <h2 class="section-title" id="area3">Área III</h2>
   <div class="cards" id="cont-area3"></div>
   <div class="subir">
@@ -319,7 +352,6 @@ header h1{
     </button>
   </div>
 
-  <!-- ÁREA IV -->
   <h2 class="section-title" id="area4">Área IV</h2>
   <div class="cards" id="cont-area4"></div>
   <div class="subir">
@@ -328,7 +360,6 @@ header h1{
     </button>
   </div>
 
-  <!-- ÁREA V -->
   <h2 class="section-title" id="area5">Área V</h2>
   <div class="cards" id="cont-area5"></div>
   <div class="subir">
@@ -337,7 +368,6 @@ header h1{
     </button>
   </div>
 
-  <!-- CONCURSOS -->
   <h2 class="section-title" id="area6">Concursos Interescolares</h2>
   <div class="cards" id="cont-area6"></div>
   <div class="subir">
@@ -359,46 +389,69 @@ const CARPETAS = [
 ];
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
 
+function toggleMenu() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.querySelector('.overlay');
+  const btn = document.querySelector('.menu-btn');
+  
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+  btn.classList.toggle('active');
+}
+
+function cerrarMenu() {
+  document.getElementById('sidebar').classList.remove('active');
+  document.querySelector('.overlay').classList.remove('active');
+  document.querySelector('.menu-btn').classList.remove('active');
+}
+
 async function cargarTodo() {
   for (let i = 0; i < 6; i++) {
     try {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
       const archivos = await res.json();
+      
       if (archivos.length === 0) {
-        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:5rem;color:#888;font-size:1.3rem">Aún no hay exámenes</p>';
+        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#888;font-size:1.3rem">Aún no hay exámenes en esta área</p>';
       } else {
         archivos.forEach(f => {
           const nombre = f.name.replace(/\.pdf$/i, '');
           contenedores[i].innerHTML += `
             <div class="card">
-              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400" alt="${nombre}"
-                   onerror="this.src='https://via.placeholder.com/340x200/1e293b/ffffff?text=Examen'">
+              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600" alt="${nombre}"
+                   onerror="this.src='https://via.placeholder.com/400x200/1e293b/94a3b8?text=EXAMEN'">
               <h3>${nombre}</h3>
               <div class="btns">
-                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">Ver</a>
-                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">Descargar</a>
+                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">VER</a>
+                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">DESCARGAR</a>
               </div>
             </div>`;
         });
       }
     } catch (e) {
-      contenedores[i].innerHTML = '<p style="color:#ff6b6b;text-align:center">Error al cargar esta área</p>';
+      contenedores[i].innerHTML = '<p style="color:#ff6b6b;text-align:center;padding:3rem">Error al cargar los exámenes</p>';
     }
   }
   document.getElementById('loading').style.display = 'none';
 }
 
-// Resaltar menú activo
+// Resaltar enlace activo al hacer scroll
 window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('.section-title');
-  const links = document.querySelectorAll('.sidebar a');
+  const links = document.querySelectorAll('.sidebar ul a');
   let current = '';
+
   sections.forEach(sec => {
-    if (window.scrollY >= sec.offsetTop - 150) current = sec.getAttribute('id');
+    if (window.scrollY >= sec.offsetTop - 180) {
+      current = sec.getAttribute('id');
+    }
   });
-  links.forEach(l => {
-    l.classList.remove('active');
-    if (l.getAttribute('href') === `#${current}`) l.classList.add('active');
+
+  links.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === `#${current}`) {
+      link.classList.add('active');
+    }
   });
 });
 
