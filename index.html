@@ -64,9 +64,8 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
     <img src="Insignia-New-cuadrado.png" alt="Logo" onerror="this.src='https://via.placeholder.com/150/003087/white?text=SL'">
     <h2>Biblioteca<br>Sanluisina</h2>
   </div>
-  <nav>
-    <div class="nav-item active"><i class="fas fa-book"></i> Todos los libros</div>
-    <a href="examenes.html" class="nav-item"><i class="fas fa-file-alt"></i> Banco de Exámenes</a>
+  <nav id="sidebar-nav">
+    <!-- Las secciones se agregan dinámicamente -->
   </nav>
 </aside>
 
@@ -76,13 +75,11 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
 </div>
 
 <div class="container">
-  <div id="loading">Cargando libros...</div>
+  <div id="loading">Cargando secciones...</div>
   
   <div class="tabs" id="tabs"></div>
   
-  <div class="cards" id="cards-container">
-    <!-- Aquí se cargan las tarjetas -->
-  </div>
+  <div class="cards" id="cards-container"></div>
 </div>
 
 <!-- Modal Subir Libro -->
@@ -91,95 +88,106 @@ body{font-family:'Inter',sans-serif;background:var(--l);color:var(--d);padding-l
     <h2>Subir Nuevo Libro</h2>
     <p>Selecciona la sección y escribe el título exacto:</p>
     <select id="seccion-libro"></select>
-    <input type="text" id="titulo-libro" placeholder="Ej: Biblia Reina Valera 1960" autofocus style="margin-top:1rem">
+    <input type="text" id="titulo-libro" placeholder="Ej: La Atalaya - Enero 2025" autofocus style="margin-top:1rem">
     <button onclick="confirmarSubidaLibro()">Copiar título y abrir carpeta</button>
     <div style="margin-top:1.5rem;"><small style="color:#888">El libro aparecerá automáticamente al subirlo.</small></div>
   </div>
 </div>
 
 <script>
-const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
+const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";  // Cambia por tu URL de GAS si creaste uno nuevo
 const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
 const SECCIONES = {
-  'todos': 'Todos los libros',
-  'wol': 'Publicaciones WOL (jw.org)',
-  'religion': 'Libros Bíblicos y Religiosos',
-  'peru': 'Literatura Peruana',
-  'huanuco': 'Literatura Huanuqueña',
-  'creencias-peru': 'Mitos y Creencias Peruanas',
-  'creencias-huanuco': 'Creencias y Tradiciones Huanuqueñas',
-  'leyendas': 'Leyendas, Fábulas y Mitos',
-  'juvenil': 'Literatura Juvenil (para Adolescentes)',
-  'comunicacion': 'Comunicación',
-  'matematica': 'Matemática',
-  'etc': 'Ciencia y Tecnología (ETC)',
-  'ps': 'Personal Social',
-  'arte': 'Arte y Cultura'
+  'literatura-peruana': 'Literatura Peruana',
+  'mitos-creencias-peruanas': 'Mitos y Creencias Peruanas',
+  'libros-biblicos-religiosos': 'Libros Bíblicos y Religiosos',
+  'literatura-huanuquena': 'Literatura Huanuqueña',
+  'leyendas-fabulas-mitos': 'Leyendas, Fábulas y Mitos',
+  'creencias-tradiciones-huanuquenas': ' 'Creencias y Tradiciones Huanuqueñas',
+  'publicaciones-wol': 'Publicaciones WOL (jw.org)'   // ¡NUEVA SECCIÓN!
 };
 
 let carpetaIds = {};
-let seccionActual = 'todos';
+let seccionActual = Object.keys(SECCIONES)[0];
 
 async function cargarSecciones() {
   const tabs = document.getElementById('tabs');
+  const sidebarNav = document.getElementById('sidebar-nav');
+  const select = document.getElementById('seccion-libro');
+  
   tabs.innerHTML = '';
+  sidebarNav.innerHTML = '';
+  select.innerHTML = '';
+  
+  let index = 0;
   for (const key in SECCIONES) {
+    const nombre = SECCIONES[key];
+    
+    // Pestañas superiores
     const btn = document.createElement('div');
-    btn.className = 'tab-btn';
-    btn.textContent = SECCIONES[key];
+    btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
+    btn.textContent = nombre;
     btn.onclick = () => cambiarSeccion(key);
     tabs.appendChild(btn);
-  }
-  document.querySelector('.tab-btn').classList.add('active');
-  
-  // Llenar select del modal
-  const select = document.getElementById('seccion-libro');
-  select.innerHTML = '';
-  for (const key in SECCIONES) {
-    if (key !== 'todos') {
-      const opt = document.createElement('option');
-      opt.value = key;
-      opt.textContent = SECCIONES[key];
-      select.appendChild(opt);
-    }
+    
+    // Menú lateral
+    const navItem = document.createElement('div');
+    navItem.className = 'nav-item' + (index === 0 ? ' active' : '');
+    navItem.innerHTML = `<i class="fas fa-book-bible"></i> ${nombre}`;
+    navItem.onclick = () => cambiarSeccion(key);
+    sidebarNav.appendChild(navItem);
+    
+    // Select del modal
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = nombre;
+    select.appendChild(opt);
+    
+    index++;
   }
   
   await cargarCarpetaIds();
-  cambiarSeccion('todos');
+  cambiarSeccion(seccionActual);
+  document.getElementById('loading').style.display = 'none';
 }
 
 async function cargarCarpetaIds() {
   try {
     const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_PRINCIPAL}`);
-    const archivos = await res.json();
-    archivos.forEach(item => {
-      if (item.mimeType === 'application/vnd.google-apps.folder' && SECCIONES[item.name.toLowerCase()]) {
-        carpetaIds[item.name.toLowerCase()] = item.id;
+    if (!res.ok) throw new Error('Error en el servidor');
+    const items = await res.json();
+    items.forEach(item => {
+      if (item.mimeType === 'application/vnd.google-apps.folder') {
+        const nombreNormalizado = item.name.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+        if (SECCIONES[nombreNormalizado]) {
+          carpetaIds[nombreNormalizado] = item.id;
+        }
       }
     });
-  } catch (e) { console.error(e); }
+  } catch (e) {
+    console.error('Error cargando carpetas:', e);
+  }
 }
 
 async function cargarLibros(carpetaId, nombreCarpeta) {
   const cont = document.getElementById('cards-container');
   cont.innerHTML = `<div class="card add" onclick="abrirModal('${nombreCarpeta}')">
-                      <i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>
+                      <i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro a<br>${SECCIONES[nombreCarpeta]}</strong>
                     </div>`;
   
-  let libros = [];
+  if (!carpetaId) {
+    cont.innerHTML += '<div style="grid-column:1/-1;text-align:center;padding:4rem;color:#666">Carpeta no encontrada. Verifica el nombre en Drive.</div>';
+    return;
+  }
+  
   try {
-    if (carpetaId) {
-      const res = await fetch(`${DEPLOY_URL}?carpeta=${carpetaId}`);
-      libros = await res.json();
-    } else if (nombreCarpeta === 'todos') {
-      const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_PRINCIPAL}`);
-      libros = await res.json();
-      libros = libros.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
-    }
+    const res = await fetch(`${DEPLOY_URL}?carpeta=${carpetaId}`);
+    if (!res.ok) throw new Error('Error cargando libros');
+    const libros = await res.json();
     
     if (libros.length === 0) {
-      cont.innerHTML += '<div style="grid-column:1/-1;text-align:center;padding:4rem;font-size:1.3rem;color:#666">Aún no hay libros en esta sección</div>';
+      cont.innerHTML += '<div style="grid-column:1/-1;text-align:center;padding:4rem;font-size:1.3rem;color:#666">Aún no hay libros en esta sección. ¡Sé el primero en subir uno!</div>';
     } else {
       libros.forEach(l => {
         const nombre = l.name.replace(/\.pdf$/i, '').trim();
@@ -197,25 +205,22 @@ async function cargarLibros(carpetaId, nombreCarpeta) {
       });
     }
   } catch (e) {
-    cont.innerHTML += `<div style="grid-column:1/-1;text-align:center;color:#dc2626;padding:2rem;background:#fee;border-radius:12px">Error al cargar: ${e.message}</div>`;
-  } finally {
-    document.getElementById('loading').style.display = 'none';
+    cont.innerHTML += `<div style="grid-column:1/-1;text-align:center;color:#dc2626;padding:2rem;background:#fee;border-radius:12px">Error: ${e.message}</div>`;
   }
 }
 
 function cambiarSeccion(key) {
   seccionActual = key;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-btn')[Object.keys(SECCIONES).indexOf(key)].classList.add('active');
-  document.getElementById('loading').style.display = 'block';
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', Object.keys(SECCIONES)[i] === key));
+  document.querySelectorAll('.nav-item').forEach((b, i) => b.classList.toggle('active', Object.keys(SECCIONES)[i] === key));
   const carpetaId = carpetaIds[key] || null;
+  document.getElementById('loading').style.display = 'block';
   cargarLibros(carpetaId, key);
+  document.getElementById('loading').style.display = 'none';
 }
 
 function abrirModal(seccionPre = '') {
-  if (seccionPre) {
-    document.getElementById('seccion-libro').value = seccionPre;
-  }
+  if (seccionPre) document.getElementById('seccion-libro').value = seccionPre;
   document.getElementById('modal-libro').classList.add('active');
   document.getElementById('titulo-libro').focus();
 }
@@ -223,17 +228,18 @@ function abrirModal(seccionPre = '') {
 function confirmarSubidaLibro() {
   const seccion = document.getElementById('seccion-libro').value;
   const titulo = document.getElementById('titulo-libro').value.trim();
-  if (!titulo) return alert("Escribe el título del libro");
+  if (!titulo) return alert("Por favor, escribe el título del libro");
   
   navigator.clipboard.writeText(titulo).then(() => {
-    alert(`¡Título copiado!\n"${titulo}"\n\nAhora abre la carpeta y renombra el PDF exactamente así.`);
+    alert(`¡Título "${titulo}" copiado!\n\nAhora abre la carpeta y renombra el PDF exactamente así.`);
     const id = carpetaIds[seccion];
-    window.open(`https://drive.google.com/drive/folders/${id}`, "_blank");
-    cerrarModal();
-    setTimeout(() => cambiarSeccion(seccion), 3000); // Recarga en 3 seg
+    if (id) {
+      window.open(`https://drive.google.com/drive/folders/${id}`, "_blank");
+      cerrarModal();
+      setTimeout(() => cambiarSeccion(seccion), 5000);
+    }
   }).catch(() => {
-    alert("Copiado manual: " + titulo);
-    window.open(`https://drive.google.com/drive/folders/${carpetaIds[seccion]}`, "_blank");
+    alert("Copia manual: " + titulo);
     cerrarModal();
   });
 }
@@ -244,7 +250,7 @@ function cerrarModal() {
 }
 
 document.getElementById('modal-libro').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal-libro')) cerrarModal();
+  if (e.target.id === 'modal-libro') cerrarModal();
 });
 
 cargarSecciones();
