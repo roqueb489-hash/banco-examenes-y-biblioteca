@@ -4,680 +4,350 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Banco de Exámenes - IEP San Luis Gonzaga</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
-  --bg:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  --card-bg:rgba(30, 41, 59, 0.8);
-  --glass: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(251, 191, 36, 0.2);
-  --accent: #1e40af;
-  --gold: #fbbf24;
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  --shadow-hover: 0 35px 60px -12px rgba(30, 64, 175, 0.4);
+  --bg:#0f172a;
+  --sidebar:#1e293b;
+  --accent:#1e40af;
+  --gold:#fbbf24;
+  --red:#ef4444;
+  --text:#e2e8f0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding-top:80px;
+  padding-left:0;
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
+/* BOTÓN HAMBURGUESA FIJO */
+.menu-btn{
+  position:fixed;
+  top:15px;
+  left:15px;
+  width:58px;
+  height:58px;
+  background:var(--gold);
+  color:black;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.9rem;
+  cursor:pointer;
+  z-index:1001;
+  box-shadow:0 10px 30px rgba(251,191,36,0.5);
+  transition:all .3s;
+}
+.menu-btn:hover{transform:scale(1.1)}
+.menu-btn.active{background:var(--accent);color:white}
+
+/* MENÚ DESPLEGABLE LATERAL */
+.sidebar{
+  position:fixed;
+  top:0;
+  left:-320px;
+  width:320px;
+  height:100%;
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  box-shadow:10px 0 50px rgba(0,0,0,0.8);
+  z-index:1000;
+  padding:25px 20px;
+  transition:left .4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow-y:auto;
+}
+.sidebar.active{
+  left:0;
 }
 
-/* ====== HEADER PRINCIPAL ====== */
-.header-main {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 1.5rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 1000;
-  box-shadow: var(--shadow);
-  border-bottom: 1px solid var(--glass-border);
+/* Logo del colegio */
+.sidebar .logo{
+  margin:10px 0 30px;
+}
+.sidebar .logo img{
+  width:210px;
+  padding:16px;
+  background:rgba(251,191,36,0.2);
+  border-radius:28px;
+  border:3px solid rgba(251,191,36,0.4);
+  box-shadow:0 15px 40px rgba(251,191,36,0.4);
+  transition:transform .3s;
+}
+.sidebar .logo img:hover{transform:scale(1.05)}
+
+/* Botón Volver */
+.volver-btn{
+  display:block;
+  width:88%;
+  margin:20px 0;
+  padding:16px;
+  background:rgba(239,68,68,0.3);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(239,68,68,0.5);
+  border-radius:22px;
+  color:white;
+  text-decoration:none;
+  text-align:center;
+  font-weight:700;
+  font-size:1.1rem;
+  box-shadow:0 10px 30px rgba(239,68,68,0.3);
+  transition:all .3s;
+}
+.volver-btn:hover{
+  transform:translateY(-5px);
+  background:rgba(239,68,68,0.5);
 }
 
-.header-main h1 {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  background: linear-gradient(135deg, var(--gold), #f59e0b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+/* Items del menú */
+.sidebar ul{
+  width:88%;
+  list-style:none;
+  flex:1;
+}
+.sidebar ul li{
+  margin:10px 0;
+}
+.sidebar ul li a{
+  display:flex;
+  align-items:center;
+  padding:18px 24px;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+  font-size:1.1rem;
+  border-radius:20px;
+  transition:all .35s;
+  position:relative;
+  overflow:hidden;
+}
+.sidebar ul li a::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;
+  width:6px;height:100%;
+  background:var(--gold);
+  transform:scaleY(0);
+  transition:transform .35s;
+}
+.sidebar ul li a i{
+  width:42px;
+  font-size:1.4rem;
+  margin-right:16px;
+  transition:transform .3s;
+}
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+  background:var(--accent);
+  color:white;
+  transform:translateX(12px);
+  box-shadow:0 12px 35px rgba(30,64,175,0.5);
+}
+.sidebar ul li a:hover::before,
+.sidebar ul li a.active::before{
+  transform:scaleY(1);
+}
+.sidebar ul li a:hover i{
+  transform:scale(1.2);
 }
 
-.menu-trigger {
-  background: rgba(251, 191, 36, 0.2);
-  border: 1px solid var(--gold);
-  width: 55px; height: 55px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold);
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: none;
+/* Header fijo */
+header{
+  position:fixed;
+  top:0;left:0;right:0;
+  background:rgba(15,23,42,0.97);
+  backdrop-filter:blur(15px);
+  padding:1.4rem;
+  text-align:center;
+  z-index:999;
+  box-shadow:0 4px 30px rgba(0,0,0,0.6);
+}
+header h1{
+  font-size:2.6rem;
+  background:linear-gradient(90deg,#fbbf24,#f59e0b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:900;
 }
 
-.menu-trigger:hover {
-  background: var(--gold);
-  color: #0f172a;
-  transform: scale(1.05);
+/* Contenido centrado perfecto */
+.container{
+  max-width:1400px;
+  margin:0 auto;
+  padding:2rem 1.5rem;
+}
+.section-title{
+  font-size:2.9rem;
+  text-align:center;
+  margin:4rem 0 3rem;
+  padding-top:100px;
+  margin-top:-100px;
+  background:linear-gradient(90deg,#fbbf24,#f59e0b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:900;
+  scroll-margin-top:120px;
 }
 
-/* ====== MENÚ LATERAL (DESKTOP) ====== */
-.sidebar {
-  position: fixed;
-  top: 0; left: 0;
-  width: 320px; height: 100vh;
-  background: rgba(30, 41, 59, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 2.5rem 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 999;
-  box-shadow: var(--shadow);
-  border-right: 1px solid var(--glass-border);
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:2rem;
+  margin-bottom:2rem;
 }
-
-.logo-section {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  padding: 0 1.5rem;
+.card{
+  background:var(--sidebar);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.5);
+  transition:all .4s;
 }
-
-.logo-section img {
-  width: 180px;
-  height: auto;
-  padding: 1.2rem;
-  background: rgba(251, 191, 36, 0.1);
-  border-radius: 20px;
-  border: 2px solid var(--glass-border);
-  box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
-  transition: all 0.4s ease;
+.card:hover{
+  transform:translateY(-15px);
+  box-shadow:0 30px 70px rgba(30,64,175,0.5);
 }
-
-.logo-section img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 25px 50px rgba(251, 191, 36, 0.25);
+.card img{height:200px;width:100%;object-fit:cover}
+.card h3{padding:1.3rem;font-size:1.4rem;text-align:center;font-weight:700}
+.btns{text-align:center;padding:1.2rem}
+.btn{
+  padding:0.9rem 2rem;
+  margin:0.5rem;
+  border-radius:16px;
+  font-weight:700;
+  text-decoration:none;
+  display:inline-block;
 }
-
-.nav-btn {
-  display: block;
-  width: 85%;
-  margin: 0 auto 1.5rem;
-  padding: 1rem 1.5rem;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 16px;
-  color: var(--text);
-  text-decoration: none;
-  text-align: center;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
+.ver{background:var(--accent);color:white}
+.desc{background:var(--gold);color:black}
+.subir{
+  background:var(--sidebar);
+  border:3px dashed var(--accent);
+  border-radius:24px;
+  padding:3.5rem;
+  text-align:center;
+  margin:5rem 0;
 }
-
-.nav-btn:hover {
-  background: rgba(239, 68, 68, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 15px 30px rgba(239, 68, 68, 0.2);
+.subir button{
+  background:var(--gold);
+  color:black;
+  padding:1.4rem 4rem;
+  border:none;
+  border-radius:50px;
+  font-size:1.5rem;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 12px 35px rgba(251,191,36,0.5);
+  transition:.3s;
 }
-
-.nav-menu {
-  flex: 1;
-  padding: 0 1.5rem;
-  overflow-y: auto;
+.subir button:hover{transform:translateY(-6px)}
+.loading{
+  text-align:center;
+  padding:8rem;
+  font-size:1.8rem;
+  color:#888;
 }
-
-.nav-menu::-webkit-scrollbar { width: 6px; }
-.nav-menu::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-.nav-menu::-webkit-scrollbar-thumb { 
-  background: var(--gold); 
-  border-radius: 3px;
-}
-
-.nav-item {
-  margin-bottom: 0.75rem;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  padding: 1.1rem 1.4rem;
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
-  border-radius: 14px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-link::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0;
-  width: 4px; height: 100%;
-  background: var(--gold);
-  transform: scaleY(0);
-  transition: transform 0.3s ease;
-}
-
-.nav-link i {
-  width: 24px;
-  margin-right: 1rem;
-  font-size: 1.1rem;
-  transition: transform 0.3s ease;
-}
-
-.nav-link:hover, .nav-link.active {
-  background: rgba(30, 64, 175, 0.2);
-  color: white;
-  transform: translateX(8px);
-  box-shadow: 0 10px 25px rgba(30, 64, 175, 0.2);
-}
-
-.nav-link:hover::before, .nav-link.active::before {
-  transform: scaleY(1);
-}
-
-.nav-link:hover i, .nav-link.active i {
-  transform: scale(1.1);
-}
-
-.nav-link.active {
-  background: linear-gradient(135deg, var(--accent), #2563eb);
-  box-shadow: 0 8px 25px rgba(30, 64, 175, 0.3);
-}
-
-/* ====== MENÚ MÓVIL (DESLIZA DESDE ARRIBA) ====== */
-.mobile-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  z-index: 1001;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.mobile-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.mobile-menu {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  background: rgba(15, 23, 42, 0.98);
-  backdrop-filter: blur(20px);
-  transform: translateY(-100%);
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 1002;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.mobile-menu.active {
-  transform: translateY(0);
-}
-
-.mobile-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-}
-
-.mobile-nav-link {
-  display: flex;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.mobile-nav-link::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%) scaleX(0);
-  width: 4px; height: 100%;
-  background: var(--gold);
-  transition: transform 0.3s ease;
-  border-radius: 0 2px 2px 0;
-}
-
-.mobile-nav-link i {
-  width: 20px;
-  margin-right: 1rem;
-  font-size: 1.1rem;
-}
-
-.mobile-nav-link:hover, .mobile-nav-link.active {
-  background: rgba(30, 64, 175, 0.2);
-  color: white;
-  transform: translateX(8px);
-}
-
-.mobile-nav-link.active::before {
-  transform: translateY(-50%) scaleX(1);
-}
-
-/* ====== CONTENIDO PRINCIPAL ====== */
-.main-content {
-  padding: 6rem 2rem 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.section-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  text-align: center;
-  margin: 4rem 0 2.5rem;
-  background: linear-gradient(135deg, var(--gold), #f59e0b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.exam-card {
-  background: var(--card-bg);
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 1px solid var(--glass);
-  backdrop-filter: blur(10px);
-}
-
-.exam-card:hover {
-  transform: translateY(-16px) scale(1.02);
-  box-shadow: var(--shadow-hover);
-  border-color: rgba(251, 191, 36, 0.3);
-}
-
-.card-image {
-  height: 220px;
-  width: 100%;
-  object-fit: cover;
-  background: linear-gradient(45deg, var(--accent), var(--gold));
-}
-
-.card-content {
-  padding: 1.5rem;
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: var(--text);
-  line-height: 1.3;
-}
-
-.card-actions {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
-}
-
-.action-btn {
-  flex: 1;
-  padding: 0.9rem 1.2rem;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.btn-view {
-  background: linear-gradient(135deg, var(--accent), #2563eb);
-  color: white;
-  border-color: rgba(30, 64, 175, 0.3);
-}
-
-.btn-download {
-  background: linear-gradient(135deg, var(--gold), #f59e0b);
-  color: #0f172a;
-  border-color: rgba(251, 191, 36, 0.3);
-}
-
-.action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* ====== BOTÓN SUBIR ====== */
-.upload-section {
-  background: var(--card-bg);
-  border-radius: 24px;
-  padding: 3.5rem 2rem;
-  text-align: center;
-  margin: 4rem auto;
-  max-width: 500px;
-  border: 2px dashed rgba(251, 191, 36, 0.4);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.upload-section:hover {
-  border-color: var(--gold);
-  box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
-}
-
-.upload-btn {
-  background: linear-gradient(135deg, var(--gold), #f59e0b);
-  color: #0f172a;
-  padding: 1.2rem 3rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 1.3rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 15px 35px rgba(251, 191, 36, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.upload-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 25px 50px rgba(251, 191, 36, 0.4);
-}
-
-/* ====== ESTADOS DE CARGA ====== */
-.loading-state {
-  text-align: center;
-  padding: 8rem 2rem;
-}
-
-.loading-text {
-  font-size: 1.6rem;
-  color: var(--text-muted);
-  margin-bottom: 2rem;
-}
-
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid var(--glass);
-  border-top: 3px solid var(--gold);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.empty-state {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 4rem 2rem;
-  color: var(--text-muted);
-}
-
-.empty-state i {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
-}
-
-/* ====== RESPONSIVE ====== */
-@media (max-width: 1024px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.active { transform: translateX(0); }
-  .main-content { padding-left: 2rem; padding-right: 2rem; }
-}
-
-@media (max-width: 768px) {
-  .menu-trigger { display: flex; }
-  .sidebar { 
-    width: 100%; 
-    transform: translateX(-100%); 
-    left: 0;
-  }
-  .sidebar.active { transform: translateX(0); }
-  .cards-grid { 
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-  .main-content { padding: 5rem 1.5rem 2rem; }
-}
-
-@media (max-width: 480px) {
-  .cards-grid { 
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-  .card-image { height: 200px; }
-  .section-title { 
-    font-size: 2rem;
-    margin: 3rem 0 2rem;
-  }
-  .upload-section { padding: 2.5rem 1.5rem; margin: 3rem 1rem; }
-}
-
-/* ====== ANIMACIONES DE ENTRADA ====== */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.exam-card, .upload-section, .section-title {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.exam-card:nth-child(1) { animation-delay: 0.1s; }
-.exam-card:nth-child(2) { animation-delay: 0.2s; }
-.exam-card:nth-child(3) { animation-delay: 0.3s; }
 </style>
 </head>
 <body>
-<!-- Overlay para menú móvil -->
-<div class="mobile-overlay" onclick="closeMobileMenu()"></div>
 
-<!-- Header principal -->
-<header class="header-main">
-  <h1>Banco de Exámenes</h1>
-  <div class="menu-trigger" onclick="toggleMobileMenu()">
-    <i class="fas fa-bars"></i>
-  </div>
-</header>
+<!-- Botón hamburguesa -->
+<div class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('active'); this.classList.toggle('active')">
+  <i class="fas fa-bars"></i>
+</div>
 
-<!-- Menú lateral (desktop) -->
-<nav class="sidebar" id="sidebar">
-  <div class="logo-section">
+<!-- Menú desplegable -->
+<nav class="sidebar">
+  <div class="logo">
     <img src="https://raw.githubusercontent.com/roqueb489-hash/banco-examenes-y-biblioteca/main/Insignia-New-cuadrado.png" 
-         alt="IEP San Luis Gonzaga">
+         alt="IEP San Luis Gonzaga - Huánuco">
   </div>
-  
-  <a href="index.html" class="nav-btn">
-    <i class="fas fa-home"></i> Volver al Inicio
+
+  <a href="index.html" class="volver-btn">
+    <i class="fas fa-home"></i> VOLVER AL INICIO
   </a>
-  
-  <div class="nav-menu">
-    <div class="nav-item">
-      <a href="#area1" class="nav-link active">
-        <i class="fas fa-brain"></i>
-        <span>Área I</span>
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="#area2" class="nav-link">
-        <i class="fas fa-calculator"></i>
-        <span>Área II</span>
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="#area3" class="nav-link">
-        <i class="fas fa-flask"></i>
-        <span>Área III</span>
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="#area4" class="nav-link">
-        <i class="fas fa-book-open"></i>
-        <span>Área IV</span>
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="#area5" class="nav-link">
-        <i class="fas fa-globe"></i>
-        <span>Área V</span>
-      </a>
-    </div>
-    <div class="nav-item">
-      <a href="#area6" class="nav-link">
-        <i class="fas fa-trophy"></i>
-        <span>Concursos</span>
-      </a>
-    </div>
-  </div>
+
+  <ul>
+    <li><a href="#area1" class="active"><i class="fas fa-brain"></i> Área I</a></li>
+    <li><a href="#area2"><i class="fas fa-calculator"></i> Área II</a></li>
+    <li><a href="#area3"><i class="fas fa-flask"></i> Área III</a></li>
+    <li><a href="#area4"><i class="fas fa-book-open"></i> Área IV</a></li>
+    <li><a href="#area5"><i class="fas fa-globe"></i> Área V</a></li>
+    <li><a href="#area6"><i class="fas fa-trophy"></i> Concursos</a></li>
+  </ul>
 </nav>
 
-<!-- Menú móvil (desliza desde arriba) -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-nav">
-    <a href="#area1" class="mobile-nav-link active">
-      <i class="fas fa-brain"></i>
-      <span>Área I</span>
-    </a>
-    <a href="#area2" class="mobile-nav-link">
-      <i class="fas fa-calculator"></i>
-      <span>Área II</span>
-    </a>
-    <a href="#area3" class="mobile-nav-link">
-      <i class="fas fa-flask"></i>
-      <span>Área III</span>
-    </a>
-    <a href="#area4" class="mobile-nav-link">
-      <i class="fas fa-book-open"></i>
-      <span>Área IV</span>
-    </a>
-    <a href="#area5" class="mobile-nav-link">
-      <i class="fas fa-globe"></i>
-      <span>Área V</span>
-    </a>
-    <a href="#area6" class="mobile-nav-link">
-      <i class="fas fa-trophy"></i>
-      <span>Concursos</span>
-    </a>
-    <a href="index.html" class="mobile-nav-link" style="margin-top: auto; margin-bottom: 1rem;">
-      <i class="fas fa-home"></i>
-      <span>Volver al Inicio</span>
-    </a>
+<header>
+  <h1>BANCO DE EXÁMENES</h1>
+</header>
+
+<div class="container">
+  <div class="loading" id="loading">Cargando exámenes...</div>
+
+  <!-- ÁREA I -->
+  <h2 class="section-title" id="area1">Área I</h2>
+  <div class="cards" id="cont-area1"></div>
+  <div class="subir">
+    <button onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">
+      SUBIR EXAMEN ÁREA I
+    </button>
+  </div>
+
+  <!-- ÁREA II -->
+  <h2 class="section-title" id="area2">Área II</h2>
+  <div class="cards" id="cont-area2"></div>
+  <div class="subir">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">
+      SUBIR EXAMEN ÁREA II
+    </button>
+  </div>
+
+  <!-- ÁREA III -->
+  <h2 class="section-title" id="area3">Área III</h2>
+  <div class="cards" id="cont-area3"></div>
+  <div class="subir">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">
+      SUBIR EXAMEN ÁREA III
+    </button>
+  </div>
+
+  <!-- ÁREA IV -->
+  <h2 class="section-title" id="area4">Área IV</h2>
+  <div class="cards" id="cont-area4"></div>
+  <div class="subir">
+    <button onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">
+      SUBIR EXAMEN ÁREA IV
+    </button>
+  </div>
+
+  <!-- ÁREA V -->
+  <h2 class="section-title" id="area5">Área V</h2>
+  <div class="cards" id="cont-area5"></div>
+  <div class="subir">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">
+      SUBIR EXAMEN ÁREA V
+    </button>
+  </div>
+
+  <!-- CONCURSOS -->
+  <h2 class="section-title" id="area6">Concursos Interescolares</h2>
+  <div class="cards" id="cont-area6"></div>
+  <div class="subir">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">
+      SUBIR EXAMEN DE CONCURSO
+    </button>
   </div>
 </div>
 
-<!-- Contenido principal -->
-<main class="main-content">
-  <div class="loading-state" id="loading">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Cargando exámenes...</div>
-  </div>
-
-  <section>
-    <h2 class="section-title" id="area1">Área I</h2>
-    <div class="cards-grid" id="cont-area1"></div>
-    <div class="upload-section">
-      <button class="upload-btn" onclick="window.open('https://drive.google.com/drive/folders/18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ','_blank')">
-        <i class="fas fa-cloud-upload-alt"></i> Subir Examen
-      </button>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="section-title" id="area2">Área II</h2>
-    <div class="cards-grid" id="cont-area2"></div>
-    <div class="upload-section">
-      <button class="upload-btn" onclick="window.open('https://drive.google.com/drive/folders/1i6XARtZklKOQlIyI_lvpnV52Bw8IgZmp','_blank')">
-        <i class="fas fa-cloud-upload-alt"></i> Subir Examen
-      </button>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="section-title" id="area3">Área III</h2>
-    <div class="cards-grid" id="cont-area3"></div>
-    <div class="upload-section">
-      <button class="upload-btn" onclick="window.open('https://drive.google.com/drive/folders/1w_sXgXEfhZ3PYCuEri00JtI5CdfU5F1N','_blank')">
-        <i class="fas fa-cloud-upload-alt"></i> Subir Examen
-      </button>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="section-title" id="area4">Área IV</h2>
-    <div class="cards-grid" id="cont-area4"></div>
-    <div class="upload-section">
-      <button class="upload-btn" onclick="window.open('https://drive.google.com/drive/folders/16oCtaxlZHPnIpq2q-b4JPHihW3seYuWU','_blank')">
-        <i class="fas fa-cloud-upload-alt"></i> Subir Examen
-      </button>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="section-title" id="area5">Área V</h2>
-    <div class="cards-grid" id="cont-area5"></div>
-    <div class="upload-section">
-      <button class="upload-btn" onclick="window.open('https://drive.google.com/drive/folders/1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77','_blank')">
-        <i class="fas fa-cloud-upload-alt"></i> Subir Examen
-      </button>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="section-title" id="area6">Concursos Interescolares</h2>
-    <div class="cards-grid" id="cont-area6"></div>
-    <div class="upload-section">
-      <button class="upload-btn" onclick="window.open('https://drive.google.com/drive/folders/1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D','_blank')">
-        <i class="fas fa-cloud-upload-alt"></i> Subir Examen
-      </button>
-    </div>
-  </section>
-</main>
-
 <script>
-// Tu script original (mejorado)
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
 const CARPETAS = [
   "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ",
@@ -687,7 +357,6 @@ const CARPETAS = [
   "1SJxoxe9yJP-ianUI0GNK_VrcuvtWdf77",
   "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
 ];
-
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
 
 async function cargarTodo() {
@@ -695,94 +364,44 @@ async function cargarTodo() {
     try {
       const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
       const archivos = await res.json();
-      
       if (archivos.length === 0) {
-        contenedores[i].innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-file-alt" style="font-size: 5rem; color: var(--text-muted);"></i>
-            <h3 style="font-size: 1.5rem; margin: 1rem 0; color: var(--text-muted);">Aún no hay exámenes</h3>
-            <p style="color: var(--text-muted);">Sé el primero en subir uno</p>
-          </div>`;
+        contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:5rem;color:#888;font-size:1.3rem">Aún no hay exámenes</p>';
       } else {
-        contenedores[i].innerHTML = '';
-        archivos.forEach((f, index) => {
+        archivos.forEach(f => {
           const nombre = f.name.replace(/\.pdf$/i, '');
-          const card = document.createElement('div');
-          card.className = 'exam-card';
-          card.style.animationDelay = `${index * 0.1}s`;
-          card.innerHTML = `
-            <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400" 
-                 alt="${nombre}" class="card-image"
-                 onerror="this.style.background='linear-gradient(45deg, var(--accent), var(--gold))'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.style.color='white'; this.style.fontSize='1.2rem'; this.innerHTML='<i class=\'fas fa-file-pdf\'></i> ${nombre}'">
-            <div class="card-content">
-              <h3 class="card-title">${nombre}</h3>
-              <div class="card-actions">
-                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="action-btn btn-view">
-                  <i class="fas fa-eye"></i> Ver
-                </a>
-                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="action-btn btn-download">
-                  <i class="fas fa-download"></i> Descargar
-                </a>
+          contenedores[i].innerHTML += `
+            <div class="card">
+              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400" alt="${nombre}"
+                   onerror="this.src='https://via.placeholder.com/340x200/1e293b/ffffff?text=Examen'">
+              <h3>${nombre}</h3>
+              <div class="btns">
+                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">Ver</a>
+                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">Descargar</a>
               </div>
-            </div>
-          `;
-          contenedores[i].appendChild(card);
+            </div>`;
         });
       }
     } catch (e) {
-      contenedores[i].innerHTML = `
-        <div class="empty-state" style="color: #ef4444;">
-          <i class="fas fa-exclamation-triangle" style="font-size: 5rem; color: #ef4444;"></i>
-          <h3 style="font-size: 1.5rem; margin: 1rem 0; color: #ef4444;">Error de conexión</h3>
-          <p>Intenta recargar la página</p>
-        </div>`;
+      contenedores[i].innerHTML = '<p style="color:#ff6b6b;text-align:center">Error al cargar esta área</p>';
     }
   }
   document.getElementById('loading').style.display = 'none';
 }
 
-// Funciones de menú móvil
-function toggleMobileMenu() {
-  document.getElementById('mobileMenu').classList.toggle('active');
-  document.querySelector('.mobile-overlay').classList.toggle('active');
-}
-
-function closeMobileMenu() {
-  document.getElementById('mobileMenu').classList.remove('active');
-  document.querySelector('.mobile-overlay').classList.remove('active');
-}
-
-// Navegación activa
-function updateActiveNav() {
+// Resaltar menú activo
+window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('.section-title');
-  const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
-  
+  const links = document.querySelectorAll('.sidebar a');
   let current = '';
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 200;
-    if (window.scrollY >= sectionTop) {
-      current = section.getAttribute('id');
-    }
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 150) current = sec.getAttribute('id');
   });
-
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === `#${current}`) {
-      link.classList.add('active');
-    }
-  });
-}
-
-// Event listeners
-window.addEventListener('scroll', updateActiveNav);
-document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    closeMobileMenu();
-    setTimeout(updateActiveNav, 300);
+  links.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === `#${current}`) l.classList.add('active');
   });
 });
 
-// Cargar contenido
 cargarTodo();
 </script>
 </body>
