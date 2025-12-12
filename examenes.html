@@ -8,13 +8,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
-  --bg: #001f3f; /* Azul marino profundo para fondo */
-  --card: #003366; /* Azul más claro para tarjetas */
-  --accent: #ff0000; /* Rojo para acentos principales (botones, highlights) */
-  --gold: #ffd700; /* Amarillo oro para highlights, botones secundarios y detalles */
-  --text: #f0f8ff; /* Blanco azulado suave para texto */
-  --header: rgba(0,31,63,0.96); /* Azul semi-transparente para header */
-  --filter-active: var(--accent); /* Rojo para filtros activos */
+  --bg: #001f3f;
+  --card: #003366;
+  --accent: #ff0000;
+  --gold: #ffd700;
+  --text: #f0f8ff;
+  --header: rgba(0,31,63,0.96);
+  --filter-active: var(--accent);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -49,7 +49,7 @@ header h1{
   max-width:90%;
 }
 
-/* MENÚ LATERAL PC */
+/* ================== MENÚ LATERAL PC - MEJORADO ================== */
 .menu-btn{
   position:fixed;top:18px;left:18px;width:58px;height:58px;
   background:var(--gold);color:#000;border-radius:50%;
@@ -62,8 +62,8 @@ header h1{
 
 .sidebar{
   position:fixed;top:0;left:-360px;width:360px;height:100%;
-  background:linear-gradient(135deg,var(--card),var(--bg));
-  box-shadow:12px 0 50px rgba(0,0,0,0.7);
+  background:linear-gradient(135deg,#002b55,#001f3f);
+  box-shadow:12px 0 50px rgba(0,0,0,0.8);
   z-index:1000;padding:30px;transition:left .45s cubic-bezier(0.68,-.55,.27,1.55);
   display:flex;flex-direction:column;overflow-y:auto;
 }
@@ -77,22 +77,45 @@ header h1{
 .sidebar .logo img{
   width:220px;padding:16px;background:rgba(255,215,0,0.15);
   border:3px solid var(--gold);border-radius:30px;
-  box-shadow:0 15px 40px rgba(255,215,0,0.4);margin:0 auto 25px;display:block;
+  box-shadow:0 15px 40px rgba(255,215,0,0.4);margin:0 auto 30px;display:block;
 }
 .volver-btn{
-  display:block;width:85%;margin:20px auto;padding:16px;
+  display:block;width:88%;margin:25px auto 35px;padding:18px;
   background:var(--accent);color:white;text-align:center;
-  border-radius:20px;font-weight:700;text-decoration:none;
-  box-shadow:0 10px 30px rgba(255,0,0,0.5);transition:.3s;
+  border-radius:24px;font-weight:800;font-size:1.1rem;text-decoration:none;
+  box-shadow:0 12px 35px rgba(255,0,0,0.5);transition:.3s;
 }
-.volver-btn:hover{transform:translateY(-5px)}
+.volver-btn:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(255,0,0,0.6);}
 
-/* MENÚ MÓVIL */
+.sidebar ul{
+  list-style:none;margin-top:20px;
+}
+.sidebar ul li{
+  margin-bottom:8px;
+}
+.sidebar ul li a{
+  display:flex;align-items:center;padding:18px 22px;
+  color:var(--text);font-weight:700;font-size:1.05rem;
+  text-decoration:none;border-radius:18px;
+  transition:all .35s;background:rgba(255,255,255,0.05);
+}
+.sidebar ul li a i{
+  font-size:1.6rem;margin-right:16px;width:36px;text-align:center;
+}
+.sidebar ul li a:hover{
+  background:rgba(255,215,0,0.15);color:var(--gold);transform:translateX(8px);
+}
+.sidebar ul li a.active{
+  background:var(--accent);color:white;box-shadow:0 8px 25px rgba(255,0,0,0.5);
+  transform:translateX(4px);
+}
+
+/* ================== MENÚ MÓVIL - MEJORADO ================== */
 .fab-trigger{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
   width:66px;height:66px;background:var(--gold);color:#000;
   border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:2.1rem;box-shadow:0 12px 35px rgba(255,215,0,0.7);
+  font-size:2.3rem;box-shadow:0 12px 35px rgba(255,215,0,0.7);
   z-index:999;cursor:pointer;transition:.4s;
 }
 .fab-trigger.active{
@@ -100,36 +123,46 @@ header h1{
 }
 .mobile-menu{
   position:fixed;bottom:0;left:0;right:0;
-  background:rgba(0,51,102,0.98);backdrop-filter:blur(20px);
-  border-radius:30px 30px 0 0;padding:100px 20px 30px;
+  background:linear-gradient(135deg,#002b55,#001f3f);backdrop-filter:blur(20px);
+  border-radius:30px 30px 0 0;padding:100px 24px 34px;
   transform:translateY(100%);transition:transform .45s cubic-bezier(0.32,1.2,0.32,1);
-  z-index:998;box-shadow:0 -15px 50px rgba(0,0,0,0.6);
-  width:100%;
-  max-width:480px;margin:0 auto;
+  z-index:998;box-shadow:0 -15px 50px rgba(0,0,0,0.7);
+  width:100%;max-width:480px;margin:0 auto;left:50%;transform:translateX(-50%) translateY(100%);
 }
-.mobile-menu.active{transform:translateY(0);}
+.mobile-menu.active{transform:translateX(-50%) translateY(0);}
 .mobile-menu::before{
   content:'';position:absolute;top:18px;left:50%;transform:translateX(-50%);
   width:50px;height:5px;background:#666;border-radius:10px;
 }
 .mobile-menu-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;
 }
 .mobile-menu-item{
   background:rgba(255,255,255,0.08);color:var(--text);
-  padding:18px 8px;border-radius:20px;text-align:center;
-  text-decoration:none;font-weight:700;font-size:0.88rem;
-  transition:.3s;
+  padding:22px 10px;border-radius:22px;text-align:center;
+  text-decoration:none;font-weight:800;font-size:0.92rem;
+  transition:all .35s;box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
-.mobile-menu-item i{font-size:1.9rem;display:block;margin-bottom:8px;}
-.mobile-menu-item:hover,.mobile-menu-item.active{
+.mobile-menu-item i{
+  font-size:2.1rem;margin-bottom:10px;
+}
+.mobile-menu-item:hover{
+  background:rgba(255,215,0,0.2);color:var(--gold);transform:scale(1.08);
+}
+.mobile-menu-item.active{
   background:var(--accent);color:white;transform:scale(1.08);
+  box-shadow:0 10px 30px rgba(255,0,0,0.5);
 }
 .mobile-menu-item.volver{
   background:var(--accent);color:white;grid-column:1/-1;
+  padding:20px;font-size:1.05rem;
+}
+.mobile-menu-item.volver:hover{
+  background:#cc0000;transform:scale(1.03);
 }
 
-/* FILTRO POR AÑO */
+/* EL RESTO DEL CSS QUEDA IGUAL QUE ANTES */
 .filter-bar{
   display:flex;justify-content:center;flex-wrap:wrap;gap:12px;
   margin:1rem 0 2rem;padding:0 1rem;
@@ -148,7 +181,6 @@ header h1{
   background:var(--filter-active);color:white;border-color:var(--filter-active);
 }
 
-/* CONTENIDO */
 .container{max-width:1400px;margin:0 auto;padding:1rem 1rem;width:100%;}
 .section-title{
   font-size:clamp(2.5rem,7vw,3.6rem);text-align:center;
@@ -193,7 +225,7 @@ header h1{
 }
 .subir button:hover{transform:scale(1.06);background:var(--accent);color:white;}
 
-/* RESPONSIVE - Optimizado para móvil */
+/* RESPONSIVE */
 @media (max-width:1024px){
   .menu-btn,.sidebar,.overlay{display:none!important;}
   body{padding-bottom:120px;}
@@ -212,7 +244,7 @@ header h1{
 <!-- Overlay PC -->
 <div class="overlay" onclick="cerrarMenu()"></div>
 
-<!-- Menú PC -->
+<!-- Menú PC MEJORADO -->
 <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
 <nav class="sidebar" id="sidebar">
   <div class="logo">
@@ -229,16 +261,16 @@ header h1{
   </ul>
 </nav>
 
-<!-- Menú móvil -->
+<!-- Menú móvil MEJORADO -->
 <div class="fab-trigger" onclick="toggleMobileMenu()"><i class="fas fa-shield-alt"></i></div>
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu-grid">
-    <a href="#area1" class="mobile-menu-item"><i class="fas fa-brain"></i> Área I</a>
-    <a href="#area2" class="mobile-menu-item"><i class="fas fa-calculator"></i> Área II</a>
-    <a href="#area3" class="mobile-menu-item"><i class="fas fa-flask"></i> Área III</a>
-    <a href="#area4" class="mobile-menu-item"><i class="fas fa-book"></i> Área IV</a>
-    <a href="#area5" class="mobile-menu-item"><i class="fas fa-globe"></i> Área V</a>
-    <a href="#area6" class="mobile-menu-item"><i class="fas fa-trophy"></i> Concursos</a>
+    <a href="#area1" class="mobile-menu-item"><i class="fas fa-brain"></i><span>Área I</span></a>
+    <a href="#area2" class="mobile-menu-item"><i class="fas fa-calculator"></i><span>Área II</span></a>
+    <a href="#area3" class="mobile-menu-item"><i class="fas fa-flask"></i><span>Área III</span></a>
+    <a href="#area4" class="mobile-menu-item"><i class="fas fa-book"></i><span>Área IV</span></a>
+    <a href="#area5" class="mobile-menu-item"><i class="fas fa-globe"></i><span>Área V</span></a>
+    <a href="#area6" class="mobile-menu-item"><i class="fas fa-trophy"></i><span>Concursos</span></a>
     <a href="index.html" class="mobile-menu-item volver"><i class="fas fa-home"></i> VOLVER A LA BIBLIOTECA</a>
   </div>
 </div>
@@ -248,7 +280,7 @@ header h1{
 <div class="container">
   <div class="loading" id="loading">Cargando exámenes...</div>
 
-  <!-- ÁREAS -->
+  <!-- ÁREAS (igual que antes) -->
   <h2 class="section-title" id="area1">Área I</h2>
   <div class="filter-bar" id="filter-area1"></div>
   <div class="cards" id="cont-area1"></div>
@@ -281,7 +313,7 @@ header h1{
 </div>
 
 <script>
-// El script permanece igual, solo ajusté íconos en HTML para consistencia
+// Script igual que antes (solo agregué cierre automático al tocar fuera del menú móvil)
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
 const CARPETAS = [
   "18QPIPzEixyoOEQpS7AJwz5pVZnlO_buZ",
@@ -292,7 +324,7 @@ const CARPETAS = [
   "1OOWIKgEenaueVSBsGYatXcJGmPcHrF3D"
 ];
 const contenedores = [1,2,3,4,5,6].map(n => document.getElementById('cont-area'+n));
-const filtros = [1,2,3,4,5,6].map(n => document.getElementById('filter-area'+n));
+const filtros = [1,2,3,4,5,6].map(n => minte.document.getElementById('filter-area'+n));
 
 function toggleMenu(){
   document.getElementById('sidebar').classList.toggle('active');
@@ -312,14 +344,14 @@ function toggleMobileMenu(){
   btn.classList.toggle('active');
 }
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('.mobile-menu') && !e.target.closest('.fab-trigger') && !e.target.closest('.menu-btn')) {
+  if (!e.target.closest('.mobile-menu') && !e.target.closest('.fab-trigger') && !e.target.closest('.menu-btn') && !e.target.closest('.sidebar')) {
     cerrarMenu();
     document.getElementById('mobileMenu').classList.remove('active');
     document.querySelector('.fab-trigger').classList.remove('active');
   }
 });
 
-// Resaltar menú activo
+// Resaltar menú activo (scroll)
 window.addEventListener('scroll', () => {
   let current = '';
   document.querySelectorAll('.section-title').forEach(sec => {
