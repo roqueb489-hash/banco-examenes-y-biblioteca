@@ -212,12 +212,7 @@
 
     @media (max-width: 992px) {
       body { padding-left: 0; padding-top: 80px; }
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        box-shadow: none;
-      }
+      .sidebar { width: 100%; height: auto; position: relative; box-shadow: none; }
       .sidebar-header { padding: 1.5rem; }
       nav { display: flex; overflow-x: auto; }
       .nav-item { padding: 1rem; flex: 1; min-width: 150px; justify-content: center; }
@@ -246,33 +241,31 @@
     <div class="cards" id="cards-container"></div>
   </div>
 
-  <!-- Modal Subir Libro -->
+  <!-- Modal Subir Libro con subida directa -->
   <div class="modal" id="modal-libro">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
-      <p>Selecciona la sección y escribe el título exacto del PDF:</p>
+      <p>Selecciona la sección, el PDF y el título exacto:</p>
+      
       <select id="seccion-libro"></select>
+      
+      <input type="file" id="archivo-pdf" accept=".pdf" required>
+      
       <input type="text" id="titulo-libro" placeholder="Ej: La Atalaya - Enero 2025" autofocus>
-
-      <button id="btn-ir-drive">
-        <i class="fas fa-folder-open"></i> Ir a la carpeta de Drive
+      
+      <button id="btn-subir-directo">
+        <i class="fas fa-cloud-upload-alt"></i> Subir PDF directamente
       </button>
-
-      <div style="margin-top:1.5rem; padding:1.2rem; background:#e6f7ff; border-radius:12px; border-left:5px solid #1890ff; text-align:left;">
-        <small style="color:#333; line-height:1.6;">
-          <strong>Pasos rápidos:</strong><br>
-          1. El título se copiará automáticamente al portapapeles.<br>
-          2. Se abrirá la carpeta de Drive.<br>
-          3. Sube tu PDF y <strong>renómbralo exactamente</strong> con el título copiado (sin .pdf).<br>
-          4. ¡Listo! El libro aparecerá aquí al refrescar.
-        </small>
-      </div>
+      
+      <div id="mensaje-subida" style="margin-top:1.5rem; font-weight:bold; min-height:30px;"></div>
     </div>
   </div>
 
   <script>
-    // Configuración
-    const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
+    // === CONFIGURACIÓN ===
+    const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
+    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbxfOZgNZiMjmOTkiXdSNANZfuPfQ-7qsYRUPDUC4QbLgCaTJWaQbHRtQSbSRKzOX9AZ/exec"; // Tu nueva Web App
+
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
     const SECCIONES = {
@@ -296,7 +289,6 @@
     let carpetaIds = {};
     let seccionActual = Object.keys(SECCIONES)[0];
 
-    // Elementos DOM
     const elements = {
       tabs: document.getElementById('tabs'),
       sidebarNav: document.getElementById('sidebar-nav'),
@@ -305,10 +297,11 @@
       loading: document.getElementById('loading'),
       modal: document.getElementById('modal-libro'),
       tituloInput: document.getElementById('titulo-libro'),
-      btnIrDrive: document.getElementById('btn-ir-drive')
+      archivoInput: document.getElementById('archivo-pdf'),
+      btnSubir: document.getElementById('btn-subir-directo'),
+      mensajeSubida: document.getElementById('mensaje-subida')
     };
 
-    // Inicialización
     async function init() {
       await cargarSecciones();
       await cargarCarpetaIds();
@@ -325,7 +318,6 @@
         const isActive = index === 0;
         const icono = obtenerIcono(key);
 
-        // Pestaña
         const tabBtn = crearElemento('div', {
           class: `tab-btn ${isActive ? 'active' : ''}`,
           text: nombre,
@@ -333,7 +325,6 @@
         });
         elements.tabs.appendChild(tabBtn);
 
-        // Sidebar
         const navItem = crearElemento('div', {
           class: `nav-item ${isActive ? 'active' : ''}`,
           html: `<i class="fas ${icono}"></i> ${nombre}`,
@@ -341,12 +332,10 @@
         });
         elements.sidebarNav.appendChild(navItem);
 
-        // Select modal
         const option = crearElemento('option', { value: key, text: nombre });
         elements.selectSeccion.appendChild(option);
       });
 
-      // Banco de exámenes
       const examenesItem = crearElemento('a', {
         href: "examenes.html",
         class: "nav-item",
@@ -364,8 +353,8 @@
 
     async function cargarCarpetaIds() {
       try {
-        const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_PRINCIPAL}`);
-        if (!res.ok) throw new Error('Error al conectar con el servidor');
+        const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${CARPETA_PRINCIPAL}`);
+        if (!res.ok) throw new Error('Error al conectar');
         const items = await res.json();
 
         items.forEach(item => {
@@ -385,7 +374,6 @@
       const cont = elements.cardsContainer;
       cont.innerHTML = '';
 
-      // Tarjeta subir
       const addCard = crearElemento('div', {
         class: 'card add',
         onclick: () => abrirModal(key),
@@ -394,17 +382,17 @@
       cont.appendChild(addCard);
 
       if (!carpetaId) {
-        cont.appendChild(crearMensaje('Carpeta no encontrada. Verifica los nombres en Drive.', 'warning'));
+        cont.appendChild(crearMensaje('Carpeta no encontrada.', 'warning'));
         return;
       }
 
       try {
-        const res = await fetch(`${DEPLOY_URL}?carpeta=${carpetaId}`);
-        if (!res.ok) throw new Error('Error al cargar libros');
+        const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${carpetaId}`);
+        if (!res.ok) throw new Error('Error cargando libros');
         const libros = await res.json();
 
         if (libros.length === 0) {
-          cont.appendChild(crearMensaje('Aún no hay libros en esta sección. ¡Sé el primero!', 'info'));
+          cont.appendChild(crearMensaje('Aún no hay libros en esta sección.', 'info'));
         } else {
           libros.forEach(libro => cont.appendChild(crearTarjetaLibro(libro)));
         }
@@ -415,12 +403,11 @@
 
     function crearElemento(tag, props) {
       const el = document.createElement(tag);
+      Object.assign(el, props);
       if (props.class) el.className = props.class;
       if (props.text) el.textContent = props.text;
       if (props.html) el.innerHTML = props.html;
-      if (props.onclick) el.onclick = props.onclick;
-      if (props.href) el.href = props.href;
-      return Object.assign(el, props);
+      return el;
     }
 
     function crearTarjetaLibro(l) {
@@ -475,61 +462,82 @@
       if (seccionPre) elements.selectSeccion.value = seccionPre;
       elements.modal.classList.add('active');
       elements.tituloInput.focus();
+      elements.archivoInput.value = '';
+      elements.mensajeSubida.innerHTML = '';
     }
 
     function cerrarModal() {
       elements.modal.classList.remove('active');
-      elements.tituloInput.value = '';
     }
 
-    // Acción principal: Ir a Drive
-    elements.btnIrDrive.addEventListener('click', () => {
+    // === SUBIDA DIRECTA ===
+    elements.btnSubir.addEventListener('click', async () => {
       const seccion = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
+      const file = elements.archivoInput.files[0];
 
       if (!titulo) {
-        alert('Por favor, escribe el título exacto del libro');
+        elements.mensajeSubida.innerHTML = 'Por favor escribe el título';
+        elements.mensajeSubida.style.color = 'red';
+        return;
+      }
+      if (!file) {
+        elements.mensajeSubida.innerHTML = 'Selecciona un archivo PDF';
+        elements.mensajeSubida.style.color = 'red';
+        return;
+      }
+      if (!file.name.toLowerCase().endsWith('.pdf')) {
+        elements.mensajeSubida.innerHTML = 'Solo se permiten archivos PDF';
+        elements.mensajeSubida.style.color = 'red';
         return;
       }
 
-      // Copiar al portapapeles
-      navigator.clipboard.writeText(titulo).then(() => {
-        // Mensaje opcional (puedes quitarlo si prefieres silencio total)
-        // alert(`"${titulo}" copiado al portapapeles`);
-      }).catch(() => {
-        alert(`No se pudo copiar automáticamente. Copia manualmente:\n${titulo}`);
-      });
+      elements.mensajeSubida.innerHTML = 'Subiendo... (puede tardar unos segundos)';
+      elements.mensajeSubida.style.color = '#0066cc';
 
-      const carpetaId = carpetaIds[seccion];
-      if (carpetaId) {
-        // Abre la carpeta en modo que facilita subir archivos
-        window.open(`https://drive.google.com/drive/folders/${carpetaId}?usp=drive_fs`, '_blank');
-      } else {
-        alert('Error: Carpeta no encontrada. Refresca la página.');
-        return;
-      }
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = e.target.result.split(',')[1];
 
-      cerrarModal();
+        try {
+          const response = await fetch(DEPLOY_URL_SUBIR, {
+            method: 'POST',
+            body: JSON.stringify({
+              seccion: seccion,
+              titulo: titulo,
+              file: base64,
+              filename: file.name
+            }),
+            headers: { 'Content-Type': 'application/json' }
+          });
 
-      // Opcional: preguntar si quiere refrescar después de unos segundos
-      setTimeout(() => {
-        if (confirm('¿Ya subiste y renombraste el libro? ¿Refrescamos para verlo?')) {
-          cambiarSeccion(seccion);
+          const result = await response.json();
+
+          if (result.success) {
+            elements.mensajeSubida.innerHTML = '¡Libro subido con éxito!<br>Refrescando...';
+            elements.mensajeSubida.style.color = 'green';
+            cerrarModal();
+            setTimeout(() => cambiarSeccion(seccion), 3000);
+          } else {
+            elements.mensajeSubida.innerHTML = 'Error: ' + (result.error || 'Desconocido');
+            elements.mensajeSubida.style.color = 'red';
+          }
+        } catch (err) {
+          elements.mensajeSubida.innerHTML = 'Error de conexión. Intenta de nuevo.';
+          elements.mensajeSubida.style.color = 'red';
         }
-      }, 12000);
+      };
+      reader.readAsDataURL(file);
     });
 
-    // Cerrar modal con clic fuera o Escape
+    // Cerrar modal
     elements.modal.addEventListener('click', (e) => {
       if (e.target === elements.modal) cerrarModal();
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && elements.modal.classList.contains('active')) {
-        cerrarModal();
-      }
+      if (e.key === 'Escape' && elements.modal.classList.contains('active')) cerrarModal();
     });
 
-    // Iniciar
     init();
   </script>
 </body>
