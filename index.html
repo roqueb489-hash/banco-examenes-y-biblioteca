@@ -209,19 +209,6 @@
       outline: none;
       box-shadow: 0 0 0 4px rgba(0,48,135,0.15);
     }
-    .modal-box button {
-      background: var(--p);
-      color: white;
-      padding: 16px 32px;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: .3s;
-    }
-    .modal-box button:hover { background: #00205e; }
 
     @media (max-width: 992px) {
       body { padding-left: 0; padding-top: 80px; }
@@ -263,12 +250,22 @@
   <div class="modal" id="modal-libro">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
-      <p>Selecciona la sección y escribe el título exacto:</p>
+      <p>Selecciona la sección y escribe el título exacto del PDF:</p>
       <select id="seccion-libro"></select>
       <input type="text" id="titulo-libro" placeholder="Ej: La Atalaya - Enero 2025" autofocus>
-      <button id="btn-confirmar">Copiar título y abrir carpeta</button>
-      <div style="margin-top:1.5rem;">
-        <small style="color:#888">El libro aparecerá automáticamente al subirlo.</small>
+
+      <button id="btn-ir-drive">
+        <i class="fas fa-folder-open"></i> Ir a la carpeta de Drive
+      </button>
+
+      <div style="margin-top:1.5rem; padding:1.2rem; background:#e6f7ff; border-radius:12px; border-left:5px solid #1890ff; text-align:left;">
+        <small style="color:#333; line-height:1.6;">
+          <strong>Pasos rápidos:</strong><br>
+          1. El título se copiará automáticamente al portapapeles.<br>
+          2. Se abrirá la carpeta de Drive.<br>
+          3. Sube tu PDF y <strong>renómbralo exactamente</strong> con el título copiado (sin .pdf).<br>
+          4. ¡Listo! El libro aparecerá aquí al refrescar.
+        </small>
       </div>
     </div>
   </div>
@@ -308,7 +305,7 @@
       loading: document.getElementById('loading'),
       modal: document.getElementById('modal-libro'),
       tituloInput: document.getElementById('titulo-libro'),
-      btnConfirmar: document.getElementById('btn-confirmar')
+      btnIrDrive: document.getElementById('btn-ir-drive')
     };
 
     // Inicialización
@@ -319,7 +316,6 @@
       elements.loading.style.display = 'none';
     }
 
-    // Cargar secciones en pestañas, sidebar y select
     function cargarSecciones() {
       elements.tabs.innerHTML = '';
       elements.sidebarNav.innerHTML = '';
@@ -337,7 +333,7 @@
         });
         elements.tabs.appendChild(tabBtn);
 
-        // Menú lateral
+        // Sidebar
         const navItem = crearElemento('div', {
           class: `nav-item ${isActive ? 'active' : ''}`,
           html: `<i class="fas ${icono}"></i> ${nombre}`,
@@ -350,7 +346,7 @@
         elements.selectSeccion.appendChild(option);
       });
 
-      // Banco de exámenes (fijo)
+      // Banco de exámenes
       const examenesItem = crearElemento('a', {
         href: "examenes.html",
         class: "nav-item",
@@ -366,7 +362,6 @@
       return 'fa-book';
     }
 
-    // Cargar IDs de carpetas desde Drive
     async function cargarCarpetaIds() {
       try {
         const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETA_PRINCIPAL}`);
@@ -383,21 +378,23 @@
         });
       } catch (error) {
         console.error('Error cargando carpetas:', error);
-        mostrarError('No se pudieron cargar las carpetas. Verifica la conexión.');
       }
     }
 
-    // Cargar libros de una sección
     async function cargarLibros(carpetaId, key) {
       const cont = elements.cardsContainer;
-      cont.innerHTML = ''; // Limpiar
+      cont.innerHTML = '';
 
-      // Tarjeta "Subir nuevo"
-      const addCard = crearTarjetaSubir(key);
+      // Tarjeta subir
+      const addCard = crearElemento('div', {
+        class: 'card add',
+        onclick: () => abrirModal(key),
+        html: `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro a<br>${SECCIONES[key]}</strong>`
+      });
       cont.appendChild(addCard);
 
       if (!carpetaId) {
-        cont.appendChild(crearMensaje('Carpeta no encontrada. Verifica el nombre en Google Drive.', 'warning'));
+        cont.appendChild(crearMensaje('Carpeta no encontrada. Verifica los nombres en Drive.', 'warning'));
         return;
       }
 
@@ -407,19 +404,15 @@
         const libros = await res.json();
 
         if (libros.length === 0) {
-          cont.appendChild(crearMensaje('Aún no hay libros en esta sección. ¡Sé el primero en subir uno!', 'info'));
+          cont.appendChild(crearMensaje('Aún no hay libros en esta sección. ¡Sé el primero!', 'info'));
         } else {
-          libros.forEach(libro => {
-            const card = crearTarjetaLibro(libro);
-            cont.appendChild(card);
-          });
+          libros.forEach(libro => cont.appendChild(crearTarjetaLibro(libro)));
         }
       } catch (error) {
         cont.appendChild(crearMensaje(`Error: ${error.message}`, 'error'));
       }
     }
 
-    // Crear elementos auxiliares
     function crearElemento(tag, props) {
       const el = document.createElement(tag);
       if (props.class) el.className = props.class;
@@ -427,16 +420,7 @@
       if (props.html) el.innerHTML = props.html;
       if (props.onclick) el.onclick = props.onclick;
       if (props.href) el.href = props.href;
-      Object.assign(el, props);
-      return el;
-    }
-
-    function crearTarjetaSubir(key) {
-      return crearElemento('div', {
-        class: 'card add',
-        onclick: () => abrirModal(key),
-        html: `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro a<br>${SECCIONES[key]}</strong>`
-      });
+      return Object.assign(el, props);
     }
 
     function crearTarjetaLibro(l) {
@@ -470,20 +454,11 @@
       return div;
     }
 
-    function mostrarError(msg) {
-      elements.cardsContainer.innerHTML = crearMensaje(msg, 'error').outerHTML;
-    }
-
-    // Cambiar sección activa
     function cambiarSeccion(key) {
       seccionActual = key;
-
-      // Actualizar pestañas
       document.querySelectorAll('.tab-btn').forEach((btn, i) => {
         btn.classList.toggle('active', Object.keys(SECCIONES)[i] === key);
       });
-
-      // Actualizar sidebar
       document.querySelectorAll('.nav-item').forEach((item, i) => {
         if (i < Object.keys(SECCIONES).length) {
           item.classList.toggle('active', Object.keys(SECCIONES)[i] === key);
@@ -496,7 +471,6 @@
       });
     }
 
-    // Modal
     function abrirModal(seccionPre = '') {
       if (seccionPre) elements.selectSeccion.value = seccionPre;
       elements.modal.classList.add('active');
@@ -508,32 +482,44 @@
       elements.tituloInput.value = '';
     }
 
-    function confirmarSubidaLibro() {
+    // Acción principal: Ir a Drive
+    elements.btnIrDrive.addEventListener('click', () => {
       const seccion = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
 
       if (!titulo) {
-        alert("Por favor, escribe el título del libro");
+        alert('Por favor, escribe el título exacto del libro');
         return;
       }
 
-      navigator.clipboard.writeText(titulo)
-        .then(() => {
-          alert(`¡Título "${titulo}" copiado al portapapeles!\n\nAhora abre la carpeta y renombra el PDF exactamente igual.`);
-          const id = carpetaIds[seccion];
-          if (id) {
-            window.open(`https://drive.google.com/drive/folders/${id}`, "_blank");
-            cerrarModal();
-            setTimeout(() => cambiarSeccion(seccion), 6000); // Refrescar tras subir
-          }
-        })
-        .catch(() => {
-          alert("No se pudo copiar automáticamente. Copia manualmente:\n\n" + titulo);
-        });
-    }
+      // Copiar al portapapeles
+      navigator.clipboard.writeText(titulo).then(() => {
+        // Mensaje opcional (puedes quitarlo si prefieres silencio total)
+        // alert(`"${titulo}" copiado al portapapeles`);
+      }).catch(() => {
+        alert(`No se pudo copiar automáticamente. Copia manualmente:\n${titulo}`);
+      });
 
-    // Eventos
-    elements.btnConfirmar.addEventListener('click', confirmarSubidaLibro);
+      const carpetaId = carpetaIds[seccion];
+      if (carpetaId) {
+        // Abre la carpeta en modo que facilita subir archivos
+        window.open(`https://drive.google.com/drive/folders/${carpetaId}?usp=drive_fs`, '_blank');
+      } else {
+        alert('Error: Carpeta no encontrada. Refresca la página.');
+        return;
+      }
+
+      cerrarModal();
+
+      // Opcional: preguntar si quiere refrescar después de unos segundos
+      setTimeout(() => {
+        if (confirm('¿Ya subiste y renombraste el libro? ¿Refrescamos para verlo?')) {
+          cambiarSeccion(seccion);
+        }
+      }, 12000);
+    });
+
+    // Cerrar modal con clic fuera o Escape
     elements.modal.addEventListener('click', (e) => {
       if (e.target === elements.modal) cerrarModal();
     });
@@ -543,7 +529,7 @@
       }
     });
 
-    // Iniciar app
+    // Iniciar
     init();
   </script>
 </body>
