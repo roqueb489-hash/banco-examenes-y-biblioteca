@@ -277,7 +277,7 @@
   <script>
     // === CONFIGURACIÓN ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbya3WCeerEx3eMYIZZrpg7b31XIOSTOdpne_iMiqU_KnAvHWRSTSw4-Sg68fNvInwEA_g/exec"; // URL CORRECTA Y PÚBLICA
+    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbya3WCeerEx3eMYIZZrpg7b31XIOSTOdpne_iMiqU_KnAvHWRSTSw4-Sg68fNvInwEA_g/exec"; // URL PÚBLICA
 
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
@@ -483,7 +483,7 @@
       elements.modal.classList.remove('active');
     }
 
-    // === SUBIDA DIRECTA ===
+    // === SUBIDA DIRECTA (VERSIÓN FINAL SIN ERROR DE CONEXIÓN) ===
     elements.btnSubir.addEventListener('click', async () => {
       const seccion = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
@@ -512,16 +512,21 @@
       reader.onload = async (e) => {
         const base64 = e.target.result.split(',')[1];
 
+        const payload = JSON.stringify({
+          seccion: seccion,
+          titulo: titulo,
+          file: base64,
+          filename: file.name
+        });
+
         try {
           const response = await fetch(DEPLOY_URL_SUBIR, {
             method: 'POST',
-            body: JSON.stringify({
-              seccion: seccion,
-              titulo: titulo,
-              file: base64,
-              filename: file.name
-            }),
-            headers: { 'Content-Type': 'application/json' }
+            redirect: 'follow',
+            body: payload,
+            headers: {
+              'Content-Type': 'text/plain'  // ¡ESTO RESUELVE EL ERROR DE CONEXIÓN!
+            }
           });
 
           const result = await response.json();
@@ -532,12 +537,13 @@
             cerrarModal();
             setTimeout(() => cambiarSeccion(seccion), 3000);
           } else {
-            elements.mensajeSubida.innerHTML = 'Error: ' + (result.error || 'Desconocido');
+            elements.mensajeSubida.innerHTML = 'Error del servidor: ' + (result.error || 'Desconocido');
             elements.mensajeSubida.style.color = 'red';
           }
         } catch (err) {
           elements.mensajeSubida.innerHTML = 'Error de conexión. Intenta de nuevo.';
           elements.mensajeSubida.style.color = 'red';
+          console.error(err);
         }
       };
       reader.readAsDataURL(file);
