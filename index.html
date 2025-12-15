@@ -275,20 +275,21 @@
   </div>
 
   <script>
-    // === CONFIGURACIÓN FINAL ===
+    // === CONFIGURACIÓN ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbxkn9YzqI1VGxzobuCSCNYMzPN8sEKoaGavVZfu_wXpe7rKbDy7a34wi_ighjL-hJzHhw/exec"; // TU ÚLTIMA URL
+    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbxkn9YzqI1VGxzobuCSCNYMzPN8sEKoaGavVZfu_wXpe7rKbDy7a34wi_ighjL-hJzHhw/exec";
 
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
+    // === SECCIONES AJUSTADAS A TUS CARPETAS REALES ===
     const SECCIONES = {
       'literatura-peruana': 'Literatura Peruana',
-      'mitos-creencias-peruanas': 'Mitos y Creencias Peruanas',
-      'libros-biblicos-religiosos': 'Libros Bíblicos y Religiosos',
-      'publicaciones-wol': 'Publicaciones WOL (jw.org)',
+      'mitos-y-creencias-peruanas': 'Mitos y Creencias Peruanas',
+      'libros-biblicos-y-religiosos': 'Libros Bíblicos y Religiosos',
+      'publicaciones-wol-jw-org': 'Publicaciones WOL (jw.org)',
       'literatura-huanuquena': 'Literatura Huanuqueña',
-      'leyendas-fabulas-mitos': 'Leyendas, Fábulas y Mitos',
-      'creencias-tradiciones-huanuquenas': 'Creencias y Tradiciones Huanuqueñas'
+      'leyendas-fabulas-y-mitos': 'Leyendas, Fábulas y Mitos',
+      'creencias-y-tradiciones-huanuquenas': 'Creencias y Tradiciones Huanuqueñas'
     };
 
     const ICONOS = {
@@ -372,7 +373,12 @@
 
         items.forEach(item => {
           if (item.mimeType === 'application/vnd.google-apps.folder') {
-            const normalized = item.name.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+            let normalized = item.name.toLowerCase();
+            normalized = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quita acentos
+            normalized = normalized.replace(/[^a-z0-9]/g, '-'); // Todo lo no alfanumérico a -
+            normalized = normalized.replace(/-+/g, '-'); // Múltiples - a uno
+            normalized = normalized.replace(/^-|-$/g, ''); // Quita - al inicio/final
+
             if (SECCIONES[normalized]) {
               carpetaIds[normalized] = item.id;
             }
@@ -395,7 +401,7 @@
       cont.appendChild(addCard);
 
       if (!carpetaId) {
-        cont.appendChild(crearMensaje('Carpeta no encontrada.', 'warning'));
+        cont.appendChild(crearMensaje('Carpeta no encontrada. Verifica los nombres en Drive.', 'warning'));
         return;
       }
 
@@ -483,7 +489,7 @@
       elements.modal.classList.remove('active');
     }
 
-    // === SUBIDA DIRECTA (FUNCIONANDO) ===
+    // === SUBIDA DIRECTA ===
     elements.btnSubir.addEventListener('click', async () => {
       const seccion = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
