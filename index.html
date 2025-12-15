@@ -195,7 +195,7 @@
       font-size: 2.2rem;
       margin-bottom: 1rem;
     }
-    .modal-box select, .modal-box input {
+    .modal-box select, .modal-box input[type="text"], .modal-box input[type="file"] {
       width: 100%;
       padding: 16px;
       border: 2px solid #ddd;
@@ -209,6 +209,19 @@
       outline: none;
       box-shadow: 0 0 0 4px rgba(0,48,135,0.15);
     }
+    #btn-subir-directo {
+      background: #28a745;
+      color: white;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: .3s;
+    }
+    #btn-subir-directo:hover { background: #218838; }
 
     @media (max-width: 992px) {
       body { padding-left: 0; padding-top: 80px; }
@@ -264,7 +277,7 @@
   <script>
     // === CONFIGURACIÓN ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbxfOZgNZiMjmOTkiXdSNANZfuPfQ-7qsYRUPDUC4QbLgCaTJWaQbHRtQSbSRKzOX9AZ/exec"; // Tu nueva Web App
+    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbya3WCeerEx3eMYIZZrpg7b31XIOSTOdpne_iMiqU_KnAvHWRSTSw4-Sg68fNvInwEA_g/exec"; // URL CORRECTA Y PÚBLICA
 
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
