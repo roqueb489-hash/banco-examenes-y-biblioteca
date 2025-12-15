@@ -281,15 +281,15 @@
 
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
-    // === SECCIONES AJUSTADAS A TUS CARPETAS REALES ===
+    // === SECCIONES AJUSTADAS ===
     const SECCIONES = {
-      'literatura-peruana': 'Literatura Peruana',
-      'mitos-y-creencias-peruanas': 'Mitos y Creencias Peruanas',
+      'creencias-y-tradiciones-huanuquenas': 'Creencias y Tradiciones Huanuqueñas',
+      'leyendas-fabulas-y-mitos': 'Leyendas, Fábulas y Mitos',
       'libros-biblicos-y-religiosos': 'Libros Bíblicos y Religiosos',
       'publicaciones-wol-jw-org': 'Publicaciones WOL (jw.org)',
       'literatura-huanuquena': 'Literatura Huanuqueña',
-      'leyendas-fabulas-y-mitos': 'Leyendas, Fábulas y Mitos',
-      'creencias-y-tradiciones-huanuquenas': 'Creencias y Tradiciones Huanuqueñas'
+      'literatura-peruana': 'Literatura Peruana',
+      'mitos-y-creencias-peruanas': 'Mitos y Creencias Peruanas'
     };
 
     const ICONOS = {
@@ -375,9 +375,11 @@
           if (item.mimeType === 'application/vnd.google-apps.folder') {
             let normalized = item.name.toLowerCase();
             normalized = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quita acentos
-            normalized = normalized.replace(/[^a-z0-9]/g, '-'); // Todo lo no alfanumérico a -
-            normalized = normalized.replace(/-+/g, '-'); // Múltiples - a uno
+            normalized = normalized.replace(/[^a-z0-9]/g, '-'); // Reemplaza no alfanuméricos por -
+            normalized = normalized.replace(/-+/g, '-'); // Múltiples - por uno
             normalized = normalized.replace(/^-|-$/g, ''); // Quita - al inicio/final
+
+            console.log('Normalized for ' + item.name + ': ' + normalized); // Para debugging
 
             if (SECCIONES[normalized]) {
               carpetaIds[normalized] = item.id;
