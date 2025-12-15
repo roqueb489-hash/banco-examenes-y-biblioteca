@@ -254,7 +254,7 @@
     <div class="cards" id="cards-container"></div>
   </div>
 
-  <!-- Modal Subir Libro con subida directa -->
+  <!-- Modal Subir Libro -->
   <div class="modal" id="modal-libro">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
@@ -275,9 +275,9 @@
   </div>
 
   <script>
-    // === CONFIGURACIÓN ===
+    // === CONFIGURACIÓN FINAL ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbya3WCeerEx3eMYIZZrpg7b31XIOSTOdpne_iMiqU_KnAvHWRSTSw4-Sg68fNvInwEA_g/exec"; // URL PÚBLICA
+    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbxkn9YzqI1VGxzobuCSCNYMzPN8sEKoaGavVZfu_wXpe7rKbDy7a34wi_ighjL-hJzHhw/exec"; // TU ÚLTIMA URL
 
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
@@ -483,7 +483,7 @@
       elements.modal.classList.remove('active');
     }
 
-    // === SUBIDA DIRECTA (VERSIÓN FINAL SIN ERROR DE CONEXIÓN) ===
+    // === SUBIDA DIRECTA (FUNCIONANDO) ===
     elements.btnSubir.addEventListener('click', async () => {
       const seccion = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
@@ -522,10 +522,9 @@
         try {
           const response = await fetch(DEPLOY_URL_SUBIR, {
             method: 'POST',
-            redirect: 'follow',
             body: payload,
             headers: {
-              'Content-Type': 'text/plain'  // ¡ESTO RESUELVE EL ERROR DE CONEXIÓN!
+              'Content-Type': 'text/plain'
             }
           });
 
