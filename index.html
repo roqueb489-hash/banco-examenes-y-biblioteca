@@ -272,19 +272,21 @@
   <script>
     // === CONFIGURACIÓN ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbxoPNW7IPyuiP1nUxkhiWCDnYtLFNO4iv-YXaHQPyuGsaRJ3vsBWJnUWyro1I1Q6eCw2w/exec";
-    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbxkn9YzqI1VGxzobuCSCNYMzPN8sEKoaGavVZfu_wXpe7rKbDy7a34wi_ighjL-hJzHhw/exec";
+    
+    // NUEVA URL DE SUBIDA (la que me diste ahora)
+    const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbwGTUr-dca3rwPV_mw1KowqkjEipg9cmeD7PdFuCye--Wo2Cu6BTRlAsH6ISndzYLRxbA/exec";
 
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
-    // === SECCIONES ACTUALIZADAS SEGÚN TUS CARPETAS REALES ===
+    // === SECCIONES CON NOMBRES EXACTOS DE TUS CARPETAS ===
     const SECCIONES = {
-      'Creencias-y-Tradiciones-Huanuqueñas': 'Creencias y Tradiciones Huanuqueñas',
-      'Leyendas-Fábulas-y-Mitos': 'Leyendas, Fábulas y Mitos',
-      'Libros-Biblicos-y-Religiosos': 'Libros Bíblicos y Religiosos',
-      'Libros-y-textos-religiosos': 'Libros y textos religiosos',
-      'Literatura-Huanuqueña': 'Literatura Huanuqueña',
-      'Literatura-Peruana': 'Literatura Peruana',
-      'Mitos-y-Creencias-Peruanas': 'Mitos y Creencias Peruanas'
+      "Creencias-y-Tradiciones-Huanuqueñas": "Creencias y Tradiciones Huanuqueñas",
+      "Leyendas-Fábulas-y-Mitos": "Leyendas, Fábulas y Mitos",
+      "Libros-Biblicos-y-Religiosos": "Libros Bíblicos y Religiosos",
+      "Libros-y-textos-religiosos": "Libros y textos religiosos",
+      "Literatura-Huanuqueña": "Literatura Huanuqueña",
+      "Literatura-Peruana": "Literatura Peruana",
+      "Mitos-y-Creencias-Peruanas": "Mitos y Creencias Peruanas"
     };
 
     const ICONOS = {
@@ -368,13 +370,9 @@
 
         items.forEach(item => {
           if (item.mimeType === 'application/vnd.google-apps.folder') {
-            // Usamos el nombre EXACTO de la carpeta (como aparece en Drive)
-            const normalized = item.name;  // Ya no normalizamos, porque las claves coinciden exactamente
-
-            console.log('Carpeta detectada: ' + item.name + ' → ID: ' + item.id);
-
-            if (SECCIONES[normalized]) {
-              carpetaIds[normalized] = item.id;
+            const nombreExacto = item.name;
+            if (SECCIONES[nombreExacto]) {
+              carpetaIds[nombreExacto] = item.id;
             }
           }
         });
