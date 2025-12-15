@@ -236,7 +236,7 @@
 <body>
   <aside class="sidebar">
     <div class="sidebar-header">
-      <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga" 
+      <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
            onerror="this.src='https://via.placeholder.com/150/003087/white?text=SL'">
       <h2>Biblioteca<br>Sanluisina</h2>
     </div>
@@ -259,17 +259,12 @@
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
       <p>Selecciona la sección, el PDF y el título exacto:</p>
-      
       <select id="seccion-libro"></select>
-      
       <input type="file" id="archivo-pdf" accept=".pdf" required>
-      
       <input type="text" id="titulo-libro" placeholder="Ej: La Atalaya - Enero 2025" autofocus>
-      
       <button id="btn-subir-directo">
         <i class="fas fa-cloud-upload-alt"></i> Subir PDF directamente
       </button>
-      
       <div id="mensaje-subida" style="margin-top:1.5rem; font-weight:bold; min-height:30px;"></div>
     </div>
   </div>
@@ -281,15 +276,15 @@
 
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
-    // === SECCIONES AJUSTADAS A TUS CARPETAS REALES ===
+    // === SECCIONES ACTUALIZADAS SEGÚN TUS CARPETAS REALES ===
     const SECCIONES = {
-      'creencias-y-tradiciones-huanuquenas': 'Creencias y Tradiciones Huanuqueñas',
-      'leyendas-fabulas-y-mitos': 'Leyendas, Fábulas y Mitos',
-      'libros-biblicos-y-religiosos': 'Libros Bíblicos y Religiosos',
-      'libros-y-textos-religiosos': 'Libros y textos religiosos',
-      'literatura-huanuquena': 'Literatura Huanuqueña',
-      'literatura-peruana': 'Literatura Peruana',
-      'mitos-y-creencias-peruanas': 'Mitos y Creencias Peruanas'
+      'Creencias-y-Tradiciones-Huanuqueñas': 'Creencias y Tradiciones Huanuqueñas',
+      'Leyendas-Fábulas-y-Mitos': 'Leyendas, Fábulas y Mitos',
+      'Libros-Biblicos-y-Religiosos': 'Libros Bíblicos y Religiosos',
+      'Libros-y-textos-religiosos': 'Libros y textos religiosos',
+      'Literatura-Huanuqueña': 'Literatura Huanuqueña',
+      'Literatura-Peruana': 'Literatura Peruana',
+      'Mitos-y-Creencias-Peruanas': 'Mitos y Creencias Peruanas'
     };
 
     const ICONOS = {
@@ -360,7 +355,7 @@
 
     function obtenerIcono(key) {
       for (const [palabra, icono] of Object.entries(ICONOS)) {
-        if (key.includes(palabra)) return icono;
+        if (key.toLowerCase().includes(palabra)) return icono;
       }
       return 'fa-book';
     }
@@ -373,13 +368,10 @@
 
         items.forEach(item => {
           if (item.mimeType === 'application/vnd.google-apps.folder') {
-            let normalized = item.name.toLowerCase();
-            normalized = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quitar acentos
-            normalized = normalized.replace(/[^a-z0-9]/g, '-'); // Reemplazar no alfanuméricos por -
-            normalized = normalized.replace(/-+/g, '-'); // Múltiples - por uno
-            normalized = normalized.replace(/^-|-$/g, ''); // Quitar - al inicio/final
+            // Usamos el nombre EXACTO de la carpeta (como aparece en Drive)
+            const normalized = item.name;  // Ya no normalizamos, porque las claves coinciden exactamente
 
-            console.log('Normalized for ' + item.name + ': ' + normalized); // Para debugging
+            console.log('Carpeta detectada: ' + item.name + ' → ID: ' + item.id);
 
             if (SECCIONES[normalized]) {
               carpetaIds[normalized] = item.id;
