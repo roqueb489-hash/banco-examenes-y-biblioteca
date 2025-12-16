@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    /* TODO EL CSS ES EL MISMO (lo mantengo igual para no alargar el mensaje) */
     :root {
       --p: #003087;
       --a: #FFD700;
@@ -15,211 +16,43 @@
       --r: 20px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--l);
-      color: var(--d);
-      padding-left: 280px;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-    .sidebar {
-      position: fixed;
-      left: 0; top: 0;
-      width: 280px;
-      height: 100vh;
-      background: linear-gradient(180deg, var(--p), #0146c6);
-      color: white;
-      z-index: 999;
-      box-shadow: 8px 0 30px rgba(0,48,135,0.3);
-      overflow-y: auto;
-    }
-    .sidebar-header {
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-    .sidebar-header img {
-      width: 150px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.2);
-      padding: 12px;
-    }
-    .sidebar-header h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
-      margin-top: 1rem;
-    }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 1rem 2rem;
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      font-weight: 600;
-      transition: .3s;
-      cursor: pointer;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--l); color: var(--d); padding-left: 280px; overflow-x: hidden; min-height: 100vh; }
+    .sidebar { position: fixed; left: 0; top: 0; width: 280px; height: 100vh; background: linear-gradient(180deg, var(--p), #0146c6); color: white; z-index: 999; box-shadow: 8px 0 30px rgba(0,48,135,0.3); overflow-y: auto; }
+    .sidebar-header { padding: 2.5rem 1.5rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-header img { width: 150px; border-radius: 20px; background: rgba(255,255,255,0.2); padding: 12px; }
+    .sidebar-header h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; margin-top: 1rem; }
+    .nav-item { display: flex; align-items: center; gap: 15px; padding: 1rem 2rem; color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 600; transition: .3s; cursor: pointer; }
     .nav-item:hover { background: rgba(255,255,255,0.15); }
-    .nav-item.active {
-      background: rgba(255,255,255,0.25);
-      border-left: 5px solid var(--a);
-      font-weight: 700;
-    }
+    .nav-item.active { background: rgba(255,255,255,0.25); border-left: 5px solid var(--a); font-weight: 700; }
     .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-    .hero {
-      text-align: center;
-      padding: 5rem 0;
-      background: linear-gradient(135deg, var(--p), #0146c6);
-      color: white;
-      margin: -2rem -2rem 2rem;
-      border-radius: 0 0 var(--r) var(--r);
-    }
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.5rem;
-      margin-bottom: 0.5rem;
-    }
+    .hero { text-align: center; padding: 5rem 0; background: linear-gradient(135deg, var(--p), #0146c6); color: white; margin: -2rem -2rem 2rem; border-radius: 0 0 var(--r) var(--r); }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 0.5rem; }
     .hero p { font-size: 1.2rem; opacity: 0.9; }
-    .tabs {
-      margin: 2rem 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      justify-content: center;
-    }
-    .tab-btn {
-      padding: 0.9rem 1.8rem;
-      background: white;
-      border: 2px solid #ddd;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .3s;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .tab-btn.active {
-      background: var(--p);
-      color: white;
-      border-color: var(--p);
-    }
+    .tabs { margin: 2rem 0; display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
+    .tab-btn { padding: 0.9rem 1.8rem; background: white; border: 2px solid #ddd; border-radius: 50px; font-weight: 600; cursor: pointer; transition: .3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .tab-btn.active { background: var(--p); color: white; border-color: var(--p); }
     .tab-btn:hover:not(.active) { background: #f0f0f0; }
-    #loading {
-      text-align: center;
-      padding: 4rem;
-      font-size: 1.5rem;
-      color: #666;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-    .card {
-      background: white;
-      border-radius: var(--r);
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-      transition: .4s;
-      border: 3px solid transparent;
-    }
-    .card:hover {
-      transform: translateY(-12px);
-      border-color: var(--a);
-    }
-    .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      background: #f0f0f0;
-    }
-    .card h3 {
-      padding: 1rem;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
-      font-weight: 800;
-      text-align: center;
-    }
-    .btn {
-      display: inline-block;
-      padding: 0.8rem 1.4rem;
-      margin: 0 0.5rem 1rem;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 700;
-      transition: .3s;
-    }
+    #loading { text-align: center; padding: 4rem; font-size: 1.5rem; color: #666; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; margin-top: 1rem; }
+    .card { background: white; border-radius: var(--r); overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.12); transition: .4s; border: 3px solid transparent; }
+    .card:hover { transform: translateY(-12px); border-color: var(--a); }
+    .card img { width: 100%; height: 200px; object-fit: cover; background: #f0f0f0; }
+    .card h3 { padding: 1rem; font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 800; text-align: center; }
+    .btn { display: inline-block; padding: 0.8rem 1.4rem; margin: 0 0.5rem 1rem; border-radius: 12px; text-decoration: none; font-weight: 700; transition: .3s; }
     .read { background: var(--p); color: white; }
     .read:hover { background: #00205e; }
     .download { background: #dc2626; color: white; }
     .download:hover { background: #b91c1c; }
-    .add {
-      background: linear-gradient(135deg, var(--p), #0146c6);
-      color: white;
-      text-align: center;
-      padding: 3rem;
-      cursor: pointer;
-      transition: .3s;
-      border: 3px dashed rgba(255,255,255,0.4);
-    }
+    .add { background: linear-gradient(135deg, var(--p), #0146c6); color: white; text-align: center; padding: 3rem; cursor: pointer; transition: .3s; border: 3px dashed rgba(255,255,255,0.4); }
     .add:hover { opacity: 0.9; }
     .add i { font-size: 4.5rem; margin-bottom: 1rem; }
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
     .modal.active { display: flex; }
-    .modal-box {
-      background: white;
-      border-radius: 24px;
-      padding: 2.5rem;
-      max-width: 520px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-    .modal-box h2 {
-      color: var(--p);
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
-    .modal-box select, .modal-box input[type="text"], .modal-box input[type="file"] {
-      width: 100%;
-      padding: 16px;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      margin: 1rem 0;
-      transition: .3s;
-    }
-    .modal-box select:focus, .modal-box input:focus {
-      border-color: var(--p);
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(0,48,135,0.15);
-    }
-    #btn-subir-directo {
-      background: #28a745;
-      color: white;
-      padding: 16px 32px;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: .3s;
-    }
+    .modal-box { background: white; border-radius: 24px; padding: 2.5rem; max-width: 520px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .modal-box h2 { color: var(--p); font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 1rem; }
+    .modal-box select, .modal-box input[type="text"], .modal-box input[type="file"] { width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 12px; font-size: 1.1rem; margin: 1rem 0; transition: .3s; }
+    .modal-box select:focus, .modal-box input:focus { border-color: var(--p); outline: none; box-shadow: 0 0 0 4px rgba(0,48,135,0.15); }
+    #btn-subir-directo { background: #28a745; color: white; padding: 16px 32px; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 1rem; transition: .3s; }
     #btn-subir-directo:hover { background: #218838; }
     @media (max-width: 992px) {
       body { padding-left: 0; padding-top: 80px; }
@@ -232,6 +65,7 @@
   </style>
 </head>
 <body>
+  <!-- TODO EL HTML ES EL MISMO -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
@@ -249,7 +83,6 @@
     <div class="tabs" id="tabs"></div>
     <div class="cards" id="cards-container"></div>
   </div>
-  <!-- Modal Subir Libro -->
   <div class="modal" id="modal-libro">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
@@ -264,12 +97,10 @@
     </div>
   </div>
   <script>
-    // === CONFIGURACIÓN ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
     const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbwGTUr-dca3rwPV_mw1KowqkjEipg9cmeD7PdFuCye--Wo2Cu6BTRlAsH6ISndzYLRxbA/exec";
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
-    // === NOMBRES EXACTOS DE TUS CARPETAS EN DRIVE (según tu captura) ===
     const SECCIONES = {
       "Creencias y Tradiciones Huanuqueñas": "Creencias y Tradiciones Huanuqueñas",
       "Leyendas, Fábulas y Mitos": "Leyendas, Fábulas y Mitos",
@@ -279,11 +110,6 @@
       "Literatura Peruana": "Literatura Peruana",
       "Mitos y Creencias Peruanas": "Mitos y Creencias Peruanas"
     };
-
-    // Función para normalizar nombres (quitar tildes para búsqueda segura en subida)
-    function normalizarNombre(nombre) {
-      return nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
 
     const ICONOS = {
       'biblicos': 'fa-book-bible',
@@ -308,177 +134,11 @@
       mensajeSubida: document.getElementById('mensaje-subida')
     };
 
-    async function init() {
-      await cargarSecciones();
-      await cargarCarpetaIds();
-      cambiarSeccion(seccionActual);
-      elements.loading.style.display = 'none';
-    }
+    // ... (todas las funciones init, cargarSecciones, obtenerIcono, cargarCarpetaIds, cargarLibros, crearElemento, crearTarjetaLibro, crearMensaje, cambiarSeccion, abrirModal, cerrarModal son IGUALES al último código que te di)
 
-    function cargarSecciones() {
-      elements.tabs.innerHTML = '';
-      elements.sidebarNav.innerHTML = '';
-      elements.selectSeccion.innerHTML = '';
-
-      Object.entries(SECCIONES).forEach(([nombreCarpeta, nombreMostrar], index) => {
-        const key = nombreCarpeta;
-        const isActive = index === 0;
-        const icono = obtenerIcono(key);
-
-        const tabBtn = crearElemento('div', {
-          class: `tab-btn ${isActive ? 'active' : ''}`,
-          text: nombreMostrar,
-          onclick: () => cambiarSeccion(key)
-        });
-        elements.tabs.appendChild(tabBtn);
-
-        const navItem = crearElemento('div', {
-          class: `nav-item ${isActive ? 'active' : ''}`,
-          html: `<i class="fas ${icono}"></i> ${nombreMostrar}`,
-          onclick: () => cambiarSeccion(key)
-        });
-        elements.sidebarNav.appendChild(navItem);
-
-        const option = crearElemento('option', { value: key, text: nombreMostrar });
-        elements.selectSeccion.appendChild(option);
-      });
-
-      const examenesItem = crearElemento('a', {
-        href: "examenes.html",
-        class: "nav-item",
-        html: `<i class="fas fa-file-alt"></i> Banco de Exámenes`
-      });
-      elements.sidebarNav.appendChild(examenesItem);
-    }
-
-    function obtenerIcono(key) {
-      for (const [palabra, icono] of Object.entries(ICONOS)) {
-        if (key.toLowerCase().includes(palabra)) return icono;
-      }
-      return 'fa-book';
-    }
-
-    async function cargarCarpetaIds() {
-      try {
-        const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${CARPETA_PRINCIPAL}`);
-        if (!res.ok) throw new Error('Error al conectar');
-        const items = await res.json();
-        items.forEach(item => {
-          if (item.mimeType === 'application/vnd.google-apps.folder') {
-            const nombreExacto = item.name.trim();
-            if (SECCIONES.hasOwnProperty(nombreExacto)) {
-              carpetaIds[nombreExacto] = item.id;
-            }
-          }
-        });
-      } catch (error) {
-        console.error('Error cargando carpetas:', error);
-      }
-    }
-
-    async function cargarLibros(carpetaId, key) {
-      const cont = elements.cardsContainer;
-      cont.innerHTML = '';
-      const addCard = crearElemento('div', {
-        class: 'card add',
-        onclick: () => abrirModal(key),
-        html: `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro a<br>${SECCIONES[key]}</strong>`
-      });
-      cont.appendChild(addCard);
-
-      if (!carpetaId) {
-        cont.appendChild(crearMensaje('Carpeta no encontrada. Verifica los nombres en Drive.', 'warning'));
-        return;
-      }
-
-      try {
-        const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${carpetaId}`);
-        if (!res.ok) throw new Error('Error cargando libros');
-        const libros = await res.json();
-        if (libros.length === 0) {
-          cont.appendChild(crearMensaje('Aún no hay libros en esta sección.', 'info'));
-        } else {
-          libros.forEach(libro => {
-            if (libro.mimeType !== 'application/vnd.google-apps.folder') {
-              cont.appendChild(crearTarjetaLibro(libro));
-            }
-          });
-        }
-      } catch (error) {
-        cont.appendChild(crearMensaje(`Error: ${error.message}`, 'error'));
-      }
-    }
-
-    function crearElemento(tag, props) {
-      const el = document.createElement(tag);
-      Object.assign(el, props);
-      if (props.class) el.className = props.class;
-      if (props.text) el.textContent = props.text;
-      if (props.html) el.innerHTML = props.html;
-      return el;
-    }
-
-    function crearTarjetaLibro(l) {
-      const nombre = l.name.replace(/\.pdf$/i, '').trim();
-      const thumbnail = `https://drive.google.com/thumbnail?id=${l.id}&sz=w600`;
-      const placeholder = `https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,25)+'...')}`;
-      const card = crearElemento('div', { class: 'card' });
-      card.innerHTML = `
-        <img src="${thumbnail}" alt="${nombre}" onerror="this.src='${placeholder}'" loading="lazy">
-        <h3 title="${nombre}">${nombre.length > 45 ? nombre.substring(0,42)+'...' : nombre}</h3>
-        <div style="padding:0 1rem 1rem;text-align:center">
-          <a href="https://drive.google.com/file/d/${l.id}/preview" target="_blank" class="btn read">
-            <i class="fas fa-eye"></i> Leer
-          </a>
-          <a href="https://drive.google.com/uc?id=${l.id}&export=download" class="btn download">
-            <i class="fas fa-download"></i> Descargar
-          </a>
-        </div>
-      `;
-      return card;
-    }
-
-    function crearMensaje(texto, tipo = 'info') {
-      const div = crearElemento('div', {
-        style: 'grid-column:1/-1;text-align:center;padding:4rem;font-size:1.3rem;color:#666'
-      });
-      if (tipo === 'error') div.style.color = '#dc2626';
-      if (tipo === 'warning') div.style.color = '#b45309';
-      div.textContent = texto;
-      return div;
-    }
-
-    function cambiarSeccion(key) {
-      seccionActual = key;
-      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', Object.keys(SECCIONES)[i] === key);
-      });
-      document.querySelectorAll('.nav-item').forEach((item, i) => {
-        if (i < Object.keys(SECCIONES).length) {
-          item.classList.toggle('active', Object.keys(SECCIONES)[i] === key);
-        }
-      });
-      elements.loading.style.display = 'block';
-      cargarLibros(carpetaIds[key] || null, key).finally(() => {
-        elements.loading.style.display = 'none';
-      });
-    }
-
-    function abrirModal(seccionPre = '') {
-      if (seccionPre) elements.selectSeccion.value = seccionPre;
-      elements.modal.classList.add('active');
-      elements.tituloInput.focus();
-      elements.archivoInput.value = '';
-      elements.mensajeSubida.innerHTML = '';
-    }
-
-    function cerrarModal() {
-      elements.modal.classList.remove('active');
-    }
-
-    // === SUBIDA DE PDF CON NORMALIZACIÓN PARA EVITAR PROBLEMAS DE TILDES ===
+    // === SUBIDA CON NOMBRE EXACTO (con tildes) ===
     elements.btnSubir.addEventListener('click', async () => {
-      const seccionOriginal = elements.selectSeccion.value;
+      const seccion = elements.selectSeccion.value;  // Enviamos el nombre EXACTO con tildes
       const titulo = elements.tituloInput.value.trim();
       const file = elements.archivoInput.files[0];
 
@@ -494,11 +154,8 @@
       const reader = new FileReader();
       reader.onload = async (e) => {
         const base64 = e.target.result.split(',')[1];
-        // Enviamos el nombre normalizado (sin tildes) para que el script de subir lo encuentre fácilmente
-        const seccionParaSubir = normalizarNombre(seccionOriginal);
-
         const payload = JSON.stringify({
-          seccion: seccionParaSubir,
+          seccion: seccion,  // Nombre exacto como en Drive
           titulo: titulo,
           file: base64,
           filename: file.name
@@ -515,7 +172,7 @@
             elements.mensajeSubida.innerHTML = '¡Libro subido con éxito!<br>Refrescando...';
             elements.mensajeSubida.style.color = 'green';
             cerrarModal();
-            setTimeout(() => cambiarSeccion(seccionOriginal), 3000);
+            setTimeout(() => cambiarSeccion(seccion), 3000);
           } else {
             elements.mensajeSubida.innerHTML = 'Error del servidor: ' + (result.error || 'Desconocido');
             elements.mensajeSubida.style.color = 'red';
@@ -529,12 +186,7 @@
       reader.readAsDataURL(file);
     });
 
-    elements.modal.addEventListener('click', (e) => {
-      if (e.target === elements.modal) cerrarModal();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && elements.modal.classList.contains('active')) cerrarModal();
-    });
+    // ... (el resto del script igual: cerrar modal, init(), etc.)
 
     init();
   </script>
