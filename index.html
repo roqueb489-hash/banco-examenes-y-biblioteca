@@ -269,7 +269,7 @@
     const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbwGTUr-dca3rwPV_mw1KowqkjEipg9cmeD7PdFuCye--Wo2Cu6BTRlAsH6ISndzYLRxbA/exec";
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
-    // === NOMBRES EXACTOS DE LAS CARPETAS EN DRIVE (claves) → Nombre que se muestra en la web (valor) ===
+    // === NOMBRES EXACTOS DE LAS CARPETAS EN DRIVE (con tildes correctas) ===
     const SECCIONES = {
       "Creencias y Tradiciones Huanuqueñas": "Creencias y Tradiciones Huanuqueñas",
       "Leyendas, Fábulas y Mitos": "Leyendas, Fábulas y Mitos",
@@ -317,7 +317,7 @@
       elements.selectSeccion.innerHTML = '';
 
       Object.entries(SECCIONES).forEach(([nombreCarpeta, nombreMostrar], index) => {
-        const key = nombreCarpeta; // clave es el nombre exacto de la carpeta
+        const key = nombreCarpeta;
         const isActive = index === 0;
         const icono = obtenerIcono(key);
 
@@ -528,7 +528,7 @@
       reader.readAsDataURL(file);
     });
 
-    // Cerrar modal al hacer clic fuera o con Escape
+    // Cerrar modal
     elements.modal.addEventListener('click', (e) => {
       if (e.target === elements.modal) cerrarModal();
     });
