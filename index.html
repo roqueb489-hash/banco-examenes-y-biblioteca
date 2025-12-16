@@ -19,231 +19,366 @@
       font-family: 'Inter', sans-serif;
       background: var(--l);
       color: var(--d);
+      padding-left: 280px;
+      overflow-x: hidden;
       min-height: 100vh;
-      padding-top: 85px;
     }
-    header {
-      position: fixed; top: 0; left: 0; right: 0;
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0;
+      width: 280px;
+      height: 100vh;
       background: linear-gradient(180deg, var(--p), #0146c6);
-      color: white; padding: 1rem; text-align: center;
-      z-index: 999; box-shadow: 0 6px 30px rgba(0,48,135,0.3);
-      display: flex; align-items: center; justify-content: center;
+      color: white;
+      z-index: 999;
+      box-shadow: 8px 0 30px rgba(0,48,135,0.3);
+      overflow-y: auto;
     }
-    .header-content { display: flex; align-items: center; gap: 12px; }
-    .header-content img { width: 52px; height: 52px; border-radius: 12px; }
-    header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,5vw,3rem); }
-    .container { max-width: 1400px; margin: 0 auto; padding: 1rem; }
+    .sidebar-header {
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .sidebar-header img {
+      width: 150px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+    }
+    .sidebar-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      margin-top: 1rem;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 1rem 2rem;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 600;
+      transition: .3s;
+      cursor: pointer;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.15); }
+    .nav-item.active {
+      background: rgba(255,255,255,0.25);
+      border-left: 5px solid var(--a);
+      font-weight: 700;
+    }
+    .hero {
+      text-align: center;
+      padding: 4rem 0;
+      background: linear-gradient(135deg, var(--p), #0146c6);
+      color: white;
+      margin: -2rem -2rem 2rem -280px;
+      border-radius: 0 0 var(--r) var(--r);
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero p { font-size: 1.2rem; opacity: 0.9; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
     .section-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem,6vw,3.4rem); text-align: center;
-      margin: 3rem 0 2rem; padding-top: 100px; margin-top: -100px;
-      color: var(--p); font-weight: 900; scroll-margin-top: 140px;
+      font-size: 2.8rem;
+      text-align: center;
+      margin: 3rem 0 2rem;
+      color: var(--p);
+      font-weight: 900;
     }
     .cards {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem; margin-bottom: 3rem; justify-items: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
     }
     .card {
-      background: white; border-radius: var(--r); overflow: hidden;
-      box-shadow: 0 15px 45px rgba(0,0,0,0.12); transition: .4s;
+      background: white;
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+      transition: .4s;
       border: 3px solid transparent;
     }
-    .card:hover { transform: translateY(-16px); border-color: var(--a); }
-    .card img { width: 100%; height: 220px; object-fit: cover; background: #f0f0f0; }
-    .card h3 { padding: 1rem; font-family: 'Playfair Display', serif; font-size: 1.45rem; text-align: center; font-weight: 800; }
-    .btns { padding: 1.3rem; display: flex; gap: 14px; justify-content: center; }
-    .btn { padding: 0.95rem 2.1rem; border-radius: 18px; font-weight: 700; text-decoration: none; }
-    .ver { background: var(--p); color: white; }
-    .desc { background: #dc2626; color: white; }
-    .subir {
-      text-align: center; margin: 3rem auto;
+    .card:hover {
+      transform: translateY(-12px);
+      border-color: var(--a);
     }
-    .subir button {
-      background: var(--p); color: white; padding: 1.2rem 3rem;
-      border: none; border-radius: 50px; font-size: 1.4rem; font-weight: 900;
-      cursor: pointer; box-shadow: 0 15px 40px rgba(0,48,135,0.3); transition: .3s; margin: 0 1rem;
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #f0f0f0;
     }
-    .subir button:hover { background: #00205e; transform: scale(1.06); }
-    .subir a {
-      display: inline-block; margin-top: 1rem; color: var(--p); font-weight: 700; text-decoration: underline;
+    .card h3 {
+      padding: 1rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      text-align: center;
     }
-    .loading { text-align: center; padding: 6rem; font-size: 1.6rem; color: var(--p); }
-    .spinner { width: 50px; height: 50px; border: 5px solid rgba(0,48,135,0.3); border-top: 5px solid var(--p); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.4rem;
+      margin: 0 0.5rem 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: .3s;
+    }
+    .read { background: var(--p); color: white; }
+    .read:hover { background: #00205e; }
+    .download { background: #dc2626; color: white; }
+    .download:hover { background: #b91c1c; }
+    .add-card {
+      background: linear-gradient(135deg, var(--p), #0146c6);
+      color: white;
+      text-align: center;
+      padding: 3rem;
+      cursor: pointer;
+      transition: .3s;
+      border: 3px dashed rgba(255,255,255,0.4);
+      border-radius: var(--r);
+    }
+    .add-card:hover { opacity: 0.9; }
+    .add-card i { font-size: 4.5rem; margin-bottom: 1rem; }
+    .loading {
+      text-align: center;
+      padding: 4rem;
+      font-size: 1.5rem;
+      color: #666;
+    }
     /* Modal */
-    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
     .modal.active { display: flex; }
-    .modal-box { background: white; border-radius: 24px; padding: 2.5rem; max-width: 520px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-    .modal-box h2 { color: var(--p); font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 1rem; }
-    .modal-box input { width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 12px; font-size: 1.1rem; margin: 1rem 0; }
-    .modal-box button { background: #28a745; color: white; padding: 16px 32px; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 1rem; }
+    .modal-box {
+      background: white;
+      border-radius: 24px;
+      padding: 2.5rem;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .modal-box h2 {
+      color: var(--p);
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+    .modal-box input {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      margin: 1rem 0;
+      transition: .3s;
+    }
+    .modal-box input:focus {
+      border-color: var(--p);
+      outline: none;
+    }
+    .modal-box button {
+      background: #28a745;
+      color: white;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: .3s;
+    }
     .modal-box button:hover { background: #218838; }
     #mensaje-subida { margin-top: 1.5rem; font-weight: bold; min-height: 30px; }
+    @media (max-width: 992px) {
+      body { padding-left: 0; padding-top: 80px; }
+      .sidebar { width: 100%; height: auto; position: relative; box-shadow: none; }
+      .sidebar-header { padding: 1.5rem; }
+      .hero { margin-left: 0; border-radius: 0; }
+    }
   </style>
 </head>
 <body>
-<header>
-  <div class="header-content">
-    <img src="Insignia-New-cuadrado.png" alt="IEP San Luis Gonzaga"
-         onerror="this.src='https://via.placeholder.com/52/003087/white?text=SL'">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
+           onerror="this.src='https://via.placeholder.com/150/003087/white?text=SL'">
+      <h2>Biblioteca<br>Sanluisina</h2>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="cambiarSeccion(0)"><i class="fas fa-mountain-sun"></i> Creencias y Tradiciones Huanuqueñas</div>
+      <div class="nav-item" onclick="cambiarSeccion(1)"><i class="fas fa-scroll"></i> Leyendas, Fábulas y Mitos</div>
+      <div class="nav-item" onclick="cambiarSeccion(2)"><i class="fas fa-book-bible"></i> Libros Bíblicos y Religiosos</div>
+      <div class="nav-item" onclick="cambiarSeccion(3)"><i class="fas fa-book"></i> Libros y textos religiosos</div>
+      <div class="nav-item" onclick="cambiarSeccion(4)"><i class="fas fa-book-open"></i> Literatura Huanuqueña</div>
+      <div class="nav-item" onclick="cambiarSeccion(5)"><i class="fas fa-book-open"></i> Literatura Peruana</div>
+      <div class="nav-item" onclick="cambiarSeccion(6)"><i class="fas fa-mountain-sun"></i> Mitos y Creencias Peruanas</div>
+      <a href="examenes.html" class="nav-item"><i class="fas fa-file-alt"></i> Banco de Exámenes</a>
+    </nav>
+  </aside>
+  <div class="hero">
     <h1>Biblioteca Digital Sanluisina</h1>
+    <p>IEP San Luis Gonzaga - Huánuco</p>
   </div>
-</header>
-<div class="container">
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    Cargando libros...
-  </div>
-
-  <h2 class="section-title" id="seccion1">Creencias y Tradiciones Huanuqueñas</h2>
-  <div class="cards" id="cont-seccion1"></div>
-  <div class="subir">
-    <button onclick="abrirModalSubir('1z8prGUC0uJ1B_XNHsTzHrqW7hZ7KIAjO')">SUBIR NUEVO LIBRO</button>
-    <a href="https://drive.google.com/drive/folders/1z8prGUC0uJ1B_XNHsTzHrqW7hZ7KIAjO" target="_blank">Abrir carpeta en Drive</a>
+  <div class="container">
+    <div class="loading" id="loading">Cargando libros...</div>
+    <h2 class="section-title" id="titulo-seccion">Creencias y Tradiciones Huanuqueñas</h2>
+    <div class="cards" id="cards-container"></div>
   </div>
 
-  <h2 class="section-title" id="seccion2">Leyendas, Fábulas y Mitos</h2>
-  <div class="cards" id="cont-seccion2"></div>
-  <div class="subir">
-    <button onclick="abrirModalSubir('1PYBr9zTjhCBVD8Sv65XAcR_C1_veQtFd')">SUBIR NUEVO LIBRO</button>
-    <a href="https://drive.google.com/drive/folders/1PYBr9zTjhCBVD8Sv65XAcR_C1_veQtFd" target="_blank">Abrir carpeta en Drive</a>
+  <!-- Modal Subir Libro -->
+  <div class="modal" id="modal-subir">
+    <div class="modal-box">
+      <h2>Subir Nuevo Libro</h2>
+      <p>Ingresa el título y autor. El nombre sugerido se copiará al portapapeles.</p>
+      <input type="text" id="titulo-libro" placeholder="Título del libro" autofocus>
+      <input type="text" id="autor-libro" placeholder="Autor (opcional)">
+      <input type="file" id="archivo-pdf" accept=".pdf">
+      <button id="btn-preparar-subida">Preparar y abrir carpeta</button>
+      <div id="mensaje-subida"></div>
+    </div>
   </div>
 
-  <h2 class="section-title" id="seccion3">Libros Bíblicos y Religiosos</h2>
-  <div class="cards" id="cont-seccion3"></div>
-  <div class="subir">
-    <button onclick="abrirModalSubir('1LjGbGaSHk4JZ0ynVwjLLixSanZxcUaXc')">SUBIR NUEVO LIBRO</button>
-    <a href="https://drive.google.com/drive/folders/1LjGbGaSHk4JZ0ynVwjLLixSanZxcUaXc" target="_blank">Abrir carpeta en Drive</a>
-  </div>
+  <script>
+    const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
 
-  <h2 class="section-title" id="seccion4">Libros y textos religiosos</h2>
-  <div class="cards" id="cont-seccion4"></div>
-  <div class="subir">
-    <button onclick="abrirModalSubir('1A8BgZZOeDihPMSk9SkwEEMTb_k3-RJFY')">SUBIR NUEVO LIBRO</button>
-    <a href="https://drive.google.com/drive/folders/1A8BgZZOeDihPMSk9SkwEEMTb_k3-RJFY" target="_blank">Abrir carpeta en Drive</a>
-  </div>
+    const CARPETAS = [
+      "1z8prGUC0uJ1B_XNHsTzHrqW7hZ7KIAjO",
+      "1PYBr9zTjhCBVD8Sv65XAcR_C1_veQtFd",
+      "1LjGbGaSHk4JZ0ynVwjLLixSanZxcUaXc",
+      "1A8BgZZOeDihPMSk9SkwEEMTb_k3-RJFY",
+      "1DevVgGKwPTEtHVbz82RBqfoG-nNMCXZB",
+      "1yHiDEAHdic_ByiL6qax-R26Pd0x5s0pe",
+      "1LddIPgywrGppPGG_A_LNYfyKTVQxOH0-"
+    ];
 
-  <h2 class="section-title" id="seccion5">Literatura Huanuqueña</h2>
-  <div class="cards" id="cont-seccion5"></div>
-  <div class="subir">
-    <button onclick="abrirModalSubir('1DevVgGKwPTEtHVbz82RBqfoG-nNMCXZB')">SUBIR NUEVO LIBRO</button>
-    <a href="https://drive.google.com/drive/folders/1DevVgGKwPTEtHVbz82RBqfoG-nNMCXZB" target="_blank">Abrir carpeta en Drive</a>
-  </div>
+    const TITULOS = [
+      "Creencias y Tradiciones Huanuqueñas",
+      "Leyendas, Fábulas y Mitos",
+      "Libros Bíblicos y Religiosos",
+      "Libros y textos religiosos",
+      "Literatura Huanuqueña",
+      "Literatura Peruana",
+      "Mitos y Creencias Peruanas"
+    ];
 
-  <h2 class="section-title" id="seccion6">Literatura Peruana</h2>
-  <div class="cards" id="cont-seccion6"></div>
-  <div class="subir">
-    <button onclick="abrirModalSubir('1yHiDEAHdic_ByiL6qax-R26Pd0x5s0pe')">SUBIR NUEVO LIBRO</button>
-    <a href="https://drive.google.com/drive/folders/1yHiDEAHdic_ByiL6qax-R26Pd0x5s0pe" target="_blank">Abrir carpeta en Drive</a>
-  </div>
+    let seccionActual = 0;
 
-  <h2 class="section-title" id="seccion7">Mitos y Creencias Peruanas</h2>
-  <div class="cards" id="cont-seccion7"></div>
-  <div class="subir">
-    <button onclick="abrirModalSubir('1LddIPgywrGppPGG_A_LNYfyKTVQxOH0-')">SUBIR NUEVO LIBRO</button>
-    <a href="https://drive.google.com/drive/folders/1LddIPgywrGppPGG_A_LNYfyKTVQxOH0-" target="_blank">Abrir carpeta en Drive</a>
-  </div>
-</div>
+    const elements = {
+      cardsContainer: document.getElementById('cards-container'),
+      loading: document.getElementById('loading'),
+      tituloSeccion: document.getElementById('titulo-seccion'),
+      modal: document.getElementById('modal-subir')
+    };
 
-<!-- Modal Subir Libro -->
-<div class="modal" id="modal-subir">
-  <div class="modal-box">
-    <h2>Subir Nuevo Libro</h2>
-    <p>Ingresa el título y autor. Te sugeriré el nombre al subir.</p>
-    <input type="text" id="titulo-libro" placeholder="Título del libro" autofocus>
-    <input type="text" id="autor-libro" placeholder="Autor (opcional)">
-    <input type="file" id="archivo-pdf" accept=".pdf" required>
-    <button id="btn-subir-pdf">Preparar subida</button>
-    <div id="mensaje-subida"></div>
-  </div>
-</div>
+    async function cargarLibros(index) {
+      elements.cardsContainer.innerHTML = '';
+      elements.loading.style.display = 'block';
 
-<script>
-  const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
+      const addCard = document.createElement('div');
+      addCard.className = 'card add-card';
+      addCard.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>`;
+      addCard.onclick = () => abrirModalSubir(index);
+      elements.cardsContainer.appendChild(addCard);
 
-  const CARPETAS = [
-    "1z8prGUC0uJ1B_XNHsTzHrqW7hZ7KIAjO",
-    "1PYBr9zTjhCBVD8Sv65XAcR_C1_veQtFd",
-    "1LjGbGaSHk4JZ0ynVwjLLixSanZxcUaXc",
-    "1A8BgZZOeDihPMSk9SkwEEMTb_k3-RJFY",
-    "1DevVgGKwPTEtHVbz82RBqfoG-nNMCXZB",
-    "1yHiDEAHdic_ByiL6qax-R26Pd0x5s0pe",
-    "1LddIPgywrGppPGG_A_LNYfyKTVQxOH0-"
-  ];
-
-  const contenedores = [1,2,3,4,5,6,7].map(n => document.getElementById('cont-seccion'+n));
-
-  let carpetaUrlActual = '';
-
-  function abrirModalSubir(id) {
-    carpetaUrlActual = `https://drive.google.com/drive/folders/${id}`;
-    document.getElementById('modal-subir').classList.add('active');
-    document.getElementById('titulo-libro').focus();
-    document.getElementById('mensaje-subida').innerHTML = '';
-    document.getElementById('archivo-pdf').value = '';
-  }
-
-  document.getElementById('modal-subir').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('modal-subir')) {
-      document.getElementById('modal-subir').classList.remove('active');
-    }
-  });
-
-  document.getElementById('btn-subir-pdf').addEventListener('click', () => {
-    const titulo = document.getElementById('titulo-libro').value.trim();
-    const autor = document.getElementById('autor-libro').value.trim();
-    const file = document.getElementById('archivo-pdf').files[0];
-
-    if (!titulo || !file || !file.name.toLowerCase().endsWith('.pdf')) {
-      document.getElementById('mensaje-subida').innerHTML = '<span style="color:red">Faltan datos o el archivo no es PDF</span>';
-      return;
-    }
-
-    const nombreSugerido = autor ? `${titulo} - ${autor}.pdf` : `${titulo}.pdf`;
-
-    document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Listo! Sube el PDF a la carpeta y renómbralo a:<br><strong>${nombreSugerido}</strong></span>`;
-
-    // Abre la carpeta en Drive después de 2 segundos
-    setTimeout(() => {
-      window.open(carpetaUrlActual, '_blank');
-      document.getElementById('modal-subir').classList.remove('active');
-    }, 2000);
-  });
-
-  async function cargarTodo() {
-    for (let i = 0; i < 7; i++) {
       try {
-        const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
+        const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[index]}`);
         let archivos = await res.json();
         archivos = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
         archivos.sort((a, b) => new Date(b.modifiedTime || 0) - new Date(a.modifiedTime || 0));
         if (archivos.length === 0) {
-          contenedores[i].innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:6rem;color:#666;font-size:1.4rem">Aún no hay libros en esta sección</p>';
-          continue;
-        }
-        archivos.forEach(f => {
-          const nombre = f.name.replace(/\.pdf$/i, '');
-          contenedores[i].innerHTML += `
-            <div class="card">
-              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w800" alt="${nombre}"
-                   onerror="this.src='https://via.placeholder.com/400x220/003087/white?text=LIBRO'">
-              <div class="card-content">
-                <h3>${nombre}</h3>
-                <div class="btns">
-                  <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn ver">Leer</a>
-                  <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn desc">Descargar</a>
-                </div>
+          elements.cardsContainer.innerHTML += '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#666">Aún no hay libros en esta sección</p>';
+        } else {
+          archivos.forEach(f => {
+            const nombre = f.name.replace(/\.pdf$/i, '');
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600" alt="${nombre}" onerror="this.src='https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,25)+'...')}'" loading="lazy">
+              <h3 title="${nombre}">${nombre.length > 45 ? nombre.substring(0,42)+'...' : nombre}</h3>
+              <div style="padding:0 1rem 1rem;text-align:center">
+                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn read">
+                  <i class="fas fa-eye"></i> Leer
+                </a>
+                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn download">
+                  <i class="fas fa-download"></i> Descargar
+                </a>
               </div>
-            </div>`;
-        });
+            `;
+            elements.cardsContainer.appendChild(card);
+          });
+        }
       } catch (e) {
-        contenedores[i].innerHTML = '<p style="color:#dc2626;text-align:center;padding:4rem">Error al cargar</p>';
+        elements.cardsContainer.innerHTML += '<p style="color:#dc2626;text-align:center;padding:4rem">Error al cargar libros</p>';
       }
+      elements.loading.style.display = 'none';
     }
-    document.getElementById('loading').style.display = 'none';
-  }
 
-  cargarTodo();
-</script>
+    function cambiarSeccion(index) {
+      seccionActual = index;
+      elements.tituloSeccion.textContent = TITULOS[index];
+      document.querySelectorAll('.nav-item').forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+      });
+      cargarLibros(index);
+      window.scrollTo(0, 0);
+    }
+
+    function abrirModalSubir(index) {
+      elements.modal.classList.add('active');
+      document.getElementById('titulo-libro').focus();
+      document.getElementById('mensaje-subida').innerHTML = '';
+      document.getElementById('archivo-pdf').value = '';
+      window.carpetaSubirIndex = index;
+    }
+
+    elements.modal.addEventListener('click', (e) => {
+      if (e.target === elements.modal) elements.modal.classList.remove('active');
+    });
+
+    document.getElementById('btn-preparar-subida').addEventListener('click', () => {
+      const titulo = document.getElementById('titulo-libro').value.trim();
+      const autor = document.getElementById('autor-libro').value.trim();
+      const file = document.getElementById('archivo-pdf').files[0];
+
+      if (!titulo || !file) {
+        document.getElementById('mensaje-subida').innerHTML = '<span style="color:red">Falta título o archivo PDF</span>';
+        return;
+      }
+
+      const nombreSugerido = autor ? `${titulo} - ${autor}.pdf` : `${titulo}.pdf`;
+
+      // Copia al portapapeles
+      navigator.clipboard.writeText(nombreSugerido).then(() => {
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado al portapapeles!<br><strong>${nombreSugerido}</strong><br>Abre la carpeta, sube el PDF y pega el nombre.</span>`;
+      });
+
+      // Abre la carpeta en Drive
+      setTimeout(() => {
+        window.open(`https://drive.google.com/drive/folders/${CARPETAS[window.carpetaSubirIndex]}`, '_blank');
+        elements.modal.classList.remove('active');
+      }, 1500);
+    });
+
+    // Carga inicial
+    cargarLibros(0);
+  </script>
 </body>
 </html>
