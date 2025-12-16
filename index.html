@@ -279,6 +279,11 @@
       "Mitos y Creencias Peruanas": "Mitos y Creencias Peruanas"
     };
 
+    // Función para normalizar nombres (quitar tildes y caracteres especiales para búsqueda segura)
+    function normalizarNombre(nombre) {
+      return nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
     const ICONOS = {
       'biblicos': 'fa-book-bible',
       'wol': 'fa-book-bible',
@@ -356,14 +361,18 @@
     async function cargarCarpetaIds() {
       try {
         const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${CARPETA_PRINCIPAL}`);
-        if (!res.ok) throw new Error('Error al conectar con el servidor de listado');
+        if (!res.ok) throw new Error('Error al conectar');
         const items = await res.json();
         items.forEach(item => {
           if (item.mimeType === 'application/vnd.google-apps.folder') {
             const nombreExacto = item.name;
-            if (SECCIONES.hasOwnProperty(nombreExacto)) {
-              carpetaIds[nombreExacto] = item.id;
-            }
+            const nombreNormalizado = normalizarNombre(nombreExacto);
+            // Busca coincidencia exacta o normalizada
+            Object.keys(SECCIONES).forEach(key => {
+              if (nombreExacto === key || normalizarNombre(key) === nombreNormalizado) {
+                carpetaIds[key] = item.id;
+              }
+            });
           }
         });
       } catch (error) {
@@ -394,7 +403,7 @@
           cont.appendChild(crearMensaje('Aún no hay libros en esta sección.', 'info'));
         } else {
           libros.forEach(libro => {
-            if (!libro.mimeType.includes('folder')) { // solo mostrar archivos PDF
+            if (libro.mimeType !== 'application/vnd.google-apps.folder') {
               cont.appendChild(crearTarjetaLibro(libro));
             }
           });
@@ -471,8 +480,9 @@
       elements.modal.classList.remove('active');
     }
 
+    // === SUBIDA CON CORRECCIÓN DE TILDES ===
     elements.btnSubir.addEventListener('click', async () => {
-      const seccion = elements.selectSeccion.value;
+      const seccionOriginal = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
       const file = elements.archivoInput.files[0];
 
@@ -488,8 +498,11 @@
       const reader = new FileReader();
       reader.onload = async (e) => {
         const base64 = e.target.result.split(',')[1];
+        // Enviamos el nombre normalizado (sin tildes) para que coincida en Apps Script
+        const seccionParaEnviar = normalizarNombre(seccionOriginal);
+
         const payload = JSON.stringify({
-          seccion: seccion,
+          seccion: seccionParaEnviar,
           titulo: titulo,
           file: base64,
           filename: file.name
@@ -506,7 +519,7 @@
             elements.mensajeSubida.innerHTML = '¡Libro subido con éxito!<br>Refrescando...';
             elements.mensajeSubida.style.color = 'green';
             cerrarModal();
-            setTimeout(() => cambiarSeccion(seccion), 3000);
+            setTimeout(() => cambiarSeccion(seccionOriginal), 3000);
           } else {
             elements.mensajeSubida.innerHTML = 'Error del servidor: ' + (result.error || 'Desconocido');
             elements.mensajeSubida.style.color = 'red';
@@ -514,6 +527,7 @@
         } catch (err) {
           elements.mensajeSubida.innerHTML = 'Error de conexión. Intenta de nuevo.';
           elements.mensajeSubida.style.color = 'red';
+          console.error(err);
         }
       };
       reader.readAsDataURL(file);
