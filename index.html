@@ -264,12 +264,11 @@
     </div>
   </div>
   <script>
-    // === CONFIGURACIÓN FINAL ===
+    // === CONFIGURACIÓN ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbziD2LPW4ulFqzGe049jXWjWvq770blPnFiPJVdteoK5UNn23efncdj5URaCRDIJRJTzA/exec";
     const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbwGTUr-dca3rwPV_mw1KowqkjEipg9cmeD7PdFuCye--Wo2Cu6BTRlAsH6ISndzYLRxbA/exec";
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
-    // === NOMBRES EXACTOS DE LAS CARPETAS EN DRIVE (con tildes correctas) ===
     const SECCIONES = {
       "Creencias y Tradiciones Huanuqueñas": "Creencias y Tradiciones Huanuqueñas",
       "Leyendas, Fábulas y Mitos": "Leyendas, Fábulas y Mitos",
@@ -468,24 +467,13 @@
       elements.modal.classList.remove('active');
     }
 
-    // === SUBIDA DIRECTA ===
     elements.btnSubir.addEventListener('click', async () => {
       const seccion = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
       const file = elements.archivoInput.files[0];
 
-      if (!titulo) {
-        elements.mensajeSubida.innerHTML = 'Por favor escribe el título';
-        elements.mensajeSubida.style.color = 'red';
-        return;
-      }
-      if (!file) {
-        elements.mensajeSubida.innerHTML = 'Selecciona un archivo PDF';
-        elements.mensajeSubida.style.color = 'red';
-        return;
-      }
-      if (!file.name.toLowerCase().endsWith('.pdf')) {
-        elements.mensajeSubida.innerHTML = 'Solo se permiten archivos PDF';
+      if (!titulo || !file || !file.name.toLowerCase().endsWith('.pdf')) {
+        elements.mensajeSubida.innerHTML = !titulo ? 'Por favor escribe el título' : !file ? 'Selecciona un archivo PDF' : 'Solo se permiten archivos PDF';
         elements.mensajeSubida.style.color = 'red';
         return;
       }
@@ -522,13 +510,11 @@
         } catch (err) {
           elements.mensajeSubida.innerHTML = 'Error de conexión. Intenta de nuevo.';
           elements.mensajeSubida.style.color = 'red';
-          console.error(err);
         }
       };
       reader.readAsDataURL(file);
     });
 
-    // Cerrar modal
     elements.modal.addEventListener('click', (e) => {
       if (e.target === elements.modal) cerrarModal();
     });
