@@ -264,11 +264,12 @@
     </div>
   </div>
   <script>
-    // === CONFIGURACIÓN ACTUALIZADA ===
+    // === CONFIGURACIÓN ===
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
     const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbwGTUr-dca3rwPV_mw1KowqkjEipg9cmeD7PdFuCye--Wo2Cu6BTRlAsH6ISndzYLRxbA/exec";
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
+    // === NOMBRES EXACTOS DE TUS CARPETAS EN DRIVE (según tu captura) ===
     const SECCIONES = {
       "Creencias y Tradiciones Huanuqueñas": "Creencias y Tradiciones Huanuqueñas",
       "Leyendas, Fábulas y Mitos": "Leyendas, Fábulas y Mitos",
@@ -279,14 +280,13 @@
       "Mitos y Creencias Peruanas": "Mitos y Creencias Peruanas"
     };
 
-    // Función para normalizar nombres (quitar tildes y caracteres especiales para búsqueda segura)
+    // Función para normalizar nombres (quitar tildes para búsqueda segura en subida)
     function normalizarNombre(nombre) {
       return nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
     const ICONOS = {
       'biblicos': 'fa-book-bible',
-      'wol': 'fa-book-bible',
       'leyendas': 'fa-scroll',
       'creencias': 'fa-mountain-sun',
       'literatura': 'fa-book-open'
@@ -365,14 +365,10 @@
         const items = await res.json();
         items.forEach(item => {
           if (item.mimeType === 'application/vnd.google-apps.folder') {
-            const nombreExacto = item.name;
-            const nombreNormalizado = normalizarNombre(nombreExacto);
-            // Busca coincidencia exacta o normalizada
-            Object.keys(SECCIONES).forEach(key => {
-              if (nombreExacto === key || normalizarNombre(key) === nombreNormalizado) {
-                carpetaIds[key] = item.id;
-              }
-            });
+            const nombreExacto = item.name.trim();
+            if (SECCIONES.hasOwnProperty(nombreExacto)) {
+              carpetaIds[nombreExacto] = item.id;
+            }
           }
         });
       } catch (error) {
@@ -480,7 +476,7 @@
       elements.modal.classList.remove('active');
     }
 
-    // === SUBIDA CON CORRECCIÓN DE TILDES ===
+    // === SUBIDA DE PDF CON NORMALIZACIÓN PARA EVITAR PROBLEMAS DE TILDES ===
     elements.btnSubir.addEventListener('click', async () => {
       const seccionOriginal = elements.selectSeccion.value;
       const titulo = elements.tituloInput.value.trim();
@@ -498,11 +494,11 @@
       const reader = new FileReader();
       reader.onload = async (e) => {
         const base64 = e.target.result.split(',')[1];
-        // Enviamos el nombre normalizado (sin tildes) para que coincida en Apps Script
-        const seccionParaEnviar = normalizarNombre(seccionOriginal);
+        // Enviamos el nombre normalizado (sin tildes) para que el script de subir lo encuentre fácilmente
+        const seccionParaSubir = normalizarNombre(seccionOriginal);
 
         const payload = JSON.stringify({
-          seccion: seccionParaEnviar,
+          seccion: seccionParaSubir,
           titulo: titulo,
           file: base64,
           filename: file.name
