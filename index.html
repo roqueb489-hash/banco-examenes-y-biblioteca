@@ -33,6 +33,7 @@
       z-index: 999;
       box-shadow: 8px 0 30px rgba(0,48,135,0.3);
       overflow-y: auto;
+      padding-bottom: 2rem;
     }
     .sidebar-header {
       padding: 2.5rem 1.5rem;
@@ -44,6 +45,7 @@
       border-radius: 20px;
       background: rgba(255,255,255,0.2);
       padding: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
     .sidebar-header h2 {
       font-family: 'Playfair Display', serif;
@@ -54,12 +56,13 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      padding: 1rem 2rem;
+      padding: 1.2rem 2rem;
       color: rgba(255,255,255,0.9);
       text-decoration: none;
       font-weight: 600;
       transition: .3s;
       cursor: pointer;
+      border-left: 5px solid transparent;
     }
     .nav-item:hover { background: rgba(255,255,255,0.15); }
     .nav-item.active {
@@ -67,29 +70,31 @@
       border-left: 5px solid var(--a);
       font-weight: 700;
     }
+    .nav-item i { font-size: 1.6rem; width: 36px; text-align: center; }
     .hero {
       text-align: center;
       padding: 4rem 0;
       background: linear-gradient(135deg, var(--p), #0146c6);
       color: white;
-      margin: -2rem -2rem 2rem -280px;
+      margin: -2rem -2rem 3rem -280px;
       border-radius: 0 0 var(--r) var(--r);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero img {
+      width: 120px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.2);
+      padding: 10px;
     }
     .hero h1 {
       font-family: 'Playfair Display', serif;
       font-size: 3.5rem;
-      margin-bottom: 0.5rem;
     }
     .hero p { font-size: 1.2rem; opacity: 0.9; }
     .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      text-align: center;
-      margin: 3rem 0 2rem;
-      color: var(--p);
-      font-weight: 900;
-    }
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -192,6 +197,7 @@
     .modal-box input:focus {
       border-color: var(--p);
       outline: none;
+      box-shadow: 0 0 0 4px rgba(0,48,135,0.15);
     }
     .modal-box button {
       background: #28a745;
@@ -208,10 +214,12 @@
     .modal-box button:hover { background: #218838; }
     #mensaje-subida { margin-top: 1.5rem; font-weight: bold; min-height: 30px; }
     @media (max-width: 992px) {
-      body { padding-left: 0; padding-top: 80px; }
-      .sidebar { width: 100%; height: auto; position: relative; box-shadow: none; }
+      body { padding-left: 0; }
+      .sidebar { width: 100%; height: auto; position: relative; box-shadow: none; padding: 1rem; }
       .sidebar-header { padding: 1.5rem; }
-      .hero { margin-left: 0; border-radius: 0; }
+      .hero { margin-left: 0; border-radius: 0; padding: 3rem 1rem; }
+      .nav-item { padding: 1rem; justify-content: center; }
+      .nav-item span { display: none; }
     }
   </style>
 </head>
@@ -222,24 +230,23 @@
            onerror="this.src='https://via.placeholder.com/150/003087/white?text=SL'">
       <h2>Biblioteca<br>Sanluisina</h2>
     </div>
-    <nav>
-      <div class="nav-item active" onclick="cambiarSeccion(0)"><i class="fas fa-mountain-sun"></i> Creencias y Tradiciones Huanuqueñas</div>
-      <div class="nav-item" onclick="cambiarSeccion(1)"><i class="fas fa-scroll"></i> Leyendas, Fábulas y Mitos</div>
-      <div class="nav-item" onclick="cambiarSeccion(2)"><i class="fas fa-book-bible"></i> Libros Bíblicos y Religiosos</div>
-      <div class="nav-item" onclick="cambiarSeccion(3)"><i class="fas fa-book"></i> Libros y textos religiosos</div>
-      <div class="nav-item" onclick="cambiarSeccion(4)"><i class="fas fa-book-open"></i> Literatura Huanuqueña</div>
-      <div class="nav-item" onclick="cambiarSeccion(5)"><i class="fas fa-book-open"></i> Literatura Peruana</div>
-      <div class="nav-item" onclick="cambiarSeccion(6)"><i class="fas fa-mountain-sun"></i> Mitos y Creencias Peruanas</div>
-      <a href="examenes.html" class="nav-item"><i class="fas fa-file-alt"></i> Banco de Exámenes</a>
-    </nav>
+    <div class="nav-item active" onclick="cambiarSeccion(0)"><i class="fas fa-mountain-sun"></i><span>Creencias y Tradiciones Huanuqueñas</span></div>
+    <div class="nav-item" onclick="cambiarSeccion(1)"><i class="fas fa-scroll"></i><span>Leyendas, Fábulas y Mitos</span></div>
+    <div class="nav-item" onclick="cambiarSeccion(2)"><i class="fas fa-book-bible"></i><span>Libros Bíblicos y Religiosos</span></div>
+    <div class="nav-item" onclick="cambiarSeccion(3)"><i class="fas fa-book"></i><span>Libros y textos religiosos</span></div>
+    <div class="nav-item" onclick="cambiarSeccion(4)"><i class="fas fa-book-open"></i><span>Literatura Huanuqueña</span></div>
+    <div class="nav-item" onclick="cambiarSeccion(5)"><i class="fas fa-book-open"></i><span>Literatura Peruana</span></div>
+    <div class="nav-item" onclick="cambiarSeccion(6)"><i class="fas fa-mountain-sun"></i><span>Mitos y Creencias Peruanas</span></div>
+    <a href="examenes.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Banco de Exámenes</span></a>
   </aside>
   <div class="hero">
+    <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
+         onerror="this.src='https://via.placeholder.com/120/003087/white?text=SL'">
     <h1>Biblioteca Digital Sanluisina</h1>
     <p>IEP San Luis Gonzaga - Huánuco</p>
   </div>
   <div class="container">
     <div class="loading" id="loading">Cargando libros...</div>
-    <h2 class="section-title" id="titulo-seccion">Creencias y Tradiciones Huanuqueñas</h2>
     <div class="cards" id="cards-container"></div>
   </div>
 
@@ -247,7 +254,7 @@
   <div class="modal" id="modal-subir">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
-      <p>Ingresa el título y autor. El nombre sugerido se copiará al portapapeles.</p>
+      <p>Ingresa el título y autor. El nombre se copiará al portapapeles.</p>
       <input type="text" id="titulo-libro" placeholder="Título del libro" autofocus>
       <input type="text" id="autor-libro" placeholder="Autor (opcional)">
       <input type="file" id="archivo-pdf" accept=".pdf">
@@ -269,22 +276,11 @@
       "1LddIPgywrGppPGG_A_LNYfyKTVQxOH0-"
     ];
 
-    const TITULOS = [
-      "Creencias y Tradiciones Huanuqueñas",
-      "Leyendas, Fábulas y Mitos",
-      "Libros Bíblicos y Religiosos",
-      "Libros y textos religiosos",
-      "Literatura Huanuqueña",
-      "Literatura Peruana",
-      "Mitos y Creencias Peruanas"
-    ];
-
     let seccionActual = 0;
 
     const elements = {
       cardsContainer: document.getElementById('cards-container'),
       loading: document.getElementById('loading'),
-      tituloSeccion: document.getElementById('titulo-seccion'),
       modal: document.getElementById('modal-subir')
     };
 
@@ -333,12 +329,10 @@
 
     function cambiarSeccion(index) {
       seccionActual = index;
-      elements.tituloSeccion.textContent = TITULOS[index];
       document.querySelectorAll('.nav-item').forEach((item, i) => {
         item.classList.toggle('active', i === index);
       });
       cargarLibros(index);
-      window.scrollTo(0, 0);
     }
 
     function abrirModalSubir(index) {
@@ -365,12 +359,12 @@
 
       const nombreSugerido = autor ? `${titulo} - ${autor}.pdf` : `${titulo}.pdf`;
 
-      // Copia al portapapeles
       navigator.clipboard.writeText(nombreSugerido).then(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado al portapapeles!<br><strong>${nombreSugerido}</strong><br>Abre la carpeta, sube el PDF y pega el nombre.</span>`;
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado al portapapeles!<br><strong>${nombreSugerido}</strong><br>Sube el PDF y pega el nombre.</span>`;
+      }).catch(() => {
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green"><strong>${nombreSugerido}</strong><br>Copia este nombre y pégalo al subir el PDF.</span>`;
       });
 
-      // Abre la carpeta en Drive
       setTimeout(() => {
         window.open(`https://drive.google.com/drive/folders/${CARPETAS[window.carpetaSubirIndex]}`, '_blank');
         elements.modal.classList.remove('active');
