@@ -166,7 +166,6 @@
     }
     .add:hover { opacity: 0.9; }
     .add i { font-size: 4.5rem; margin-bottom: 1rem; }
-
     /* Modal */
     .modal {
       display: none;
@@ -222,7 +221,6 @@
       transition: .3s;
     }
     #btn-subir-directo:hover { background: #218838; }
-
     @media (max-width: 992px) {
       body { padding-left: 0; padding-top: 80px; }
       .sidebar { width: 100%; height: auto; position: relative; box-shadow: none; }
@@ -242,18 +240,15 @@
     </div>
     <nav id="sidebar-nav"></nav>
   </aside>
-
   <div class="hero">
     <h1>Biblioteca Digital Sanluisina</h1>
     <p>IEP San Luis Gonzaga - Huánuco</p>
   </div>
-
   <div class="container">
     <div id="loading">Cargando secciones...</div>
     <div class="tabs" id="tabs"></div>
     <div class="cards" id="cards-container"></div>
   </div>
-
   <!-- Modal Subir Libro -->
   <div class="modal" id="modal-libro">
     <div class="modal-box">
@@ -268,26 +263,21 @@
       <div id="mensaje-subida" style="margin-top:1.5rem; font-weight:bold; min-height:30px;"></div>
     </div>
   </div>
-
   <script>
     // === CONFIGURACIÓN FINAL ===
-    // NUEVA URL DE LISTAR (la que acabas de crear)
     const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbziD2LPW4ulFqzGe049jXWjWvq770blPnFiPJVdteoK5UNn23efncdj5URaCRDIJRJTzA/exec";
-
-    // URL DE SUBIR (la que ya tenías funcionando)
     const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbwGTUr-dca3rwPV_mw1KowqkjEipg9cmeD7PdFuCye--Wo2Cu6BTRlAsH6ISndzYLRxbA/exec";
-
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
-    // === SECCIONES CON NOMBRES EXACTOS DE TUS CARPETAS ===
+    // === NOMBRES EXACTOS DE LAS CARPETAS EN DRIVE (claves) → Nombre que se muestra en la web (valor) ===
     const SECCIONES = {
-      "Creencias-y-Tradiciones-Huanuqueñas": "Creencias y Tradiciones Huanuqueñas",
-      "Leyendas-Fábulas-y-Mitos": "Leyendas, Fábulas y Mitos",
-      "Libros-Biblicos-y-Religiosos": "Libros Bíblicos y Religiosos",
-      "Libros-y-textos-religiosos": "Libros y textos religiosos",
-      "Literatura-Huanuqueña": "Literatura Huanuqueña",
-      "Literatura-Peruana": "Literatura Peruana",
-      "Mitos-y-Creencias-Peruanas": "Mitos y Creencias Peruanas"
+      "Creencias y Tradiciones Huanuqueñas": "Creencias y Tradiciones Huanuqueñas",
+      "Leyendas, Fábulas y Mitos": "Leyendas, Fábulas y Mitos",
+      "Libros Bíblicos y Religiosos": "Libros Bíblicos y Religiosos",
+      "Libros y textos religiosos": "Libros y textos religiosos",
+      "Literatura Huanuqueña": "Literatura Huanuqueña",
+      "Literatura Peruana": "Literatura Peruana",
+      "Mitos y Creencias Peruanas": "Mitos y Creencias Peruanas"
     };
 
     const ICONOS = {
@@ -326,25 +316,26 @@
       elements.sidebarNav.innerHTML = '';
       elements.selectSeccion.innerHTML = '';
 
-      Object.entries(SECCIONES).forEach(([key, nombre], index) => {
+      Object.entries(SECCIONES).forEach(([nombreCarpeta, nombreMostrar], index) => {
+        const key = nombreCarpeta; // clave es el nombre exacto de la carpeta
         const isActive = index === 0;
         const icono = obtenerIcono(key);
 
         const tabBtn = crearElemento('div', {
           class: `tab-btn ${isActive ? 'active' : ''}`,
-          text: nombre,
+          text: nombreMostrar,
           onclick: () => cambiarSeccion(key)
         });
         elements.tabs.appendChild(tabBtn);
 
         const navItem = crearElemento('div', {
           class: `nav-item ${isActive ? 'active' : ''}`,
-          html: `<i class="fas ${icono}"></i> ${nombre}`,
+          html: `<i class="fas ${icono}"></i> ${nombreMostrar}`,
           onclick: () => cambiarSeccion(key)
         });
         elements.sidebarNav.appendChild(navItem);
 
-        const option = crearElemento('option', { value: key, text: nombre });
+        const option = crearElemento('option', { value: key, text: nombreMostrar });
         elements.selectSeccion.appendChild(option);
       });
 
@@ -368,11 +359,10 @@
         const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${CARPETA_PRINCIPAL}`);
         if (!res.ok) throw new Error('Error al conectar');
         const items = await res.json();
-
         items.forEach(item => {
           if (item.mimeType === 'application/vnd.google-apps.folder') {
             const nombreExacto = item.name;
-            if (SECCIONES[nombreExacto]) {
+            if (SECCIONES.hasOwnProperty(nombreExacto)) {
               carpetaIds[nombreExacto] = item.id;
             }
           }
@@ -385,7 +375,6 @@
     async function cargarLibros(carpetaId, key) {
       const cont = elements.cardsContainer;
       cont.innerHTML = '';
-
       const addCard = crearElemento('div', {
         class: 'card add',
         onclick: () => abrirModal(key),
@@ -402,7 +391,6 @@
         const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${carpetaId}`);
         if (!res.ok) throw new Error('Error cargando libros');
         const libros = await res.json();
-
         if (libros.length === 0) {
           cont.appendChild(crearMensaje('Aún no hay libros en esta sección.', 'info'));
         } else {
@@ -426,7 +414,6 @@
       const nombre = l.name.replace(/\.pdf$/i, '').trim();
       const thumbnail = `https://drive.google.com/thumbnail?id=${l.id}&sz=w600`;
       const placeholder = `https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,25)+'...')}`;
-
       const card = crearElemento('div', { class: 'card' });
       card.innerHTML = `
         <img src="${thumbnail}" alt="${nombre}" onerror="this.src='${placeholder}'" loading="lazy">
@@ -463,7 +450,6 @@
           item.classList.toggle('active', Object.keys(SECCIONES)[i] === key);
         }
       });
-
       elements.loading.style.display = 'block';
       cargarLibros(carpetaIds[key] || null, key).finally(() => {
         elements.loading.style.display = 'none';
@@ -510,7 +496,6 @@
       const reader = new FileReader();
       reader.onload = async (e) => {
         const base64 = e.target.result.split(',')[1];
-
         const payload = JSON.stringify({
           seccion: seccion,
           titulo: titulo,
@@ -522,13 +507,9 @@
           const response = await fetch(DEPLOY_URL_SUBIR, {
             method: 'POST',
             body: payload,
-            headers: {
-              'Content-Type': 'text/plain'
-            }
+            headers: { 'Content-Type': 'text/plain' }
           });
-
           const result = await response.json();
-
           if (result.success) {
             elements.mensajeSubida.innerHTML = '¡Libro subido con éxito!<br>Refrescando...';
             elements.mensajeSubida.style.color = 'green';
@@ -547,7 +528,7 @@
       reader.readAsDataURL(file);
     });
 
-    // Cerrar modal
+    // Cerrar modal al hacer clic fuera o con Escape
     elements.modal.addEventListener('click', (e) => {
       if (e.target === elements.modal) cerrarModal();
     });
