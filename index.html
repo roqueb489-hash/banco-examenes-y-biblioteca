@@ -264,8 +264,8 @@
     </div>
   </div>
   <script>
-    // === CONFIGURACIÓN ===
-    const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbziD2LPW4ulFqzGe049jXWjWvq770blPnFiPJVdteoK5UNn23efncdj5URaCRDIJRJTzA/exec";
+    // === CONFIGURACIÓN ACTUALIZADA ===
+    const DEPLOY_URL_LISTAR = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
     const DEPLOY_URL_SUBIR = "https://script.google.com/macros/s/AKfycbwGTUr-dca3rwPV_mw1KowqkjEipg9cmeD7PdFuCye--Wo2Cu6BTRlAsH6ISndzYLRxbA/exec";
     const CARPETA_PRINCIPAL = "1OTD3mN_Owpp_TbtaWdM8UOOg6naaIT_4";
 
@@ -356,7 +356,7 @@
     async function cargarCarpetaIds() {
       try {
         const res = await fetch(`${DEPLOY_URL_LISTAR}?carpeta=${CARPETA_PRINCIPAL}`);
-        if (!res.ok) throw new Error('Error al conectar');
+        if (!res.ok) throw new Error('Error al conectar con el servidor de listado');
         const items = await res.json();
         items.forEach(item => {
           if (item.mimeType === 'application/vnd.google-apps.folder') {
@@ -393,7 +393,11 @@
         if (libros.length === 0) {
           cont.appendChild(crearMensaje('Aún no hay libros en esta sección.', 'info'));
         } else {
-          libros.forEach(libro => cont.appendChild(crearTarjetaLibro(libro)));
+          libros.forEach(libro => {
+            if (!libro.mimeType.includes('folder')) { // solo mostrar archivos PDF
+              cont.appendChild(crearTarjetaLibro(libro));
+            }
+          });
         }
       } catch (error) {
         cont.appendChild(crearMensaje(`Error: ${error.message}`, 'error'));
