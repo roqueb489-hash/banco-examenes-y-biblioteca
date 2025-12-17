@@ -13,152 +13,207 @@
       --l: #f8f9fa;
       --d: #1e293b;
       --r: 20px;
+      --transition: all 0.3s ease;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       background: var(--l);
       color: var(--d);
-      padding-left: 280px;
-      overflow-x: hidden;
       min-height: 100vh;
-      transition: padding-left .3s;
+      overflow-x: hidden;
     }
+    /* Botón menú móvil */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 1001;
+      background: var(--p);
+      color: white;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .mobile-menu-btn:hover { transform: scale(1.05); }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 998;
+      backdrop-filter: blur(4px);
+    }
+    .overlay.active { display: block; }
+
+    /* Sidebar */
     .sidebar {
       position: fixed;
-      left: 0; top: 0;
+      left: 0;
+      top: 0;
       width: 280px;
       height: 100vh;
       background: linear-gradient(180deg, var(--p), #0146c6);
       color: white;
       z-index: 999;
-      box-shadow: 8px 0 30px rgba(0,48,135,0.3);
+      box-shadow: 10px 0 30px rgba(0,48,135,0.35);
       overflow-y: auto;
+      transition: transform 0.4s ease;
       padding-bottom: 2rem;
-      transition: transform .3s ease;
     }
     .sidebar-header {
-      padding: 2.5rem 1.5rem;
+      padding: 2.8rem 1.8rem;
       text-align: center;
       border-bottom: 1px solid rgba(255,255,255,0.15);
     }
     .sidebar-header img {
-      width: 150px;
-      border-radius: 20px;
+      width: 160px;
+      border-radius: 24px;
       background: rgba(255,255,255,0.2);
-      padding: 12px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      padding: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
     .sidebar-header h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
-      margin-top: 1rem;
+      font-size: 2rem;
+      margin-top: 1.2rem;
+      line-height: 1.2;
     }
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 15px;
-      padding: 1.2rem 2rem;
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
+      gap: 16px;
+      padding: 1.3rem 2rem;
+      color: rgba(255,255,255,0.92);
       font-weight: 600;
-      transition: .3s;
+      transition: var(--transition);
       cursor: pointer;
       border-left: 5px solid transparent;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.15); }
+    .nav-item:hover { background: rgba(255,255,255,0.18); }
     .nav-item.active {
-      background: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.28);
       border-left: 5px solid var(--a);
       font-weight: 700;
     }
-    .nav-item i { font-size: 1.6rem; width: 36px; text-align: center; }
+    .nav-item i { font-size: 1.7rem; width: 38px; text-align: center; }
+
+    /* Contenido principal */
+    .main-content {
+      margin-left: 280px;
+      transition: margin-left 0.4s ease;
+    }
     .hero {
       text-align: center;
-      padding: 4rem 0;
+      padding: 4.5rem 2rem;
       background: linear-gradient(135deg, var(--p), #0146c6);
       color: white;
-      margin: -2rem -2rem 3rem -280px;
       border-radius: 0 0 var(--r) var(--r);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
+      box-shadow: 0 10px 30px rgba(0,48,135,0.3);
     }
     .hero img {
-      width: 120px;
-      border-radius: 20px;
+      width: 130px;
+      border-radius: 24px;
       background: rgba(255,255,255,0.2);
-      padding: 10px;
+      padding: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
     .hero h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 3.5rem;
+      font-size: 3.6rem;
+      margin: 1.2rem 0 0.8rem;
     }
-    .hero p { font-size: 1.2rem; opacity: 0.9; }
-    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    .hero p {
+      font-size: 1.3rem;
+      opacity: 0.95;
+    }
+    .container {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 2.2rem;
     }
     .card {
       background: white;
       border-radius: var(--r);
       overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-      transition: .4s;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      transition: var(--transition);
       border: 3px solid transparent;
     }
     .card:hover {
-      transform: translateY(-12px);
+      transform: translateY(-15px);
       border-color: var(--a);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.2);
     }
     .card img {
       width: 100%;
-      height: 200px;
+      height: 220px;
       object-fit: cover;
       background: #f0f0f0;
     }
     .card h3 {
-      padding: 1rem;
+      padding: 1.2rem 1rem 1rem;
       font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 800;
       text-align: center;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .btn {
       display: inline-block;
-      padding: 0.8rem 1.4rem;
-      margin: 0 0.5rem 1rem;
-      border-radius: 12px;
-      text-decoration: none;
+      padding: 0.9rem 1.6rem;
+      margin: 0 0.6rem 1.2rem;
+      border-radius: 14px;
       font-weight: 700;
-      transition: .3s;
+      transition: var(--transition);
     }
     .read { background: var(--p); color: white; }
-    .read:hover { background: #00205e; }
+    .read:hover { background: #00205e; transform: translateY(-3px); }
     .download { background: #dc2626; color: white; }
-    .download:hover { background: #b91c1c; }
+    .download:hover { background: #b91c1c; transform: translateY(-3px); }
+
     .add-card {
       background: linear-gradient(135deg, var(--p), #0146c6);
       color: white;
       text-align: center;
-      padding: 3rem;
+      padding: 3.5rem 2rem;
       cursor: pointer;
-      transition: .3s;
-      border: 3px dashed rgba(255,255,255,0.4);
+      border: 3px dashed rgba(255,255,255,0.5);
       border-radius: var(--r);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    .add-card:hover { opacity: 0.9; }
-    .add-card i { font-size: 4.5rem; margin-bottom: 1rem; }
+    .add-card:hover { opacity: 0.92; transform: translateY(-8px); }
+    .add-card i { font-size: 5rem; margin-bottom: 1.2rem; }
+
     .loading {
+      grid-column: 1 / -1;
       text-align: center;
-      padding: 4rem;
-      font-size: 1.5rem;
+      padding: 5rem;
+      font-size: 1.6rem;
       color: #666;
     }
+
     /* Modal */
     .modal {
       display: none;
@@ -174,112 +229,74 @@
     .modal.active { display: flex; }
     .modal-box {
       background: white;
-      border-radius: 24px;
-      padding: 2.5rem;
-      max-width: 520px;
+      border-radius: 28px;
+      padding: 3rem;
+      max-width: 540px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.5);
     }
     .modal-box h2 {
       color: var(--p);
       font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
+      font-size: 2.4rem;
+      margin-bottom: 1.2rem;
     }
     .modal-box input {
       width: 100%;
-      padding: 16px;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      font-size: 1.1rem;
+      padding: 18px;
       margin: 1rem 0;
-      transition: .3s;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      font-size: 1.1rem;
     }
     .modal-box input:focus {
       border-color: var(--p);
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(0,48,135,0.15);
+      box-shadow: 0 0 0 5px rgba(0,48,135,0.15);
     }
     .modal-box button {
       background: #28a745;
       color: white;
-      padding: 16px 32px;
+      padding: 18px 40px;
       border: none;
       border-radius: 50px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 1rem;
-      transition: .3s;
+      margin-top: 1.5rem;
+      transition: var(--transition);
     }
-    .modal-box button:hover { background: #218838; }
-    #mensaje-subida { margin-top: 1.5rem; font-weight: bold; min-height: 30px; }
+    .modal-box button:hover { background: #218838; transform: translateY(-3px); }
 
-    /* Mejoras para móvil */
-    .mobile-menu-btn {
-      display: none;
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      z-index: 1000;
-      background: var(--p);
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 1.8rem;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      cursor: pointer;
-    }
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 998;
-    }
-    .overlay.active { display: block; }
-
+    /* Responsive */
     @media (max-width: 992px) {
-      body {
-        padding-left: 0;
-      }
-      .sidebar {
-        transform: translateX(-100%);
-      }
-      .sidebar.active {
-        transform: translateX(0);
-      }
-      .hero {
-        margin-left: 0;
-        border-radius: 0;
-        padding-top: 6rem;
-      }
-      .mobile-menu-btn {
-        display: flex;
-      }
+      .mobile-menu-btn { display: flex; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.active { transform: translateX(0); }
+      .main-content { margin-left: 0; }
+      .hero { border-radius: 0; padding: 7rem 1.5rem 3.5rem; }
     }
   </style>
 </head>
 <body>
+
   <!-- Botón menú móvil -->
   <div class="mobile-menu-btn" id="mobile-menu-btn">
     <i class="fas fa-bars"></i>
   </div>
 
-  <!-- Overlay para cerrar menú al tocar fuera -->
+  <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
 
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
-           onerror="this.src='https://via.placeholder.com/150/003087/white?text=SL'">
+           onerror="this.src='https://via.placeholder.com/160/003087/white?text=SL'">
       <h2>Biblioteca<br>Sanluisina</h2>
     </div>
-    <div class="nav-item active" onclick="cambiarSeccion(0)"><i class="fas fa-mountain-sun"></i><span>Creencias y Tradiciones Huanuqueñas</span></div>
+    <div class="nav-item active" onclick="cambiarSeccion(-1)"><i class="fas fa-home"></i><span>Inicio</span></div>
+    <div class="nav-item" onclick="cambiarSeccion(0)"><i class="fas fa-mountain-sun"></i><span>Creencias y Tradiciones Huanuqueñas</span></div>
     <div class="nav-item" onclick="cambiarSeccion(1)"><i class="fas fa-scroll"></i><span>Leyendas, Fábulas y Mitos</span></div>
     <div class="nav-item" onclick="cambiarSeccion(2)"><i class="fas fa-book-bible"></i><span>Libros Bíblicos y Religiosos</span></div>
     <div class="nav-item" onclick="cambiarSeccion(3)"><i class="fas fa-book"></i><span>Libros y textos religiosos</span></div>
@@ -288,16 +305,22 @@
     <div class="nav-item" onclick="cambiarSeccion(6)"><i class="fas fa-mountain-sun"></i><span>Mitos y Creencias Peruanas</span></div>
     <a href="examenes.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Banco de Exámenes</span></a>
   </aside>
-  <div class="hero">
-    <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
-         onerror="this.src='https://via.placeholder.com/120/003087/white?text=SL'">
-    <h1>Biblioteca Digital Sanluisina</h1>
-    <p>IEP San Luis Gonzaga - Huánuco</p>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="hero">
+      <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
+           onerror="this.src='https://via.placeholder.com/130/003087/white?text=SL'">
+      <h1>Biblioteca Digital Sanluisina</h1>
+      <p>IEP San Luis Gonzaga - Huánuco</p>
+    </div>
+
+    <div class="container">
+      <div class="loading" id="loading">Cargando libros...</div>
+      <div class="cards" id="cards-container"></div>
+    </div>
   </div>
-  <div class="container">
-    <div class="loading" id="loading">Cargando libros...</div>
-    <div class="cards" id="cards-container"></div>
-  </div>
+
   <!-- Modal Subir Libro -->
   <div class="modal" id="modal-subir">
     <div class="modal-box">
@@ -310,6 +333,7 @@
       <div id="mensaje-subida"></div>
     </div>
   </div>
+
   <script>
     const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
     const CARPETAS = [
@@ -321,7 +345,7 @@
       "1yHiDEAHdic_ByiL6qax-R26Pd0x5s0pe",
       "1LddIPgywrGppPGG_A_LNYfyKTVQxOH0-"
     ];
-    let seccionActual = 0;
+
     const elements = {
       cardsContainer: document.getElementById('cards-container'),
       loading: document.getElementById('loading'),
@@ -331,7 +355,9 @@
       overlay: document.getElementById('overlay')
     };
 
-    // Abrir/cerrar menú en móvil
+    let seccionActual = -1; // -1 = Inicio (todos los libros)
+
+    // Menú móvil
     elements.mobileBtn.addEventListener('click', () => {
       elements.sidebar.classList.toggle('active');
       elements.overlay.classList.toggle('active');
@@ -341,58 +367,113 @@
       elements.overlay.classList.remove('active');
     });
 
+    async function cargarTodosLosLibros() {
+      elements.cardsContainer.innerHTML = '';
+      elements.loading.style.display = 'block';
+
+      const addCard = crearAddCard(-1); // -1 para que sepa que es modo inicio
+      elements.cardsContainer.appendChild(addCard);
+
+      let todosLosArchivos = [];
+
+      try {
+        for (const carpeta of CARPETAS) {
+          const res = await fetch(`${DEPLOY_URL}?carpeta=${carpeta}`);
+          const archivos = await res.json();
+          const pdfs = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
+          todosLosArchivos.push(...pdfs);
+        }
+
+        todosLosArchivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+
+        if (todosLosArchivos.length === 0) {
+          elements.cardsContainer.innerHTML = '<p class="loading">Aún no hay libros en ninguna sección</p>';
+        } else {
+          todosLosArchivos.forEach(f => {
+            crearCardLibro(f, elements.cardsContainer);
+          });
+        }
+      } catch (e) {
+        elements.cardsContainer.innerHTML = '<p class="loading" style="color:#dc2626">Error al cargar libros</p>';
+      }
+      elements.loading.style.display = 'none';
+    }
+
     async function cargarLibros(index) {
       elements.cardsContainer.innerHTML = '';
       elements.loading.style.display = 'block';
-      const addCard = document.createElement('div');
-      addCard.className = 'card add-card';
-      addCard.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>`;
-      addCard.onclick = () => abrirModalSubir(index);
+
+      const addCard = crearAddCard(index);
       elements.cardsContainer.appendChild(addCard);
+
       try {
         const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[index]}`);
         let archivos = await res.json();
         archivos = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
-        archivos.sort((a, b) => new Date(b.modifiedTime || 0) - new Date(a.modifiedTime || 0));
+        archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+
         if (archivos.length === 0) {
-          elements.cardsContainer.innerHTML += '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#666">Aún no hay libros en esta sección</p>';
+          elements.cardsContainer.innerHTML += '<p class="loading">Aún no hay libros en esta sección</p>';
         } else {
-          archivos.forEach(f => {
-            const nombre = f.name.replace(/\.pdf$/i, '');
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600" alt="${nombre}" onerror="this.src='https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,25)+'...')}'" loading="lazy">
-              <h3 title="${nombre}">${nombre.length > 45 ? nombre.substring(0,42)+'...' : nombre}</h3>
-              <div style="padding:0 1rem 1rem;text-align:center">
-                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn read">
-                  <i class="fas fa-eye"></i> Leer
-                </a>
-                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn download">
-                  <i class="fas fa-download"></i> Descargar
-                </a>
-              </div>
-            `;
-            elements.cardsContainer.appendChild(card);
-          });
+          archivos.forEach(f => crearCardLibro(f, elements.cardsContainer));
         }
       } catch (e) {
-        elements.cardsContainer.innerHTML += '<p style="color:#dc2626;text-align:center;padding:4rem">Error al cargar libros</p>';
+        elements.cardsContainer.innerHTML += '<p class="loading" style="color:#dc2626">Error al cargar libros</p>';
       }
       elements.loading.style.display = 'none';
     }
-    function cambiarSeccion(index) {
+
+    function crearCardLibro(f, container) {
+      const nombre = f.name.replace(/\.pdf$/i, '');
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600" alt="${nombre}" loading="lazy"
+             onerror="this.src='https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,25)+'...')}'">
+        <h3 title="${nombre}">${nombre.length > 45 ? nombre.substring(0,42)+'...' : nombre}</h3>
+        <div style="padding:0 1rem 1.4rem;text-align:center">
+          <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn read">
+            <i class="fas fa-eye"></i> Leer
+          </a>
+          <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn download">
+            <i class="fas fa-download"></i> Descargar
+          </a>
+        </div>
+      `;
+      container.appendChild(card);
+    }
+
+    function crearAddCard(index) {
+      const addCard = document.createElement('div');
+      addCard.className = 'card add-card';
+      addCard.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>`;
+      addCard.onclick = () => abrirModalSubir(index);
+      return addCard;
+    }
+
+    function cambiarSeccion(index) { // index -1 = Inicio
       seccionActual = index;
       document.querySelectorAll('.nav-item').forEach((item, i) => {
-        item.classList.toggle('active', i === index);
+        if (index === -1) {
+          item.classList.toggle('active', i === 0); // Primera opción es Inicio
+        } else {
+          item.classList.toggle('active', i === index + 1); // +1 porque Inicio ocupa posición 0
+        }
       });
-      cargarLibros(index);
-      // Cerrar menú móvil al seleccionar una sección
+
+      if (index === -1) {
+        cargarTodosLosLibros();
+      } else {
+        cargarLibros(index);
+      }
+
+      // Cerrar menú en móvil
       if (window.innerWidth <= 992) {
         elements.sidebar.classList.remove('active');
         elements.overlay.classList.remove('active');
       }
     }
+
     function abrirModalSubir(index) {
       elements.modal.classList.add('active');
       document.getElementById('titulo-libro').focus();
@@ -400,9 +481,11 @@
       document.getElementById('archivo-pdf').value = '';
       window.carpetaSubirIndex = index;
     }
+
     elements.modal.addEventListener('click', (e) => {
       if (e.target === elements.modal) elements.modal.classList.remove('active');
     });
+
     document.getElementById('btn-preparar-subida').addEventListener('click', () => {
       const titulo = document.getElementById('titulo-libro').value.trim();
       const autor = document.getElementById('autor-libro').value.trim();
@@ -413,17 +496,18 @@
       }
       const nombreSugerido = autor ? `${titulo} - ${autor}.pdf` : `${titulo}.pdf`;
       navigator.clipboard.writeText(nombreSugerido).then(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado al portapapeles!<br><strong>${nombreSugerido}</strong><br>Sube el PDF y pega el nombre.</span>`;
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado!<br><strong>${nombreSugerido}</strong></span>`;
       }).catch(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green"><strong>${nombreSugerido}</strong><br>Copia este nombre y pégalo al subir el PDF.</span>`;
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green"><strong>${nombreSugerido}</strong><br>Copia este nombre</span>`;
       });
       setTimeout(() => {
         window.open(`https://drive.google.com/drive/folders/${CARPETAS[window.carpetaSubirIndex]}`, '_blank');
         elements.modal.classList.remove('active');
       }, 1500);
     });
-    // Carga inicial
-    cargarLibros(0);
+
+    // Carga inicial: Inicio (todos los libros)
+    cambiarSeccion(-1);
   </script>
 </body>
 </html>
