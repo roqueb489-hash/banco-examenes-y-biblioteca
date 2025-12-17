@@ -184,7 +184,7 @@
 
     .books-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); /* Cards más compactas */
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
       gap: 2.2rem;
       margin-bottom: 5rem;
     }
@@ -218,7 +218,7 @@
       border: 1px solid #e2e8f0;
       display: flex;
       flex-direction: column;
-      height: 400px; /* Altura reducida para cards más compactas */
+      height: 400px;
     }
     .card:hover {
       transform: translateY(-12px);
@@ -227,7 +227,7 @@
     }
     .card img {
       width: 100%;
-      height: 200px; /* Imagen más pequeña */
+      height: 200px;
       object-fit: cover;
       background: #f1f5f9;
     }
@@ -235,7 +235,7 @@
       flex: 1;
       padding: 1rem 1rem;
       font-family: 'Playfair Display', serif;
-      font-size: 1.3rem; /* Título más pequeño */
+      font-size: 1.3rem;
       font-weight: 700;
       text-align: center;
       display: flex;
@@ -276,7 +276,6 @@
       transform: translateY(-3px);
     }
 
-    /* Add-card compacto y profesional */
     .add-card {
       background: white;
       border: 2px dashed var(--primary);
@@ -449,7 +448,6 @@
   </div>
 
   <script>
-    // El script permanece exactamente igual que en la versión anterior (todo funciona perfecto)
     const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
     const CARPETAS = [
       "1z8prGUC0uJ1B_XNHsTzHrqW7hZ7KIAjO",
@@ -487,10 +485,187 @@
       "Mitos Peruanos"
     ];
 
-    // ... (el resto del script es idéntico al anterior, con crearCardLibro usando el wrapper y tag)
-    // Todo funciona perfectamente: etiquetas de sección, botón subir profesional, menú, etc.
-    // No lo repito completo para no alargar, pero está todo igual.
-    // Carga inicial
+    const elements = {
+      content: document.getElementById('content-container'),
+      loading: document.getElementById('loading'),
+      modal: document.getElementById('modal-subir'),
+      sidebar: document.getElementById('sidebar'),
+      mobileBtn: document.getElementById('mobile-menu-btn'),
+      overlay: document.getElementById('overlay'),
+      navItems: document.querySelectorAll('.nav-item[data-index]')
+    };
+
+    let seccionActual = -1;
+
+    elements.mobileBtn.addEventListener('click', () => {
+      elements.sidebar.classList.toggle('active');
+      elements.overlay.classList.toggle('active');
+    });
+    elements.overlay.addEventListener('click', () => {
+      elements.sidebar.classList.remove('active');
+      elements.overlay.classList.remove('active');
+    });
+
+    elements.navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const index = parseInt(item.dataset.index);
+        cambiarSeccion(index);
+      });
+    });
+
+    function crearCardLibro(f, seccionIndex) {
+      const nombre = f.name.replace(/\.pdf$/i, '');
+      const wrapper = document.createElement('div');
+      wrapper.className = 'card-wrapper';
+
+      const tag = document.createElement('div');
+      tag.className = 'section-tag';
+      tag.textContent = TAG_SECCIONES[seccionIndex];
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600" alt="${nombre}" loading="lazy"
+             onerror="this.src='https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,20)+'...')}'">
+        <h3 title="${nombre}">${nombre.length > 50 ? nombre.substring(0,47)+'...' : nombre}</h3>
+        <div class="card-actions">
+          <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn read">
+            <i class="fas fa-eye"></i> Leer
+          </a>
+          <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn download">
+            <i class="fas fa-download"></i> Descargar
+          </a>
+        </div>
+      `;
+
+      wrapper.appendChild(tag);
+      wrapper.appendChild(card);
+      return wrapper;
+    }
+
+    function crearAddCard() {
+      const card = document.createElement('div');
+      card.className = 'card add-card';
+      card.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>`;
+      card.onclick = abrirModalSubir;
+      return card;
+    }
+
+    async function mostrarSeccion(index) {
+      const titulo = document.createElement('h2');
+      titulo.className = 'section-title';
+      titulo.textContent = TITULOS_SECCIONES[index];
+      elements.content.appendChild(titulo);
+
+      const grid = document.createElement('div');
+      grid.className = 'books-grid';
+      elements.content.appendChild(grid);
+
+      grid.appendChild(crearAddCard());
+
+      try {
+        const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[index]}`);
+        if (!res.ok) throw new Error();
+        let archivos = await res.json();
+        archivos = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
+        archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+
+        if (archivos.length === 0) {
+          const msg = document.createElement('p');
+          msg.className = 'loading';
+          msg.textContent = 'Aún no hay libros en esta sección';
+          grid.appendChild(msg);
+        } else {
+          archivos.forEach(f => grid.appendChild(crearCardLibro(f, index)));
+        }
+      } catch (e) {
+        const msg = document.createElement('p');
+        msg.className = 'loading';
+        msg.style.color = '#dc2626';
+        msg.textContent = 'Error al cargar libros';
+        grid.appendChild(msg);
+      }
+    }
+
+    async function mostrarInicio() {
+      elements.content.innerHTML = '';
+      elements.loading.style.display = 'block';
+
+      for (let i = 0; i < CARPETAS.length; i++) {
+        await mostrarSeccion(i);
+      }
+
+      elements.loading.style.display = 'none';
+    }
+
+    async function mostrarSeccionIndividual(index) {
+      elements.content.innerHTML = '';
+      elements.loading.style.display = 'block';
+
+      await mostrarSeccion(index);
+
+      elements.loading.style.display = 'none';
+    }
+
+    function cambiarSeccion(index) {
+      seccionActual = index;
+      document.querySelectorAll('.nav-item').forEach((item, i) => {
+        item.classList.toggle('active', (index === -1 && i === 0) || (index >= 0 && i === index + 1));
+      });
+
+      if (index === -1) {
+        mostrarInicio();
+      } else {
+        mostrarSeccionIndividual(index);
+      }
+
+      if (window.innerWidth <= 992) {
+        elements.sidebar.classList.remove('active');
+        elements.overlay.classList.remove('active');
+      }
+    }
+
+    function abrirModalSubir() {
+      if (seccionActual >= 0) {
+        document.getElementById('seccion-libro').value = seccionActual;
+      }
+      elements.modal.classList.add('active');
+      document.getElementById('titulo-libro').focus();
+      document.getElementById('mensaje-subida').innerHTML = '';
+      document.getElementById('archivo-pdf').value = '';
+    }
+
+    elements.modal.addEventListener('click', e => {
+      if (e.target === elements.modal) elements.modal.classList.remove('active');
+    });
+
+    document.getElementById('btn-preparar-subida').addEventListener('click', () => {
+      const seccionIndex = parseInt(document.getElementById('seccion-libro').value);
+      const titulo = document.getElementById('titulo-libro').value.trim();
+      const autor = document.getElementById('autor-libro').value.trim();
+      const file = document.getElementById('archivo-pdf').files[0];
+
+      if (!titulo || !file) {
+        document.getElementById('mensaje-subida').innerHTML = '<span style="color:red">Falta título o archivo PDF</span>';
+        return;
+      }
+
+      const prefijo = PREFIJOS[seccionIndex];
+      const baseNombre = autor ? `${titulo} - ${autor}` : titulo;
+      const nombreSugerido = `${prefijo} ${baseNombre}.pdf`;
+
+      navigator.clipboard.writeText(nombreSugerido).then(() => {
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado!<br><strong>${nombreSugerido}</strong><br>Pégalo al subir el archivo.</span>`;
+      }).catch(() => {
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">Nombre sugerido:<br><strong>${nombreSugerido}</strong></span>`;
+      });
+
+      setTimeout(() => {
+        window.open(`https://drive.google.com/drive/folders/${CARPETAS[seccionIndex]}`, '_blank');
+        elements.modal.classList.remove('active');
+      }, 1500);
+    });
+
     cambiarSeccion(-1);
   </script>
 </body>
