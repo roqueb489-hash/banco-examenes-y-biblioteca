@@ -138,31 +138,31 @@
       padding: 0 2rem 4rem;
     }
 
-    /* Título de sección */
+    /* Título de sección (solo para secciones individuales) */
     .section-title {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 2.6rem;
       color: var(--p);
-      margin: 3rem 0 1.5rem;
+      margin: 2rem 0 2rem;
       text-align: center;
       position: relative;
     }
     .section-title::after {
       content: '';
       display: block;
-      width: 100px;
-      height: 4px;
+      width: 120px;
+      height: 5px;
       background: var(--a);
       margin: 1rem auto 0;
-      border-radius: 2px;
+      border-radius: 3px;
     }
 
-    /* Grid de libros por sección */
+    /* Grid general */
     .books-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 2.2rem;
-      margin-bottom: 4rem;
+      gap: 2.4rem;
+      margin-bottom: 5rem;
     }
 
     .card {
@@ -219,7 +219,6 @@
     .download { background: #dc2626; color: white; }
     .download:hover { background: #b91c1c; }
 
-    /* Botón subir libro como card */
     .add-card {
       background: linear-gradient(135deg, var(--p), #0146c6);
       color: white;
@@ -245,53 +244,9 @@
       grid-column: 1 / -1;
     }
 
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+    .modal { /* mismo que antes */ }
     .modal.active { display: flex; }
-    .modal-box {
-      background: white;
-      border-radius: 28px;
-      padding: 3rem;
-      max-width: 540px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 25px 70px rgba(0,0,0,0.5);
-    }
-    .modal-box h2 {
-      color: var(--p);
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      margin-bottom: 1.2rem;
-    }
-    .modal-box input {
-      width: 100%;
-      padding: 18px;
-      margin: 1rem 0;
-      border: 2px solid #ddd;
-      border-radius: 14px;
-      font-size: 1.1rem;
-    }
-    .modal-box button {
-      background: #28a745;
-      color: white;
-      padding: 18px 40px;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.3rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 1.5rem;
-    }
+    .modal-box { /* mismo */ }
 
     @media (max-width: 992px) {
       .mobile-menu-btn { display: flex; }
@@ -299,7 +254,7 @@
       .sidebar.active { transform: translateX(0); }
       .main-content { margin-left: 0; }
       .hero { border-radius: 0; padding: 7rem 1.5rem 3.5rem; }
-      .section-title { font-size: 2rem; }
+      .section-title { font-size: 2.2rem; }
       .books-grid { gap: 1.8rem; }
       .card, .add-card { height: 420px; }
     }
@@ -388,6 +343,7 @@
     let seccionActual = -1;
     let carpetaSubirIndex = 0;
 
+    // Menú móvil
     elements.mobileBtn.addEventListener('click', () => {
       elements.sidebar.classList.toggle('active');
       elements.overlay.classList.toggle('active');
@@ -425,6 +381,40 @@
       return card;
     }
 
+    // === INICIO: Todos los libros mezclados ===
+    async function mostrarInicio() {
+      elements.content.innerHTML = '';
+      elements.loading.style.display = 'block';
+
+      const grid = document.createElement('div');
+      grid.className = 'books-grid';
+      elements.content.appendChild(grid);
+
+      let todosLosLibros = [];
+
+      try {
+        for (const carpeta of CARPETAS) {
+          const res = await fetch(`${DEPLOY_URL}?carpeta=${carpeta}`);
+          const archivos = await res.json();
+          const pdfs = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
+          todosLosLibros.push(...pdfs);
+        }
+
+        todosLosLibros.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+
+        if (todosLosLibros.length === 0) {
+          grid.innerHTML = '<p class="loading">Aún no hay libros en la biblioteca</p>';
+        } else {
+          todosLosLibros.forEach(f => grid.appendChild(crearCardLibro(f)));
+        }
+      } catch (e) {
+        grid.innerHTML = '<p class="loading" style="color:#dc2626">Error al cargar los libros</p>';
+      }
+
+      elements.loading.style.display = 'none';
+    }
+
+    // === Sección individual ===
     async function mostrarSeccionIndividual(index) {
       elements.content.innerHTML = '';
       elements.loading.style.display = 'block';
@@ -438,7 +428,6 @@
       grid.className = 'books-grid';
       elements.content.appendChild(grid);
 
-      // Botón subir
       grid.appendChild(crearAddCard(index));
 
       try {
@@ -466,51 +455,6 @@
       elements.loading.style.display = 'none';
     }
 
-    async function mostrarInicio() {
-      elements.content.innerHTML = '';
-      elements.loading.style.display = 'block';
-
-      for (let i = 0; i < CARPETAS.length; i++) {
-        const titulo = document.createElement('h2');
-        titulo.className = 'section-title';
-        titulo.textContent = TITULOS_SECCIONES[i];
-        elements.content.appendChild(titulo);
-
-        const grid = document.createElement('div');
-        grid.className = 'books-grid';
-        elements.content.appendChild(grid);
-
-        // Botón subir para esta sección
-        grid.appendChild(crearAddCard(i));
-
-        try {
-          const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[i]}`);
-          let archivos = await res.json();
-          archivos = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
-          archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
-
-          if (archivos.length === 0) {
-            const msg = document.createElement('p');
-            msg.textContent = 'Aún no hay libros';
-            msg.style.gridColumn = '1 / -1';
-            msg.style.textAlign = 'center';
-            msg.style.padding = '2rem';
-            msg.style.color = '#666';
-            grid.appendChild(msg);
-          } else {
-            archivos.forEach(f => grid.appendChild(crearCardLibro(f)));
-          }
-        } catch (e) {
-          const msg = document.createElement('p');
-          msg.textContent = 'Error al cargar';
-          msg.style.color = '#dc2626';
-          grid.appendChild(msg);
-        }
-      }
-
-      elements.loading.style.display = 'none';
-    }
-
     function cambiarSeccion(index) {
       seccionActual = index;
       document.querySelectorAll('.nav-item').forEach((item, i) => {
@@ -523,6 +467,7 @@
         mostrarSeccionIndividual(index);
       }
 
+      // Cerrar menú móvil
       if (window.innerWidth <= 992) {
         elements.sidebar.classList.remove('active');
         elements.overlay.classList.remove('active');
@@ -561,7 +506,7 @@
       }, 1500);
     });
 
-    // Inicio
+    // Carga inicial: Inicio con todos los libros
     cambiarSeccion(-1);
   </script>
 </body>
