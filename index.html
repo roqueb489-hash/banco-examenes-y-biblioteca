@@ -24,7 +24,6 @@
       overflow-x: hidden;
     }
 
-    /* Botón menú móvil */
     .mobile-menu-btn {
       display: none;
       position: fixed;
@@ -43,7 +42,6 @@
       cursor: pointer;
     }
 
-    /* Overlay */
     .overlay {
       display: none;
       position: fixed;
@@ -54,7 +52,6 @@
     }
     .overlay.active { display: block; }
 
-    /* Sidebar */
     .sidebar {
       position: fixed;
       left: 0; top: 0;
@@ -67,7 +64,10 @@
       overflow-y: auto;
       transition: transform 0.4s ease;
       padding-bottom: 2rem;
+      transform: translateX(-100%);
     }
+    .sidebar.active { transform: translateX(0); }
+
     .sidebar-header {
       padding: 3rem 2rem;
       text-align: center;
@@ -104,7 +104,6 @@
     }
     .nav-item i { font-size: 1.7rem; width: 38px; text-align: center; }
 
-    /* Contenido principal */
     .main-content {
       margin-left: 280px;
       transition: margin-left 0.4s ease;
@@ -138,7 +137,6 @@
       padding: 0 2rem 4rem;
     }
 
-    /* Título de sección (solo para secciones individuales) */
     .section-title {
       font-family: 'Playfair Display', serif;
       font-size: 2.6rem;
@@ -157,7 +155,6 @@
       border-radius: 3px;
     }
 
-    /* Grid general */
     .books-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -244,19 +241,72 @@
       grid-column: 1 / -1;
     }
 
-    .modal { /* mismo que antes */ }
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
     .modal.active { display: flex; }
-    .modal-box { /* mismo */ }
+    .modal-box {
+      background: white;
+      border-radius: 28px;
+      padding: 3rem;
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+    }
+    .modal-box h2 {
+      color: var(--p);
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .modal-box select, .modal-box input {
+      width: 100%;
+      padding: 18px;
+      margin: 1rem 0;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      font-size: 1.1rem;
+    }
+    .modal-box select:focus, .modal-box input:focus {
+      border-color: var(--p);
+      box-shadow: 0 0 0 5px rgba(0,48,135,0.15);
+      outline: none;
+    }
+    .modal-box button {
+      background: #28a745;
+      color: white;
+      padding: 18px 40px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: var(--transition);
+    }
+    .modal-box button:hover { background: #218838; }
 
     @media (max-width: 992px) {
       .mobile-menu-btn { display: flex; }
       .sidebar { transform: translateX(-100%); }
-      .sidebar.active { transform: translateX(0); }
       .main-content { margin-left: 0; }
       .hero { border-radius: 0; padding: 7rem 1.5rem 3.5rem; }
       .section-title { font-size: 2.2rem; }
       .books-grid { gap: 1.8rem; }
       .card, .add-card { height: 420px; }
+    }
+
+    @media (min-width: 993px) {
+      .sidebar { transform: translateX(0) !important; }
     }
   </style>
 </head>
@@ -273,14 +323,14 @@
            onerror="this.src='https://via.placeholder.com/160/003087/white?text=SL'">
       <h2>Biblioteca<br>Sanluisina</h2>
     </div>
-    <div class="nav-item active" onclick="cambiarSeccion(-1)"><i class="fas fa-home"></i><span>Inicio</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(0)"><i class="fas fa-mountain-sun"></i><span>Creencias y Tradiciones Huanuqueñas</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(1)"><i class="fas fa-scroll"></i><span>Leyendas, Fábulas y Mitos</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(2)"><i class="fas fa-book-bible"></i><span>Libros Bíblicos y Religiosos</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(3)"><i class="fas fa-book"></i><span>Libros y textos religiosos</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(4)"><i class="fas fa-book-open"></i><span>Literatura Huanuqueña</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(5)"><i class="fas fa-book-open"></i><span>Literatura Peruana</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(6)"><i class="fas fa-mountain-sun"></i><span>Mitos y Creencias Peruanas</span></div>
+    <div class="nav-item active" data-index="-1"><i class="fas fa-home"></i><span>Inicio</span></div>
+    <div class="nav-item" data-index="0"><i class="fas fa-mountain-sun"></i><span>Creencias y Tradiciones Huanuqueñas</span></div>
+    <div class="nav-item" data-index="1"><i class="fas fa-scroll"></i><span>Leyendas, Fábulas y Mitos</span></div>
+    <div class="nav-item" data-index="2"><i class="fas fa-book-bible"></i><span>Libros Bíblicos y Religiosos</span></div>
+    <div class="nav-item" data-index="3"><i class="fas fa-book"></i><span>Libros y textos religiosos</span></div>
+    <div class="nav-item" data-index="4"><i class="fas fa-book-open"></i><span>Literatura Huanuqueña</span></div>
+    <div class="nav-item" data-index="5"><i class="fas fa-book-open"></i><span>Literatura Peruana</span></div>
+    <div class="nav-item" data-index="6"><i class="fas fa-mountain-sun"></i><span>Mitos y Creencias Peruanas</span></div>
     <a href="examenes.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Banco de Exámenes</span></a>
   </aside>
 
@@ -297,10 +347,20 @@
     </div>
   </div>
 
+  <!-- Modal Subir Libro mejorado con selector de sección -->
   <div class="modal" id="modal-subir">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
-      <p>Ingresa el título y autor. El nombre sugerido se copiará al portapapeles.</p>
+      <p>Selecciona la sección, ingresa título y autor.</p>
+      <select id="seccion-libro">
+        <option value="0">Creencias y Tradiciones Huanuqueñas</option>
+        <option value="1">Leyendas, Fábulas y Mitos</option>
+        <option value="2">Libros Bíblicos y Religiosos</option>
+        <option value="3">Libros y textos religiosos</option>
+        <option value="4">Literatura Huanuqueña</option>
+        <option value="5">Literatura Peruana</option>
+        <option value="6">Mitos y Creencias Peruanas</option>
+      </select>
       <input type="text" id="titulo-libro" placeholder="Título del libro" autofocus>
       <input type="text" id="autor-libro" placeholder="Autor (opcional)">
       <input type="file" id="archivo-pdf" accept=".pdf">
@@ -337,11 +397,11 @@
       modal: document.getElementById('modal-subir'),
       sidebar: document.getElementById('sidebar'),
       mobileBtn: document.getElementById('mobile-menu-btn'),
-      overlay: document.getElementById('overlay')
+      overlay: document.getElementById('overlay'),
+      navItems: document.querySelectorAll('.nav-item[data-index]')
     };
 
     let seccionActual = -1;
-    let carpetaSubirIndex = 0;
 
     // Menú móvil
     elements.mobileBtn.addEventListener('click', () => {
@@ -351,6 +411,14 @@
     elements.overlay.addEventListener('click', () => {
       elements.sidebar.classList.remove('active');
       elements.overlay.classList.remove('active');
+    });
+
+    // Navegación
+    elements.navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const index = parseInt(item.dataset.index);
+        cambiarSeccion(index);
+      });
     });
 
     function crearCardLibro(f) {
@@ -373,15 +441,14 @@
       return card;
     }
 
-    function crearAddCard(index) {
+    function crearAddCard() {
       const card = document.createElement('div');
       card.className = 'card add-card';
       card.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>`;
-      card.onclick = () => abrirModalSubir(index);
+      card.onclick = abrirModalSubir;
       return card;
     }
 
-    // === INICIO: Todos los libros mezclados ===
     async function mostrarInicio() {
       elements.content.innerHTML = '';
       elements.loading.style.display = 'block';
@@ -390,31 +457,32 @@
       grid.className = 'books-grid';
       elements.content.appendChild(grid);
 
+      // Botón subir en Inicio
+      grid.appendChild(crearAddCard());
+
       let todosLosLibros = [];
 
-      try {
-        for (const carpeta of CARPETAS) {
+      for (const carpeta of CARPETAS) {
+        try {
           const res = await fetch(`${DEPLOY_URL}?carpeta=${carpeta}`);
+          if (!res.ok) continue;
           const archivos = await res.json();
           const pdfs = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
           todosLosLibros.push(...pdfs);
-        }
+        } catch (e) {}
+      }
 
-        todosLosLibros.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+      todosLosLibros.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
 
-        if (todosLosLibros.length === 0) {
-          grid.innerHTML = '<p class="loading">Aún no hay libros en la biblioteca</p>';
-        } else {
-          todosLosLibros.forEach(f => grid.appendChild(crearCardLibro(f)));
-        }
-      } catch (e) {
-        grid.innerHTML = '<p class="loading" style="color:#dc2626">Error al cargar los libros</p>';
+      if (todosLosLibros.length === 0) {
+        grid.innerHTML += '<p class="loading">Aún no hay libros en la biblioteca</p>';
+      } else {
+        todosLosLibros.forEach(f => grid.appendChild(crearCardLibro(f)));
       }
 
       elements.loading.style.display = 'none';
     }
 
-    // === Sección individual ===
     async function mostrarSeccionIndividual(index) {
       elements.content.innerHTML = '';
       elements.loading.style.display = 'block';
@@ -428,28 +496,22 @@
       grid.className = 'books-grid';
       elements.content.appendChild(grid);
 
-      grid.appendChild(crearAddCard(index));
+      grid.appendChild(crearAddCard());
 
       try {
         const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[index]}`);
+        if (!res.ok) throw new Error();
         let archivos = await res.json();
         archivos = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
         archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
 
         if (archivos.length === 0) {
-          const msg = document.createElement('p');
-          msg.className = 'loading';
-          msg.textContent = 'Aún no hay libros en esta sección';
-          grid.appendChild(msg);
+          grid.innerHTML += '<p class="loading">Aún no hay libros en esta sección</p>';
         } else {
           archivos.forEach(f => grid.appendChild(crearCardLibro(f)));
         }
       } catch (e) {
-        const msg = document.createElement('p');
-        msg.className = 'loading';
-        msg.style.color = '#dc2626';
-        msg.textContent = 'Error al cargar libros';
-        grid.appendChild(msg);
+        grid.innerHTML += '<p class="loading" style="color:#dc2626">Error al cargar libros</p>';
       }
 
       elements.loading.style.display = 'none';
@@ -467,15 +529,17 @@
         mostrarSeccionIndividual(index);
       }
 
-      // Cerrar menú móvil
       if (window.innerWidth <= 992) {
         elements.sidebar.classList.remove('active');
         elements.overlay.classList.remove('active');
       }
     }
 
-    function abrirModalSubir(index) {
-      carpetaSubirIndex = index;
+    function abrirModalSubir() {
+      // Preseleccionar sección si no es Inicio
+      if (seccionActual >= 0) {
+        document.getElementById('seccion-libro').value = seccionActual;
+      }
       elements.modal.classList.add('active');
       document.getElementById('titulo-libro').focus();
       document.getElementById('mensaje-subida').innerHTML = '';
@@ -487,26 +551,31 @@
     });
 
     document.getElementById('btn-preparar-subida').addEventListener('click', () => {
+      const seccionIndex = parseInt(document.getElementById('seccion-libro').value);
       const titulo = document.getElementById('titulo-libro').value.trim();
       const autor = document.getElementById('autor-libro').value.trim();
       const file = document.getElementById('archivo-pdf').files[0];
+
       if (!titulo || !file) {
         document.getElementById('mensaje-subida').innerHTML = '<span style="color:red">Falta título o archivo PDF</span>';
         return;
       }
+
       const nombreSugerido = autor ? `${titulo} - ${autor}.pdf` : `${titulo}.pdf`;
+
       navigator.clipboard.writeText(nombreSugerido).then(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado!<br><strong>${nombreSugerido}</strong></span>`;
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado!<br><strong>${nombreSugerido}</strong><br>Ahora abre la carpeta y pega el nombre.</span>`;
       }).catch(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">Usa: <strong>${nombreSugerido}</strong></span>`;
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">Nombre sugerido:<br><strong>${nombreSugerido}</strong></span>`;
       });
+
       setTimeout(() => {
-        window.open(`https://drive.google.com/drive/folders/${CARPETAS[carpetaSubirIndex]}`, '_blank');
+        window.open(`https://drive.google.com/drive/folders/${CARPETAS[seccionIndex]}`, '_blank');
         elements.modal.classList.remove('active');
       }, 1500);
     });
 
-    // Carga inicial: Inicio con todos los libros
+    // Carga inicial
     cambiarSeccion(-1);
   </script>
 </body>
