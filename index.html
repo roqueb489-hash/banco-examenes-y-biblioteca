@@ -19,13 +19,60 @@
       font-family: 'Inter', sans-serif;
       background: var(--l);
       color: var(--d);
-      padding-left: 280px;
-      overflow-x: hidden;
       min-height: 100vh;
+      overflow-x: hidden;
+      transition: margin-left .3s;
     }
+    a { text-decoration: none; }
+
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: var(--p);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      z-index: 10000;
+    }
+    .skip-link:focus { top: 6px; }
+
+    /* Header móvil con hamburguesa */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(180deg, var(--p), #0146c6);
+      color: white;
+      padding: 1rem;
+      z-index: 998;
+      box-shadow: 0 4px 20px rgba(0,48,135,0.3);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mobile-header img {
+      width: 60px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.2);
+      padding: 6px;
+    }
+    .mobile-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+    }
+    .hamburger {
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    /* Sidebar */
     .sidebar {
       position: fixed;
-      left: 0; top: 0;
+      left: -280px;
+      top: 0;
       width: 280px;
       height: 100vh;
       background: linear-gradient(180deg, var(--p), #0146c6);
@@ -33,8 +80,10 @@
       z-index: 999;
       box-shadow: 8px 0 30px rgba(0,48,135,0.3);
       overflow-y: auto;
+      transition: left .3s ease;
       padding-bottom: 2rem;
     }
+    .sidebar.active { left: 0; }
     .sidebar-header {
       padding: 2.5rem 1.5rem;
       text-align: center;
@@ -52,13 +101,15 @@
       font-size: 1.9rem;
       margin-top: 1rem;
     }
+    .nav-list {
+      list-style: none;
+    }
     .nav-item {
       display: flex;
       align-items: center;
       gap: 15px;
       padding: 1.2rem 2rem;
       color: rgba(255,255,255,0.9);
-      text-decoration: none;
       font-weight: 600;
       transition: .3s;
       cursor: pointer;
@@ -71,17 +122,25 @@
       font-weight: 700;
     }
     .nav-item i { font-size: 1.6rem; width: 36px; text-align: center; }
+
+    /* Overlay cuando sidebar abierto en móvil */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 997;
+    }
+    .overlay.active { display: block; }
+
+    /* Hero */
     .hero {
       text-align: center;
-      padding: 4rem 0;
+      padding: 4rem 1rem 3rem;
       background: linear-gradient(135deg, var(--p), #0146c6);
       color: white;
-      margin: -2rem -2rem 3rem -280px;
       border-radius: 0 0 var(--r) var(--r);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
+      margin-bottom: 3rem;
     }
     .hero img {
       width: 120px;
@@ -91,15 +150,17 @@
     }
     .hero h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 3.5rem;
+      font-size: 3rem;
+      margin: 1rem 0;
     }
     .hero p { font-size: 1.2rem; opacity: 0.9; }
-    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 1rem 2rem; }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 2rem;
-      margin-top: 1rem;
     }
     .card {
       background: white;
@@ -112,10 +173,11 @@
     .card:hover {
       transform: translateY(-12px);
       border-color: var(--a);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
     .card img {
       width: 100%;
-      height: 200px;
+      height: 220px;
       object-fit: cover;
       background: #f0f0f0;
     }
@@ -125,13 +187,17 @@
       font-size: 1.35rem;
       font-weight: 800;
       text-align: center;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 80px;
     }
     .btn {
       display: inline-block;
       padding: 0.8rem 1.4rem;
       margin: 0 0.5rem 1rem;
       border-radius: 12px;
-      text-decoration: none;
       font-weight: 700;
       transition: .3s;
     }
@@ -139,24 +205,30 @@
     .read:hover { background: #00205e; }
     .download { background: #dc2626; color: white; }
     .download:hover { background: #b91c1c; }
+
     .add-card {
       background: linear-gradient(135deg, var(--p), #0146c6);
       color: white;
       text-align: center;
       padding: 3rem;
       cursor: pointer;
-      transition: .3s;
       border: 3px dashed rgba(255,255,255,0.4);
-      border-radius: var(--r);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     .add-card:hover { opacity: 0.9; }
     .add-card i { font-size: 4.5rem; margin-bottom: 1rem; }
+
     .loading {
       text-align: center;
       padding: 4rem;
       font-size: 1.5rem;
       color: #666;
+      grid-column: 1 / -1;
     }
+
     /* Modal */
     .modal {
       display: none;
@@ -185,14 +257,15 @@
       font-size: 2.2rem;
       margin-bottom: 1rem;
     }
-    .modal-box input {
+    .modal-box input, .modal-box button {
       width: 100%;
       padding: 16px;
-      border: 2px solid #ddd;
+      margin: 1rem 0;
       border-radius: 12px;
       font-size: 1.1rem;
-      margin: 1rem 0;
-      transition: .3s;
+    }
+    .modal-box input {
+      border: 2px solid #ddd;
     }
     .modal-box input:focus {
       border-color: var(--p);
@@ -202,49 +275,86 @@
     .modal-box button {
       background: #28a745;
       color: white;
-      padding: 16px 32px;
       border: none;
-      border-radius: 50px;
-      font-size: 1.2rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 1rem;
-      transition: .3s;
     }
     .modal-box button:hover { background: #218838; }
-    #mensaje-subida { margin-top: 1.5rem; font-weight: bold; min-height: 30px; }
+    #mensaje-subida { min-height: 50px; font-weight: bold; }
+
+    /* Responsivo */
     @media (max-width: 992px) {
-      body { padding-left: 0; }
-      .sidebar { width: 100%; height: auto; position: relative; box-shadow: none; padding: 1rem; }
-      .sidebar-header { padding: 1.5rem; }
-      .hero { margin-left: 0; border-radius: 0; padding: 3rem 1rem; }
-      .nav-item { padding: 1rem; justify-content: center; }
-      .nav-item span { display: none; }
+      .mobile-header { display: flex; }
+      .hero { margin-top: 90px; border-radius: 0; padding: 2rem 1rem; }
+      .hero h1 { font-size: 2.4rem; }
+      body.sidebar-open { overflow: hidden; }
     }
   </style>
 </head>
 <body>
-  <aside class="sidebar">
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- Header móvil -->
+  <header class="mobile-header">
+    <i class="fas fa-bars hamburger" id="hamburger" aria-label="Abrir menú"></i>
+    <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
+         onerror="this.src='https://via.placeholder.com/60/003087/white?text=SL'">
+    <h1>Biblioteca Sanluisina</h1>
+  </header>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" aria-label="Navegación principal">
     <div class="sidebar-header">
-      <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
+      <img src="Insignia-New-cuadrado.png" alt="Insignia del IEP San Luis Gonzaga"
            onerror="this.src='https://via.placeholder.com/150/003087/white?text=SL'">
       <h2>Biblioteca<br>Sanluisina</h2>
     </div>
-    <div class="nav-item active" onclick="cambiarSeccion(0)"><i class="fas fa-mountain-sun"></i><span>Creencias y Tradiciones Huanuqueñas</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(1)"><i class="fas fa-scroll"></i><span>Leyendas, Fábulas y Mitos</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(2)"><i class="fas fa-book-bible"></i><span>Libros Bíblicos y Religiosos</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(3)"><i class="fas fa-book"></i><span>Libros y textos religiosos</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(4)"><i class="fas fa-book-open"></i><span>Literatura Huanuqueña</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(5)"><i class="fas fa-book-open"></i><span>Literatura Peruana</span></div>
-    <div class="nav-item" onclick="cambiarSeccion(6)"><i class="fas fa-mountain-sun"></i><span>Mitos y Creencias Peruanas</span></div>
-    <a href="examenes.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Banco de Exámenes</span></a>
-  </aside>
-  <div class="hero">
-    <img src="Insignia-New-cuadrado.png" alt="Logo IEP San Luis Gonzaga"
+    <ul class="nav-list">
+      <li class="nav-item active" role="button" tabindex="0" data-index="0">
+        <i class="fas fa-mountain-sun" aria-hidden="true"></i>
+        <span>Creencias y Tradiciones Huanuqueñas</span>
+      </li>
+      <li class="nav-item" role="button" tabindex="0" data-index="1">
+        <i class="fas fa-scroll" aria-hidden="true"></i>
+        <span>Leyendas, Fábulas y Mitos</span>
+      </li>
+      <li class="nav-item" role="button" tabindex="0" data-index="2">
+        <i class="fas fa-book-bible" aria-hidden="true"></i>
+        <span>Libros Bíblicos y Religiosos</span>
+      </li>
+      <li class="nav-item" role="button" tabindex="0" data-index="3">
+        <i class="fas fa-book" aria-hidden="true"></i>
+        <span>Libros y textos religiosos</span>
+      </li>
+      <li class="nav-item" role="button" tabindex="0" data-index="4">
+        <i class="fas fa-book-open" aria-hidden="true"></i>
+        <span>Literatura Huanuqueña</span>
+      </li>
+      <li class="nav-item" role="button" tabindex="0" data-index="5">
+        <i class="fas fa-book-open" aria-hidden="true"></i>
+        <span>Literatura Peruana</span>
+      </li>
+      <li class="nav-item" role="button" tabindex="0" data-index="6">
+        <i class="fas fa-mountain-sun" aria-hidden="true"></i>
+        <span>Mitos y Creencias Peruanas</span>
+      </li>
+    </ul>
+    <a href="examenes.html" class="nav-item">
+      <i class="fas fa-file-alt" aria-hidden="true"></i>
+      <span>Banco de Exámenes</span>
+    </a>
+  </nav>
+
+  <main id="main-content" class="hero">
+    <img src="Insignia-New-cuadrado.png" alt="Insignia del IEP San Luis Gonzaga"
          onerror="this.src='https://via.placeholder.com/120/003087/white?text=SL'">
     <h1>Biblioteca Digital Sanluisina</h1>
     <p>IEP San Luis Gonzaga - Huánuco</p>
-  </div>
+  </main>
+
   <div class="container">
     <div class="loading" id="loading">Cargando libros...</div>
     <div class="cards" id="cards-container"></div>
@@ -254,7 +364,7 @@
   <div class="modal" id="modal-subir">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
-      <p>Ingresa el título y autor. El nombre se copiará al portapapeles.</p>
+      <p>Ingresa el título y autor. El nombre sugerido se copiará al portapapeles.</p>
       <input type="text" id="titulo-libro" placeholder="Título del libro" autofocus>
       <input type="text" id="autor-libro" placeholder="Autor (opcional)">
       <input type="file" id="archivo-pdf" accept=".pdf">
@@ -265,7 +375,6 @@
 
   <script>
     const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyKMz5v5A2QB5AsbfcRAR0joA_6wf5-SymU0HblhzLH_dvrz3cHLyQThUUAzb1AnkFfRQ/exec";
-
     const CARPETAS = [
       "1z8prGUC0uJ1B_XNHsTzHrqW7hZ7KIAjO",
       "1PYBr9zTjhCBVD8Sv65XAcR_C1_veQtFd",
@@ -276,75 +385,127 @@
       "1LddIPgywrGppPGG_A_LNYfyKTVQxOH0-"
     ];
 
-    let seccionActual = 0;
-
     const elements = {
+      sidebar: document.querySelector('.sidebar'),
+      overlay: document.getElementById('overlay'),
+      hamburger: document.getElementById('hamburger'),
       cardsContainer: document.getElementById('cards-container'),
       loading: document.getElementById('loading'),
-      modal: document.getElementById('modal-subir')
+      modal: document.getElementById('modal-subir'),
+      navItems: document.querySelectorAll('.nav-item[role="button"]')
     };
 
+    let seccionActual = 0;
+    let carpetaSubirIndex = 0;
+
+    // Cambiar sección
+    function cambiarSeccion(index) {
+      seccionActual = index;
+      elements.navItems.forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+      });
+      cargarLibros(index);
+      cerrarSidebar();
+    }
+
+    // Eventos de navegación
+    elements.navItems.forEach(item => {
+      const index = parseInt(item.dataset.index);
+      item.addEventListener('click', () => cambiarSeccion(index));
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          cambiarSeccion(index);
+        }
+      });
+    });
+
+    // Abrir/cerrar sidebar móvil
+    elements.hamburger.addEventListener('click', () => {
+      elements.sidebar.classList.add('active');
+      elements.overlay.classList.add('active');
+      document.body.classList.add('sidebar-open');
+    });
+
+    function cerrarSidebar() {
+      elements.sidebar.classList.remove('active');
+      elements.overlay.classList.remove('active');
+      document.body.classList.remove('sidebar-open');
+    }
+
+    elements.overlay.addEventListener('click', cerrarSidebar);
+
+    // Cargar libros
     async function cargarLibros(index) {
       elements.cardsContainer.innerHTML = '';
       elements.loading.style.display = 'block';
 
-      const addCard = document.createElement('div');
-      addCard.className = 'card add-card';
-      addCard.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>`;
-      addCard.onclick = () => abrirModalSubir(index);
-      elements.cardsContainer.appendChild(addCard);
-
       try {
         const res = await fetch(`${DEPLOY_URL}?carpeta=${CARPETAS[index]}`);
+        if (!res.ok) throw new Error('Error de red');
         let archivos = await res.json();
-        archivos = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
-        archivos.sort((a, b) => new Date(b.modifiedTime || 0) - new Date(a.modifiedTime || 0));
+        archivos = archivos.filter(f => f.mimeType === 'application/pdf');
+        archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
+
         if (archivos.length === 0) {
-          elements.cardsContainer.innerHTML += '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#666">Aún no hay libros en esta sección</p>';
+          elements.cardsContainer.innerHTML = '<p class="loading">Aún no hay libros en esta sección</p>';
         } else {
           archivos.forEach(f => {
             const nombre = f.name.replace(/\.pdf$/i, '');
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600" alt="${nombre}" onerror="this.src='https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,25)+'...')}'" loading="lazy">
-              <h3 title="${nombre}">${nombre.length > 45 ? nombre.substring(0,42)+'...' : nombre}</h3>
+              <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w400" alt="Portada de ${nombre}" loading="lazy"
+                   onerror="this.src='https://via.placeholder.com/400x600/003087/white?text=${encodeURIComponent(nombre.substring(0,20)+'...')}'">
+              <h3 title="${nombre}">${nombre}</h3>
               <div style="padding:0 1rem 1rem;text-align:center">
-                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn read">
-                  <i class="fas fa-eye"></i> Leer
+                <a href="https://drive.google.com/file/d/${f.id}/preview" target="_blank" class="btn read" aria-label="Leer ${nombre}">
+                  <i class="fas fa-eye" aria-hidden="true"></i> Leer
                 </a>
-                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn download">
-                  <i class="fas fa-download"></i> Descargar
+                <a href="https://drive.google.com/uc?id=${f.id}&export=download" class="btn download" aria-label="Descargar ${nombre}">
+                  <i class="fas fa-download" aria-hidden="true"></i> Descargar
                 </a>
               </div>
             `;
             elements.cardsContainer.appendChild(card);
           });
         }
+
+        // Tarjeta de subir al final
+        const addCard = document.createElement('div');
+        addCard.className = 'card add-card';
+        addCard.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><br><strong>Subir nuevo libro</strong>`;
+        addCard.role = 'button';
+        addCard.tabIndex = 0;
+        addCard.onclick = () => abrirModalSubir(index);
+        addCard.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') abrirModalSubir(index); };
+        elements.cardsContainer.appendChild(addCard);
+
       } catch (e) {
-        elements.cardsContainer.innerHTML += '<p style="color:#dc2626;text-align:center;padding:4rem">Error al cargar libros</p>';
+        console.error(e);
+        elements.cardsContainer.innerHTML = '<p class="loading" style="color:#dc2626">Error al cargar libros. Intenta recargar la página.</p>';
       }
       elements.loading.style.display = 'none';
     }
 
-    function cambiarSeccion(index) {
-      seccionActual = index;
-      document.querySelectorAll('.nav-item').forEach((item, i) => {
-        item.classList.toggle('active', i === index);
-      });
-      cargarLibros(index);
-    }
-
+    // Modal subir
     function abrirModalSubir(index) {
+      carpetaSubirIndex = index;
       elements.modal.classList.add('active');
       document.getElementById('titulo-libro').focus();
       document.getElementById('mensaje-subida').innerHTML = '';
       document.getElementById('archivo-pdf').value = '';
-      window.carpetaSubirIndex = index;
     }
 
-    elements.modal.addEventListener('click', (e) => {
+    elements.modal.addEventListener('click', e => {
       if (e.target === elements.modal) elements.modal.classList.remove('active');
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        elements.modal.classList.remove('active');
+        cerrarSidebar();
+      }
     });
 
     document.getElementById('btn-preparar-subida').addEventListener('click', () => {
@@ -360,13 +521,22 @@
       const nombreSugerido = autor ? `${titulo} - ${autor}.pdf` : `${titulo}.pdf`;
 
       navigator.clipboard.writeText(nombreSugerido).then(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado al portapapeles!<br><strong>${nombreSugerido}</strong><br>Sube el PDF y pega el nombre.</span>`;
+        document.getElementById('mensaje-subida').innerHTML = `
+          <span style="color:green">
+            ¡Nombre copiado al portapapeles!<br>
+            <strong>${nombreSugerido}</strong><br>
+            Abre la carpeta y pega el nombre al subir.
+          </span>`;
       }).catch(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green"><strong>${nombreSugerido}</strong><br>Copia este nombre y pégalo al subir el PDF.</span>`;
+        document.getElementById('mensaje-subida').innerHTML = `
+          <span style="color:green">
+            Usa este nombre:<br>
+            <strong>${nombreSugerido}</strong>
+          </span>`;
       });
 
       setTimeout(() => {
-        window.open(`https://drive.google.com/drive/folders/${CARPETAS[window.carpetaSubirIndex]}`, '_blank');
+        window.open(`https://drive.google.com/drive/folders/${CARPETAS[carpetaSubirIndex]}`, '_blank');
         elements.modal.classList.remove('active');
       }, 1500);
     });
