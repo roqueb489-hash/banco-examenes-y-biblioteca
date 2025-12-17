@@ -249,15 +249,23 @@
       text-align: center;
       background: #f8fafc;
       border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem; /* Espacio entre botones */
     }
     .btn {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* Espacio entre icono y texto */
       padding: 0.7rem 1.4rem;
-      margin: 0 0.5rem;
       border-radius: 50px;
       font-weight: 600;
       font-size: 0.95rem;
       transition: var(--transition);
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      min-width: 110px; /* Ancho mínimo para que no se deformen */
+      justify-content: center;
     }
     .read {
       background: var(--primary);
