@@ -141,7 +141,7 @@
       font-family: 'Playfair Display', serif;
       font-size: 2.6rem;
       color: var(--p);
-      margin: 2rem 0 2rem;
+      margin: 3rem 0 2rem;
       text-align: center;
       position: relative;
     }
@@ -293,7 +293,6 @@
       margin-top: 1.5rem;
       transition: var(--transition);
     }
-    .modal-box button:hover { background: #218838; }
 
     @media (max-width: 992px) {
       .mobile-menu-btn { display: flex; }
@@ -347,11 +346,11 @@
     </div>
   </div>
 
-  <!-- Modal Subir Libro mejorado con selector de sección -->
+  <!-- Modal con selector de sección -->
   <div class="modal" id="modal-subir">
     <div class="modal-box">
       <h2>Subir Nuevo Libro</h2>
-      <p>Selecciona la sección, ingresa título y autor.</p>
+      <p>Selecciona la sección, título y autor.</p>
       <select id="seccion-libro">
         <option value="0">Creencias y Tradiciones Huanuqueñas</option>
         <option value="1">Leyendas, Fábulas y Mitos</option>
@@ -391,6 +390,16 @@
       "Mitos y Creencias Peruanas"
     ];
 
+    const PREFIJOS = [
+      "[Creencias Huanuqueñas]",
+      "[Leyendas y Mitos]",
+      "[Libros Bíblicos]",
+      "[Textos Religiosos]",
+      "[Literatura Huanuqueña]",
+      "[Literatura Peruana]",
+      "[Mitos Peruanos]"
+    ];
+
     const elements = {
       content: document.getElementById('content-container'),
       loading: document.getElementById('loading'),
@@ -403,7 +412,6 @@
 
     let seccionActual = -1;
 
-    // Menú móvil
     elements.mobileBtn.addEventListener('click', () => {
       elements.sidebar.classList.toggle('active');
       elements.overlay.classList.toggle('active');
@@ -413,7 +421,6 @@
       elements.overlay.classList.remove('active');
     });
 
-    // Navegación
     elements.navItems.forEach(item => {
       item.addEventListener('click', () => {
         const index = parseInt(item.dataset.index);
@@ -449,44 +456,7 @@
       return card;
     }
 
-    async function mostrarInicio() {
-      elements.content.innerHTML = '';
-      elements.loading.style.display = 'block';
-
-      const grid = document.createElement('div');
-      grid.className = 'books-grid';
-      elements.content.appendChild(grid);
-
-      // Botón subir en Inicio
-      grid.appendChild(crearAddCard());
-
-      let todosLosLibros = [];
-
-      for (const carpeta of CARPETAS) {
-        try {
-          const res = await fetch(`${DEPLOY_URL}?carpeta=${carpeta}`);
-          if (!res.ok) continue;
-          const archivos = await res.json();
-          const pdfs = archivos.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
-          todosLosLibros.push(...pdfs);
-        } catch (e) {}
-      }
-
-      todosLosLibros.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
-
-      if (todosLosLibros.length === 0) {
-        grid.innerHTML += '<p class="loading">Aún no hay libros en la biblioteca</p>';
-      } else {
-        todosLosLibros.forEach(f => grid.appendChild(crearCardLibro(f)));
-      }
-
-      elements.loading.style.display = 'none';
-    }
-
-    async function mostrarSeccionIndividual(index) {
-      elements.content.innerHTML = '';
-      elements.loading.style.display = 'block';
-
+    async function mostrarSeccion(index) { // Usada tanto para Inicio como para secciones individuales
       const titulo = document.createElement('h2');
       titulo.className = 'section-title';
       titulo.textContent = TITULOS_SECCIONES[index];
@@ -506,13 +476,38 @@
         archivos.sort((a, b) => new Date(b.modifiedTime) - new Date(a.modifiedTime));
 
         if (archivos.length === 0) {
-          grid.innerHTML += '<p class="loading">Aún no hay libros en esta sección</p>';
+          const msg = document.createElement('p');
+          msg.className = 'loading';
+          msg.textContent = 'Aún no hay libros en esta sección';
+          grid.appendChild(msg);
         } else {
           archivos.forEach(f => grid.appendChild(crearCardLibro(f)));
         }
       } catch (e) {
-        grid.innerHTML += '<p class="loading" style="color:#dc2626">Error al cargar libros</p>';
+        const msg = document.createElement('p');
+        msg.className = 'loading';
+        msg.style.color = '#dc2626';
+        msg.textContent = 'Error al cargar libros';
+        grid.appendChild(msg);
       }
+    }
+
+    async function mostrarInicio() {
+      elements.content.innerHTML = '';
+      elements.loading.style.display = 'block';
+
+      for (let i = 0; i < CARPETAS.length; i++) {
+        await mostrarSeccion(i);
+      }
+
+      elements.loading.style.display = 'none';
+    }
+
+    async function mostrarSeccionIndividual(index) {
+      elements.content.innerHTML = '';
+      elements.loading.style.display = 'block';
+
+      await mostrarSeccion(index);
 
       elements.loading.style.display = 'none';
     }
@@ -536,7 +531,6 @@
     }
 
     function abrirModalSubir() {
-      // Preseleccionar sección si no es Inicio
       if (seccionActual >= 0) {
         document.getElementById('seccion-libro').value = seccionActual;
       }
@@ -561,10 +555,12 @@
         return;
       }
 
-      const nombreSugerido = autor ? `${titulo} - ${autor}.pdf` : `${titulo}.pdf`;
+      const prefijo = PREFIJOS[seccionIndex];
+      const baseNombre = autor ? `${titulo} - ${autor}` : titulo;
+      const nombreSugerido = `${prefijo} ${baseNombre}.pdf`;
 
       navigator.clipboard.writeText(nombreSugerido).then(() => {
-        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado!<br><strong>${nombreSugerido}</strong><br>Ahora abre la carpeta y pega el nombre.</span>`;
+        document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">¡Nombre copiado!<br><strong>${nombreSugerido}</strong><br>Pégalo al subir el archivo.</span>`;
       }).catch(() => {
         document.getElementById('mensaje-subida').innerHTML = `<span style="color:green">Nombre sugerido:<br><strong>${nombreSugerido}</strong></span>`;
       });
@@ -575,7 +571,7 @@
       }, 1500);
     });
 
-    // Carga inicial
+    // Carga inicial: Inicio con todas las secciones
     cambiarSeccion(-1);
   </script>
 </body>
